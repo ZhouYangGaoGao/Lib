@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <declare-styleable name="background">
+        <attr name="bl_shape" format="enum">
+            <enum name="rectangle" value="0" />
+            <enum name="oval" value="1" />
+            <enum name="line" value="2" />
+            <enum name="ring" value="3" />
+        </attr>
+
+        <attr name="bl_solid_color" format="color" />
+
+        <attr name="bl_corners_radius" format="dimension" />
+        <attr name="bl_corners_bottomLeftRadius" format="dimension" />
+        <attr name="bl_corners_bottomRightRadius" format="dimension" />
+        <attr name="bl_corners_topLeftRadius" format="dimension" />
+        <attr name="bl_corners_topRightRadius" format="dimension" />
+
+        <attr name="bl_gradient_angle" format="integer" />
+        <attr name="bl_gradient_centerX" format="float" />
+        <attr name="bl_gradient_centerY" format="float" />
+        <attr name="bl_gradient_centerColor" format="color" />
+        <attr name="bl_gradient_endColor" format="color" />
+        <attr name="bl_gradient_startColor" format="color" />
+        <attr name="bl_gradient_gradientRadius" format="dimension" />
+        <attr name="bl_gradient_type" format="enum">
+            <enum name="linear" value="0" />
+            <enum name="radial" value="1" />
+            <enum name="sweep" value="2" />
+        </attr>
+        <attr name="bl_gradient_useLevel" format="boolean" />
+
+        <attr name="bl_padding_left" format="dimension" />
+        <attr name="bl_padding_top" format="dimension" />
+        <attr name="bl_padding_right" format="dimension" />
+        <attr name="bl_padding_bottom" format="dimension" />
+
+        <attr name="bl_size_width" format="dimension">
+            <enum name="wrap_content" value="-2" />
+            <enum name="match_parent" value="-1" />
+        </attr>
+        <attr name="bl_size_height" format="dimension">
+            <enum name="wrap_content" value="-2" />
+            <enum name="match_parent" value="-1" />
+        </attr>
+
+        <attr name="bl_stroke_width" format="dimension" />
+        <attr name="bl_stroke_color" format="color" />
+        <attr name="bl_stroke_dashWidth" format="dimension" />
+        <attr name="bl_stroke_dashGap" format="dimension" />
+
+        <!--以下是selector事件-->
+        <attr name="bl_ripple_enable" format="boolean" />
+        <attr name="bl_ripple_color" format="color" />
+
+
+        <attr name="bl_checkable_stroke_color" format="color" />
+        <attr name="bl_checked_stroke_color" format="color" />
+        <attr name="bl_enabled_stroke_color" format="color" />
+        <attr name="bl_selected_stroke_color" format="color" />
+        <attr name="bl_pressed_stroke_color" format="color" />
+        <attr name="bl_focused_stroke_color" format="color" />
+
+        <attr name="bl_unCheckable_stroke_color" format="color" />
+        <attr name="bl_unChecked_stroke_color" format="color" />
+        <attr name="bl_unEnabled_stroke_color" format="color" />
+        <attr name="bl_unSelected_stroke_color" format="color" />
+        <attr name="bl_unPressed_stroke_color" format="color" />
+        <attr name="bl_unFocused_stroke_color" format="color" />
+
+        <attr name="bl_checkable_solid_color" format="color" />
+        <attr name="bl_checked_solid_color" format="color" />
+        <attr name="bl_enabled_solid_color" format="color" />
+        <attr name="bl_selected_solid_color" format="color" />
+        <attr name="bl_pressed_solid_color" format="color" />
+        <attr name="bl_focused_solid_color" format="color" />
+
+        <attr name="bl_unCheckable_solid_color" format="color" />
+        <attr name="bl_unChecked_solid_color" format="color" />
+        <attr name="bl_unEnabled_solid_color" format="color" />
+        <attr name="bl_unSelected_solid_color" format="color" />
+        <attr name="bl_unPressed_solid_color" format="color" />
+        <attr name="bl_unFocused_solid_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="background_press">
+        <attr name="bl_unpressed_color" format="color" />
+        <attr name="bl_pressed_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="background_selector">
+
+        <attr name="bl_checkable_drawable" format="color|reference" />
+        <attr name="bl_checked_drawable" format="color|reference" />
+        <attr name="bl_enabled_drawable" format="color|reference" />
+        <attr name="bl_selected_drawable" format="color|reference" />
+        <attr name="bl_pressed_drawable" format="color|reference" />
+        <attr name="bl_focused_drawable" format="color|reference" />
+        <attr name="bl_focused_hovered" format="color|reference" />
+        <attr name="bl_focused_activated" format="color|reference" />
+
+        <attr name="bl_unCheckable_drawable" format="color|reference" />
+        <attr name="bl_unChecked_drawable" format="color|reference" />
+        <attr name="bl_unEnabled_drawable" format="color|reference" />
+        <attr name="bl_unSelected_drawable" format="color|reference" />
+        <attr name="bl_unPressed_drawable" format="color|reference" />
+        <attr name="bl_unFocused_drawable" format="color|reference" />
+        <attr name="bl_unFocused_hovered" format="color|reference" />
+        <attr name="bl_unFocused_activated" format="color|reference" />
+
+    </declare-styleable>
+
+    <declare-styleable name="background_multi_selector">
+        <attr name="bl_multi_selector1" format="string" />
+        <attr name="bl_multi_selector2" format="string" />
+        <attr name="bl_multi_selector3" format="string" />
+        <attr name="bl_multi_selector4" format="string" />
+        <attr name="bl_multi_selector5" format="string" />
+        <attr name="bl_multi_selector6" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="background_multi_selector_text">
+        <attr name="bl_multi_text_selector1" format="string" />
+        <attr name="bl_multi_text_selector2" format="string" />
+        <attr name="bl_multi_text_selector3" format="string" />
+        <attr name="bl_multi_text_selector4" format="string" />
+        <attr name="bl_multi_text_selector5" format="string" />
+        <attr name="bl_multi_text_selector6" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="background_button_drawable">
+        <attr name="bl_checked_button_drawable" format="color|reference" />
+        <attr name="bl_unChecked_button_drawable" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="text_selector">
+        <attr name="bl_checkable_textColor" format="color" />
+        <attr name="bl_checked_textColor" format="color" />
+        <attr name="bl_enabled_textColor" format="color" />
+        <attr name="bl_selected_textColor" format="color" />
+        <attr name="bl_pressed_textColor" format="color" />
+        <attr name="bl_focused_textColor" format="color" />
+        <attr name="bl_activated_textColor" format="color" />
+        <attr name="bl_active_textColor" format="color" />
+        <attr name="bl_expanded_textColor" format="color" />
+
+        <attr name="bl_unCheckable_textColor" format="color" />
+        <attr name="bl_unChecked_textColor" format="color" />
+        <attr name="bl_unEnabled_textColor" format="color" />
+        <attr name="bl_unSelected_textColor" format="color" />
+        <attr name="bl_unPressed_textColor" format="color" />
+        <attr name="bl_unFocused_textColor" format="color" />
+        <attr name="bl_unActivated_textColor" format="color" />
+        <attr name="bl_unActive_textColor" format="color" />
+        <attr name="bl_unExpanded_textColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="bl_other">
+        <attr name="bl_position" format="enum">
+            <enum name="left" value="1" />
+            <enum name="top" value="2" />
+            <enum name="right" value="4" />
+            <enum name="bottom" value="8" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="bl_anim">
+        <attr name="bl_oneshot" format="boolean" />
+        <attr name="bl_anim_auto_start" format="boolean" />
+        <attr name="bl_duration" format="integer" />
+        <attr name="bl_duration_item0" format="integer" />
+        <attr name="bl_duration_item1" format="integer" />
+        <attr name="bl_duration_item2" format="integer" />
+        <attr name="bl_duration_item3" format="integer" />
+        <attr name="bl_duration_item4" format="integer" />
+        <attr name="bl_duration_item5" format="integer" />
+        <attr name="bl_duration_item6" format="integer" />
+        <attr name="bl_duration_item7" format="integer" />
+        <attr name="bl_duration_item8" format="integer" />
+        <attr name="bl_duration_item9" format="integer" />
+        <attr name="bl_duration_item10" format="integer" />
+        <attr name="bl_duration_item11" format="integer" />
+        <attr name="bl_duration_item12" format="integer" />
+        <attr name="bl_duration_item13" format="integer" />
+        <attr name="bl_duration_item14" format="integer" />
+
+        <attr name="bl_frame_drawable_item0" format="reference" />
+        <attr name="bl_frame_drawable_item1" format="reference" />
+        <attr name="bl_frame_drawable_item2" format="reference" />
+        <attr name="bl_frame_drawable_item3" format="reference" />
+        <attr name="bl_frame_drawable_item4" format="reference" />
+        <attr name="bl_frame_drawable_item5" format="reference" />
+        <attr name="bl_frame_drawable_item6" format="reference" />
+        <attr name="bl_frame_drawable_item7" format="reference" />
+        <attr name="bl_frame_drawable_item8" format="reference" />
+        <attr name="bl_frame_drawable_item9" format="reference" />
+        <attr name="bl_frame_drawable_item10" format="reference" />
+        <attr name="bl_frame_drawable_item11" format="reference" />
+        <attr name="bl_frame_drawable_item12" format="reference" />
+        <attr name="bl_frame_drawable_item13" format="reference" />
+        <attr name="bl_frame_drawable_item14" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SmartView">
+        <attr name="android:orientation"/>
+        <attr name="centerVMargin" format="float" />
+        <attr name="centerHMargin" format="float" />
+        <attr name="centerRMargin" format="float" />
+        <attr name="centerLMargin" format="float" />
+        <attr name="bigTextSize" format="float" />
+        <attr name="smallTextSize" format="float" />
+        <attr name="defHeight" format="float" />
+        <attr name="icoPadding" format="float" />
+        <attr name="captchaSecond" format="integer" />
+        <attr name="checkId" format="reference" />
+        <attr name="historyLayout" format="reference" />
+        <attr name="textColor" format="reference|color" />
+        <attr name="llIcon" format="reference|color" />
+        <attr name="ltIcon" format="reference|color" />
+        <attr name="lbIcon" format="reference|color" />
+        <attr name="lrIcon" format="reference|color" />
+
+        <attr name="clIcon" format="reference|color" />
+        <attr name="ctIcon" format="reference|color" />
+        <attr name="cbIcon" format="reference|color" />
+        <attr name="crIcon" format="reference|color" />
+
+        <attr name="rrIcon" format="reference|color" />
+        <attr name="rtIcon" format="reference|color" />
+        <attr name="rbIcon" format="reference|color" />
+        <attr name="rlIcon" format="reference|color" />
+
+        <attr name="hint" format="reference|string" />
+        <attr name="back" format="boolean" />
+        <attr name="onlyIcon" format="boolean" />
+        <attr name="enable" format="boolean" />
+        <attr name="focusable" format="boolean" />
+        <attr name="delete" format="boolean" />
+        <attr name="history" format="boolean" />
+        <attr name="hideLine" format="boolean" />
+        <attr name="leftText" format="reference|string" />
+        <attr name="centerText" format="reference|string" />
+        <attr name="rightText" format="reference|string" />
+        <attr name="mode" format="enum">
+            <enum name="top" value="0" />
+            <enum name="search" value="1" />
+            <enum name="login" value="2" />
+            <enum name="password" value="3" />
+            <enum name="captcha" value="4" />
+            <enum name="test" value="5" />
+        </attr>
+        <attr name="inputType" format="enum">
+            <enum name="number" value="0" />
+            <enum name="password" value="1" />
+            <enum name="number_password" value="2" />
+        </attr>
+        <attr name="gravity" format="enum">
+            <enum name="center" value="11" />
+            <enum name="right" value="12" />
+        </attr>
+        <attr name="measure" format="enum">
+            <enum name="max" value="110" />
+            <enum name="custom" value="111" />
+            <enum name="different" value="112" />
+        </attr>
+    </declare-styleable>
+
+    <attr name="picture.title.textColor" format="reference|color"  />
+    <attr name="picture.right.textColor" format="reference|color" />
+    <attr name="picture.leftBack.icon" format="reference" />
+    <attr name="picture.arrow_down.icon" format="reference" />
+    <attr name="picture.arrow_up.icon" format="reference" />
+    <attr name="picture.num.style" format="reference" />
+    <attr name="picture.checked.style" format="reference" />
+    <attr name="picture.bottom.bg" format="reference|color" />
+    <attr name="picture.preview.textColor" format="reference|color" />
+    <attr name="picture.complete.textColor" format="reference|color" />
+    <attr name="picture.ac_preview.title.textColor" format="reference|color" />
+    <attr name="picture.ac_preview.complete.textColor" format="reference|color" />
+    <attr name="picture.ac_preview.bottom.bg" format="reference|color" />
+    <attr name="picture.status.color" format="reference|color" />
+    <attr name="picture.ac_preview.title.bg" format="reference|color" />
+    <attr name="picture.preview.leftBack.icon" format="reference" />
+    <attr name="picture.statusFontColor" format="boolean" />
+    <attr name="picture.style.numComplete" format="boolean" />
+    <attr name="picture.style.checkNumMode" format="boolean" />
+    <attr name="picture.crop.toolbar.bg" format="reference|color" />
+    <attr name="picture.crop.status.color" format="reference|color" />
+    <attr name="picture.crop.title.color" format="reference|color" />
+    <attr name="picture.folder_checked_dot" format="reference" />
+
+    <declare-styleable name="ucrop_UCropView">
+
+        <!--Crop image view-->
+        <attr name="ucrop_aspect_ratio_x" format="float"/>
+        <attr name="ucrop_aspect_ratio_y" format="float"/>
+
+        <!--Overlay view-->
+        <attr name="ucrop_show_oval_crop_frame" format="boolean"/>
+        <attr name="ucrop_circle_dimmed_layer" format="boolean"/>
+        <attr name="ucrop_dimmed_color" format="color"/>
+
+        <attr name="ucrop_grid_stroke_size" format="dimension"/>
+        <attr name="ucrop_grid_color" format="color"/>
+        <attr name="ucrop_grid_row_count" format="integer"/>
+        <attr name="ucrop_grid_column_count" format="integer"/>
+        <attr name="ucrop_show_grid" format="boolean"/>
+
+        <attr name="ucrop_frame_stroke_size" format="dimension"/>
+        <attr name="ucrop_frame_color" format="color"/>
+        <attr name="ucrop_show_frame" format="boolean"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="ucrop_AspectRatioTextView">
+
+        <attr name="ucrop_artv_ratio_title" format="string"/>
+
+        <attr name="ucrop_artv_ratio_x" format="float"/>
+        <attr name="ucrop_artv_ratio_y" format="float"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="PicSelectView">
+        <attr name="android:orientation"/>
+        <attr name="max" format="integer"/>
+        <attr name="min" format="integer"/>
+        <attr name="numColumns" format="integer"/>
+        <attr name="onlyCamera" format="boolean"/>
+        <attr name="onlyShow" format="boolean"/>
+        <attr name="isCrop" format="boolean"/>
+        <attr name="circleCrop" format="boolean"/>
+        <attr name="showCamera" format="boolean"/>
+        <attr name="preview" format="boolean"/>
+        <attr name="single" format="boolean"/>
+        <attr name="isGif" format="boolean"/>
+        <attr name="compress" format="boolean"/>
+        <attr name="offset" format="integer"/>
+        <attr name="compressSize" format="integer"/>
+        <attr name="type" format="enum">
+            <enum name="all" value="0"/>
+            <enum name="image" value="1"/>
+            <enum name="video" value="2"/>
+            <enum name="audio" value="3"/>
+        </attr>
+
+    </declare-styleable>
+</resources>

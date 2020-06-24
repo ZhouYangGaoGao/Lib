@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:layout_height="45dp"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/leftTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp"
+            android:singleLine="true"
+            tools:text="leftTextView" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/rightTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp"
+            android:singleLine="true"
+            tools:text="rightTextView" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/centerEditText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:imeOptions="flagNoExtractUi"
+        android:imeActionLabel="走你"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="0.5dp"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/centerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:ellipsize="marquee"
+        android:foreground="@drawable/fg_title"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        tools:text="centerTextView" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorLine" />
+</RelativeLayout>

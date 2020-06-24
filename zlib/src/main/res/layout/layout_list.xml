@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<custom.SmartView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mTopView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:measure="max"
+    android:orientation="vertical"
+    app:mode="top">
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:srlEnableNestedScrolling="false">
+
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <custom.HeaderGridView
+                android:id="@+id/gridView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scrollbars="none" />
+        </LinearLayout>
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</custom.SmartView>

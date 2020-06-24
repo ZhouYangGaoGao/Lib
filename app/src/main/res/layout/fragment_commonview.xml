@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:focusable="false"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <custom.SmartView
+        android:id="@+id/topView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="SmartView  SmartView  SmartView  SmartView  SmartView  SmartView"
+        app:mode="top"
+        app:rightText="文本检测" />
+
+    <custom.SmartView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="Biu"
+        app:back="false"
+        app:icoPadding="6"
+        app:mode="search"
+        app:rightText="历史" />
+
+    <custom.SmartView
+        android:id="@+id/nameView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:onlyIcon="true"
+        app:leftText="姓名"
+        app:lrIcon="@drawable/ic_person"
+        android:layout_marginHorizontal="40dp"
+        app:mode="login" />
+
+    <custom.SmartView
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:checkId="@id/nameView"
+        app:delete="false"
+        android:layout_marginHorizontal="40dp"
+        app:mode="login" />
+
+    <custom.SmartView
+        android:id="@+id/captcha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:checkId="@id/phone"
+        android:layout_marginHorizontal="40dp"
+        app:captchaSecond="10"
+        app:mode="captcha" />
+
+    <custom.SmartView
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:checkId="@id/captcha"
+        app:llIcon="@drawable/ic_password"
+        android:layout_marginHorizontal="40dp"
+        app:mode="password" />
+
+    <custom.SmartView
+        android:id="@+id/newPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:checkId="@id/password"
+        android:layout_marginHorizontal="40dp"
+        app:leftText="新密码"
+        app:mode="password" />
+
+    <custom.SmartView
+        android:id="@+id/checkPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:checkId="@id/newPassword"
+        android:layout_marginHorizontal="40dp"
+        app:leftText="确认密码"
+        app:mode="password" />
+
+    <custom.SmartView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        app:mode="test" />
+
+    <custom.SmartView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        app:mode="test">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </custom.SmartView>
+
+    <custom.SmartView
+        android:id="@+id/testView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        app:mode="test"/>
+
+    <custom.SmartView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:orientation="vertical"
+        app:mode="test">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </custom.SmartView>
+
+</LinearLayout>
