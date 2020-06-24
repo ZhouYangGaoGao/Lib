@@ -13,7 +13,7 @@ public class BPresenter<V extends BView> {
     }
 
     public void detachView() {
-        if (mCompositeSubscription.hasSubscriptions()) {
+        if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
             mCompositeSubscription.unsubscribe();
         }
     }

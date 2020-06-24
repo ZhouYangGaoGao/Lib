@@ -243,5 +243,4 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
         refreshLayout.finishLoadMore();
         refreshLayout.finishRefresh();
     }
-
 }

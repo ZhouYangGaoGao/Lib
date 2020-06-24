@@ -14,7 +14,7 @@ import base.SmartFragment;
 public class AVLFragment extends SmartFragment<String> {
     @Override
     public void beforeView() {
-        numColumns = 7;
+        numColumns = 3;
         itemLayoutId = R.layout.item_avl;
         scrollAble = true;
         Collections.addAll(mData, getResources().getStringArray(R.array.load_name));

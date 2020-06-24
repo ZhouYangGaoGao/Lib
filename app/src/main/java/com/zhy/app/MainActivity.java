@@ -37,14 +37,10 @@ public class MainActivity extends BActivity {
         creator.add("picSelector", PhotoFragment.class);
         viewPager.setAdapter(new FragmentPagerItemAdapter(getSupportFragmentManager(), creator.create()));
         tabLayout.setViewPager(viewPager);
-        viewPager.setOffscreenPageLimit(4);
-        ((TextView) tabLayout.getTabAt(0)).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_one, 0, 0);
-        ((TextView) tabLayout.getTabAt(1)).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_one, 0, 0);
-        ((TextView) tabLayout.getTabAt(2)).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_one, 0, 0);
-        ((TextView) tabLayout.getTabAt(3)).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_one, 0, 0);
-        tabLayout.getTabAt(0).setPadding(0, ScreenUtils.dip2px(4), 0, ScreenUtils.dip2px(4));
-        tabLayout.getTabAt(1).setPadding(0, ScreenUtils.dip2px(4), 0, ScreenUtils.dip2px(4));
-        tabLayout.getTabAt(2).setPadding(0, ScreenUtils.dip2px(4), 0, ScreenUtils.dip2px(4));
-        tabLayout.getTabAt(3).setPadding(0, ScreenUtils.dip2px(4), 0, ScreenUtils.dip2px(4));
+        viewPager.setOffscreenPageLimit(viewPager.getAdapter().getCount());
+        for (int i = 0; i < viewPager.getAdapter().getCount(); i++) {
+            ((TextView) tabLayout.getTabAt(i)).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_one, 0, 0);
+            tabLayout.getTabAt(i).setPadding(0, ScreenUtils.dip2px(4), 0, ScreenUtils.dip2px(4));
+        }
     }
 }
