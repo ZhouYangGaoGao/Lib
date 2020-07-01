@@ -112,6 +112,7 @@ public abstract class PagerFragment<M> extends BFragment<M, SmartPresenter<M>> i
 
     @Override
     public void getData() {
+        if (presenter == null) return;
         presenter.getDatas();
     }
 

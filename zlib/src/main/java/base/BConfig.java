@@ -19,6 +19,7 @@ public class BConfig {
     private String baseUrl;
     private String client = "app";
     private String token = "0";
+    private String bugly ;
     private Object webInterface;
     private boolean fullScreen = false;
     private int colorTheme = 0xff36C177;
@@ -44,6 +45,14 @@ public class BConfig {
     public BConfig setFullScreen(boolean fullScreen) {
         this.fullScreen = fullScreen;
         return config;
+    }
+
+    public String getBugly() {
+        return bugly;
+    }
+
+    public BConfig setBugly(String bugly) {
+        this.bugly = bugly;return config;
     }
 
     public BConfig setColorTheme(int colorTheme) {
@@ -126,7 +135,7 @@ public class BConfig {
         return orientation;
     }
 
-    public void setOrientation(int orientation) {
-        this.orientation = orientation;
+    public BConfig setOrientation(int orientation) {
+        this.orientation = orientation;return config;
     }
 }

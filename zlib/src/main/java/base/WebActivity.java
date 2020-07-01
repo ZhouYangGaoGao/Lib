@@ -13,8 +13,8 @@ import com.zhy.android.R;
 
 public class WebActivity extends BActivity<Object, BPresenter> {
 
-    WebFragment mWebFragment;
-    FragmentManager manager;
+   private WebFragment mWebFragment;
+   private FragmentManager manager;
 
     @Override
     public void beforeView() {
@@ -29,5 +29,12 @@ public class WebActivity extends BActivity<Object, BPresenter> {
     }
 
 
+    public void reLoad(){
+        mWebFragment.reLoad();
+    }
+
+    public WebFragment getmWebFragment() {
+        return mWebFragment;
+    }
 }
 

@@ -41,9 +41,10 @@ public class WebFragment extends BFragment<Object, BPresenter> {
         String[] arguments = Objects.requireNonNull(getActivity()).getIntent().getStringArrayExtra(BConstant.ARGUMENTS);
         if (arguments != null && arguments.length > 0) {
             url = arguments[0];
-        } else {
-            if (getArguments() != null)
-                url = getArguments().getString("url");
+        } else if (getArguments() != null) {
+            url = getArguments().getString("url");
+        }else if (!TextUtils.isEmpty(getActivity().getIntent().getStringExtra("url"))){
+            url = getActivity().getIntent().getStringExtra("url");
         }
         if (TextUtils.isEmpty(url)) return;
         url = url + (url.contains("?") ? "&" : "?") + "token=" + BConfig.getConfig().getToken() + "&time=" + System.currentTimeMillis();
@@ -65,9 +66,12 @@ public class WebFragment extends BFragment<Object, BPresenter> {
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setJavaScriptEnabled(true);
+        settings.setUseWideViewPort(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setDefaultTextEncodingName("GBK");
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setLoadWithOverviewMode(true);
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(mWebParent, layoutParams)
                 .useDefaultIndicator()
@@ -90,6 +94,10 @@ public class WebFragment extends BFragment<Object, BPresenter> {
 
     public boolean onBackPressed() {
         return mAgentWeb.back();
+    }
+
+    public void reLoad(){
+        mWebView.reload();
     }
 
     @Override

@@ -1,6 +1,4 @@
-/**
- *
- */
+
 package util;
 
 import android.app.Activity;
@@ -17,22 +15,15 @@ import android.view.inputmethod.InputMethodManager;
 import base.BApp;
 
 public class ScreenUtils {
-    private ScreenUtils() {
-
-        /* cannot be instantiated */
-        throw new UnsupportedOperationException("cannot be instantiated");
-
-    }
 
     /**
      * 获得屏幕高度
      *
-     * @param context
      * @return
      */
-    public static int getScreenWidth(Context context) {
+    public static int getScreenWidth() {
 
-        WindowManager wm = (WindowManager) context
+        WindowManager wm = (WindowManager) BApp.app()
                 .getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
@@ -43,12 +34,11 @@ public class ScreenUtils {
     /**
      * 获得屏幕宽度
      *
-     * @param context
      * @return
      */
-    public static int getScreenHeight(Context context) {
+    public static int getScreenHeight() {
 
-        WindowManager wm = (WindowManager) context
+        WindowManager wm = (WindowManager) BApp.app()
                 .getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
@@ -64,7 +54,7 @@ public class ScreenUtils {
      */
     public static float setHight(View view, double h) {
         ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();
-        gLayoutParams.height = (int) (ScreenUtils.getScreenWidth(view.getContext()) * h);
+        gLayoutParams.height = (int) (ScreenUtils.getScreenWidth() * h);
         view.setLayoutParams(gLayoutParams);
         return gLayoutParams.height;
     }
@@ -104,7 +94,7 @@ public class ScreenUtils {
      */
     public static float setWidth(View view, double h) {
         ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();//底部导航栏做了适配
-        gLayoutParams.width = (int) (ScreenUtils.getScreenWidth(view.getContext()) * h);
+        gLayoutParams.width = (int) (ScreenUtils.getScreenWidth() * h);
         view.setLayoutParams(gLayoutParams);
         return gLayoutParams.width;
     }
@@ -148,17 +138,16 @@ public class ScreenUtils {
     /**
      * 获取当前屏幕截图，包含状态栏
      *
-     * @param activity
      * @return
      */
-    public static Bitmap snapShotWithStatusBar(Activity activity) {
+    public static Bitmap snapShotWithStatusBar() {
 
-        View view = activity.getWindow().getDecorView();
+        View view = BApp.app().currentActivity().getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         Bitmap bmp = view.getDrawingCache();
-        int width = getScreenWidth(activity);
-        int height = getScreenHeight(activity);
+        int width = getScreenWidth();
+        int height = getScreenHeight();
         Bitmap bp = null;
         bp = Bitmap.createBitmap(bmp, 0, 0, width, height);
         view.destroyDrawingCache();
@@ -181,8 +170,8 @@ public class ScreenUtils {
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
         int statusBarHeight = frame.top;
 
-        int width = getScreenWidth(activity);
-        int height = getScreenHeight(activity);
+        int width = getScreenWidth();
+        int height = getScreenHeight();
         Bitmap bp = null;
         bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, width, height
                 - statusBarHeight);

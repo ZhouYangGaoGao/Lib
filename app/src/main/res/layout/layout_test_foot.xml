@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mBannerFragment"
+    android:name="com.zhy.app.modules.test.BannerFragment"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:ignore="MissingDefaultResource">
-
-    <custom.SmartView
-        android:layout_width="match_parent"
-        app:mode="login"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+    android:layout_height="match_parent" />

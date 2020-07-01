@@ -23,9 +23,6 @@ public class BannerFragment extends PagerFragment<String> {
 
     @Override
     public void onPageClick(AutoScrollViewPager pager, int position) {
-        mData.remove(0);
-        mData.remove(0);
-        log("onPageClick"+mData.size());
-        upDate();
+        log("onPageClick"+position);
     }
 }

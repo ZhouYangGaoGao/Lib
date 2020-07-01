@@ -38,7 +38,6 @@ import util.Timer;
 public class SmartView extends LinearLayout {
     public TextView leftTextView, centerTextView, rightTextView;
     public EditText centerEditText;
-    public LinearLayout leftRightContent;
     public RelativeLayout topContent;
     public View line;
     private float centerVMargin, centerHMargin, centerRMargin, centerLMargin;
@@ -100,12 +99,11 @@ public class SmartView extends LinearLayout {
         Drawable rbIcon = t.getDrawable(R.styleable.SmartView_rbIcon);
         t.recycle();
 
-        View view = View.inflate(context, R.layout.view_smart, null);
+        RelativeLayout view = (RelativeLayout) View.inflate(context, R.layout.view_smart, null);
         leftTextView = view.findViewById(R.id.leftTextView);
         centerTextView = view.findViewById(R.id.centerTextView);
         centerEditText = view.findViewById(R.id.centerEditText);
         rightTextView = view.findViewById(R.id.rightTextView);
-        leftRightContent = view.findViewById(R.id.linearLayout);
         topContent = view.findViewById(R.id.relativeLayout);
         line = view.findViewById(R.id.line);
         LayoutParams params = new LayoutParams(orientation == 1 ? -1 : 0, height > 0 ? dip2px(height) : (height == -2 ? dip2px(45) : -1));
@@ -118,14 +116,14 @@ public class SmartView extends LinearLayout {
         if (getBackground() == null && (mode < 2)) {
             view.setBackgroundColor(BConfig.getConfig().getColorTheme());//top search 模式默认主题颜色背景
         }
-        if (hideLine)line.setVisibility(GONE);
+        if (hideLine) line.setVisibility(GONE);
         switch (mode) {
             case 10://common
             case 0://top
                 centerEditText.setVisibility(GONE);
                 break;
             case 1://search
-                initHistory(historyAble,historyLayout);
+                initHistory(historyAble, historyLayout);
                 centerTextView.setVisibility(GONE);
                 centerEditText.setBackground(new DrawableCreator.Builder()
                         .setCornersRadius(dip2px(25))
@@ -173,8 +171,11 @@ public class SmartView extends LinearLayout {
                 inputType = 0;
                 textRColor = BConfig.getConfig().getColorTheme();
                 rightTextView.setPadding(dip2px(8), dip2px(3), dip2px(8), dip2px(3));
-                rightTextView.setLayoutParams(new LinearLayout.LayoutParams(-2, -2));
+                RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) rightTextView.getLayoutParams();
+                rlp.height = -2;
+                rightTextView.setLayoutParams(rlp);
                 rightTextView.setBackground(new DrawableCreator.Builder()
+                        .setRipple(true,0x88888888)
                         .setCornersRadius(dip2px(15))
                         .setSolidColor(0xffeeeeee).build());
 
@@ -225,7 +226,6 @@ public class SmartView extends LinearLayout {
                 }
             });
         }
-
         leftTextView.setCompoundDrawablesWithIntrinsicBounds(llIcon, ltIcon, lrIcon, lbIcon);
         centerTextView.setCompoundDrawablesWithIntrinsicBounds(clIcon, ctIcon, crIcon, cbIcon);
         centerEditText.setCompoundDrawablesWithIntrinsicBounds(clIcon, ctIcon, crIcon, cbIcon);
@@ -284,7 +284,7 @@ public class SmartView extends LinearLayout {
 
     }
 
-    private void initHistory(boolean historyAble,int historyLayoutId) {
+    private void initHistory(boolean historyAble, int historyLayoutId) {
         if (historyAble) {
             centerEditText.addTextChangedListener(new TextWatcher() {
                 HistoryFragment historyFragment;
@@ -308,7 +308,7 @@ public class SmartView extends LinearLayout {
                         if (historyFragment == null) return;
                         historyFragment.setEditText(centerEditText);
                     }
-                    if (historyFragment!=null){
+                    if (historyFragment != null) {
                         historyFragment.onDatas(history);
                         historyWindow.showAsDropDown(line);
                     }

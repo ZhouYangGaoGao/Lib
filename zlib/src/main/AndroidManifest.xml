@@ -66,6 +66,10 @@
         <activity
             android:name="com.luck.picture.lib.PictureSelectorActivity"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:name="base.WebActivity"/>
         <activity
             android:name="com.luck.picture.lib.PictureSelectorCameraEmptyActivity"
             android:theme="@style/Picture.Theme.Translucent"

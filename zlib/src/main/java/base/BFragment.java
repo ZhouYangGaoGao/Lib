@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.zhy.android.R;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -27,15 +28,15 @@ import util.LogUtils;
 
 public abstract class BFragment<M, P extends BPresenter> extends Fragment implements BView<M> {
     public P presenter;
-    public static final int NEVER = -1;
-    public static final int CREATE = 0;
-    public static final int RESUME = 1;
-    public int preData = 0;//0:在onCreate中加载  1:在onResume中加载
+    protected static final int NEVER = -1;
+    protected static final int CREATE = 0;
+    protected static final int RESUME = 1;
+    protected int preData = 0;//0:在onCreate中加载  1:在onResume中加载
     private View rootView;
-    public boolean useEventBus = false;
-    public int contentViewId = R.layout.layout_list;
-    public String loadingName = "努力加载中";
-    public String indicatorName;
+    protected boolean useEventBus = false;
+    protected int contentViewId = R.layout.layout_list;
+    protected String loadingName = "努力加载中";
+    protected String indicatorName;
     private Unbinder unbinder;
     /**
      * 保存使用注解的 Presenter ，用于解绑
@@ -54,24 +55,22 @@ public abstract class BFragment<M, P extends BPresenter> extends Fragment implem
             ParameterizedType pt = (ParameterizedType) this.getClass().getGenericSuperclass();
             for (int i = 0; i < pt.getActualTypeArguments().length; i++) {
                 Class<?> aClass = (Class<?>) pt.getActualTypeArguments()[i];
-                if (BPresenter.class.isAssignableFrom(aClass) ){
+                if (BPresenter.class.isAssignableFrom(aClass)) {
                     presenter = (P) aClass.newInstance();
                     presenter.attachView(this);
                     mInjectPresenters.add(presenter);
+                    break;
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
-        //获得已经申明的变量，包括私有的
+        //获得某个类的所有的公共（public）的字段，包括父类中的字段
         Field[] fields = this.getClass().getFields();
         for (Field field : fields) {
             //获取变量上面的注解类型
-            InjectPresenter injectPresenter = field.getAnnotation(InjectPresenter.class);
-            if (injectPresenter != null) {
+            if (field.getAnnotation(InjectPresenter.class) != null) {
                 try {
                     Class<? extends BPresenter> type = (Class<? extends BPresenter>) field.getType();
                     BPresenter mInjectPresenter = type.newInstance();

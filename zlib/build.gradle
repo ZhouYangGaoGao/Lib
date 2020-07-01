@@ -51,6 +51,7 @@ dependencies {
     api 'androidx.appcompat:appcompat:1.1.0'
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     api 'com.github.bumptech.glide:glide:4.10.0'
+    api 'com.tencent.bugly:crashreport_upgrade:1.4.5'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     api 'pub.devrel:easypermissions:3.0.0'
 }

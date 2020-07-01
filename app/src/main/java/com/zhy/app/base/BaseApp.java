@@ -10,7 +10,7 @@ public class BaseApp extends BApp {
         super.onCreate();
         BConfig.getConfig().setBaseUrl("https://www.ahlzz.com/api/")
                 .setClient("cms")
-                .setToken("9af27eb7b9908ce3772d578aff2a517a");
+                .setToken("88a5f621de3e2594d0410825b93209a1");
     }
 
     @Override

@@ -1,7 +1,10 @@
 package base;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -14,7 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import annotation.InjectPresenter;
+import background.drawable.DrawableCreator;
+import custom.EmptySizeView;
 import custom.HeaderGridView;
+import custom.ShadowLayout;
 import custom.SmartView;
 import rx.Observable;
 import util.ScreenUtils;
@@ -38,11 +44,18 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
         refreshLayout.setEnableLoadMore(!scrollAble);
         refreshLayout.setEnableRefresh(!scrollAble);
         gridView.setNumColumns(numColumns);
-        if (emptyView != null) {
-            content.addView(emptyView, new LinearLayout.LayoutParams(-1, 0, 1));
-            gridView.setEmptyView(emptyView);
+        if (emptyView == null) {
+            emptyView = getView(R.layout.layout_empty);
         }
+        content.addView(emptyView, new LinearLayout.LayoutParams(-1, 0, 1));
+        gridView.setEmptyView(emptyView);
         if (heardView != null) gridView.addHeaderView(heardView);
+        if (isCard > 0) {
+            horizontalSpacing = 0;
+            verticalSpacing = 0;
+            gridView.addHeaderView(new EmptySizeView(isCard / 2));
+            gridView.addFooterView(new EmptySizeView(isCard / 2));
+        }
         if (footView != null) gridView.addFooterView(footView);
         gridView.setAdapter(adapter = initAdapter());
         gridView.setHorizontalSpacing(ScreenUtils.dip2px(horizontalSpacing));
@@ -57,6 +70,26 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
      * 可滑动
      */
     protected boolean scrollAble = false;
+
+    /**
+     * 是否卡片模式 0:否  >0:间距
+     */
+    protected int isCard = 0;
+
+    /**
+     * 卡片圆角
+     */
+    protected int cardRadius = 10;
+
+    /**
+     * 卡片背景色 正常
+     */
+    protected int cardColor = 0xffffffff;
+
+    /**
+     * 卡片背景色 按压
+     */
+    protected int cardPressedColor = 0x88cccccc;
 
     /**
      * 自动加载更多
@@ -85,12 +118,12 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
     /**
      * 预留参数 类型
      */
-    public String type = "";
+    protected String type = "";
 
     /**
      * 预留参数 下标
      */
-    public int index = 0;
+    protected int index = 0;
 
     /**
      * 是否是刷新
@@ -118,14 +151,16 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
      * @return
      */
     private CommonAdapter initAdapter() {
-        return new CommonAdapter<M>(getContext(), mData, itemLayoutId) {
+        return new CommonAdapter<M>(getContext(), mData, isCard > 0 ? R.layout.item_card : itemLayoutId) {
             /**
              * 当列表有头部天加时 列表为空要显示头部
              * @return
              */
             @Override
             public boolean isEmpty() {
-                if (gridView.getHeaderViewCount() + gridView.getFooterViewCount() > 0) return false;
+                int count = gridView.getHeaderViewCount() + gridView.getFooterViewCount();
+                if (count > 2) return false;
+                if (isCard == 0 && count > 0) return false;
                 return super.isEmpty();
             }
 
@@ -136,9 +171,30 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
              */
             @Override
             public void convert(ViewHolder h, M i) {
+                initCard(h);
                 SmartFragment.this.convert(h, i);
             }
         };
+    }
+
+    private void initCard(CommonAdapter.ViewHolder h) {
+        if (isCard > 0) {
+            ShadowLayout card = (ShadowLayout) h.getConvertView();
+            card.setShadowRadius(ScreenUtils.dip2px(isCard / 2f));
+            View view = View.inflate(getContext(), itemLayoutId, null);
+            view.setBackground(itemBg());
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(-1, -1);
+            params.setMargins(ScreenUtils.dip2px(isCard / 2f), 0, ScreenUtils.dip2px(isCard / 2f), 0);
+            card.addView(view, params);
+        }
+    }
+
+    protected Drawable itemBg() {
+        return new DrawableCreator.Builder()
+                .setRipple(true, 0x88888888)
+                .setCornersRadius(ScreenUtils.dip2px(cardRadius))
+                .setPressedSolidColor(cardPressedColor, cardColor)
+                .build();
     }
 
     /**
@@ -147,7 +203,7 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
      * @param h
      * @param i 数据源
      */
-    public void convert(CommonAdapter.ViewHolder h, M i) {
+    protected void convert(CommonAdapter.ViewHolder h, M i) {
     }
 
     /**

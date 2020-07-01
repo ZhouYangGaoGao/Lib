@@ -4,50 +4,39 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:layout_height="45dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    tools:layout_height="45dp">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/leftTextView"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:gravity="center_vertical"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal">
+        android:paddingHorizontal="10dp"
+        android:singleLine="true"
+        tools:text="leftTextView" />
 
-        <TextView
-            android:id="@+id/leftTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"
-            android:singleLine="true"
-            tools:text="leftTextView" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/rightTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"
-            android:singleLine="true"
-            tools:text="rightTextView" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/rightTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp"
+        android:layout_centerVertical="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="10dp"
+        android:singleLine="true"
+        tools:text="rightTextView" />
 
     <EditText
         android:id="@+id/centerEditText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
-        android:imeOptions="flagNoExtractUi"
         android:imeActionLabel="走你"
+        android:imeOptions="flagNoExtractUi"
         android:paddingHorizontal="10dp"
         android:paddingVertical="0.5dp"
         android:singleLine="true" />
@@ -56,6 +45,7 @@
         android:id="@+id/centerTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:ellipsize="marquee"
         android:foreground="@drawable/fg_title"
         android:gravity="center"

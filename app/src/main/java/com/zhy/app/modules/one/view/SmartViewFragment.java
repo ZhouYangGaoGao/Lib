@@ -26,7 +26,6 @@ public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPres
     @BindView(R.id.captcha) SmartView captcha;
     @BindView(R.id.password) SmartView password;
     @BindView(R.id.topView) SmartView topView;
-    @BindView(R.id.testView) SmartView testView;
     @BindView(R.id.checkPassword) SmartView checkPassword;
 
     @Override
@@ -36,7 +35,6 @@ public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPres
 
     @Override
     public void afterView() {
-        testView.leftRightContent.addView(new Switch(getContext()));
         topView.rightTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

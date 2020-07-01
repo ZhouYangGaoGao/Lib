@@ -3,6 +3,10 @@ package base;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.text.TextUtils;
+
+import com.tencent.bugly.Bugly;
+import com.zhy.android.BuildConfig;
 
 import java.lang.ref.WeakReference;
 
@@ -17,6 +21,8 @@ public class BApp extends Application {
         super.onCreate();
         app = this;
         Hawk.init(this).build();
+        if (!TextUtils.isEmpty(BConfig.getConfig().getBugly()))
+            Bugly.init(this, BConfig.getConfig().getBugly(), BuildConfig.DEBUG);
         initActivityCallBack();
     }
 

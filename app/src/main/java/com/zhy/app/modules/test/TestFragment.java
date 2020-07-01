@@ -25,20 +25,20 @@ import util.GPSUtils;
  * - generate by MvpAutoCodePlus plugin.
  */
 
-public class TestFragment extends SmartFragment<String> {
+public class TestFragment extends SmartFragment<TestModel> {
 
     @Override
     public void beforeView() {
-        preData = NEVER;
         heardView = getView(R.layout.layout_test_heard);
+        footView = getView(R.layout.layout_test_foot);
         itemLayoutId = R.layout.item_avl;
-        Collections.addAll(mData, getResources().getStringArray(R.array.load_name));
+        isCard = 15;
     }
 
     @Override
-    public void convert(CommonAdapter.ViewHolder h, String i) {
+    public void convert(CommonAdapter.ViewHolder h, TestModel i) {
         AVLoadingIndicatorView avl = h.getView(R.id.avl);
-        avl.setIndicator(i);
+        avl.setIndicator(getResources().getStringArray(R.array.load_name)[h.getmPosition()]);
     }
 
     @Override
@@ -70,9 +70,9 @@ public class TestFragment extends SmartFragment<String> {
         });
     }
 
-//    @Override
-//    public Observable<BResponse<BList<TestModel>>> getPageList() {
-//        return Manager.getManager().getNewsList();
-//    }
+    @Override
+    public Observable<BResponse<BList<TestModel>>> getPageList() {
+        return Manager.getManager().getNewsList();
+    }
 }
 
