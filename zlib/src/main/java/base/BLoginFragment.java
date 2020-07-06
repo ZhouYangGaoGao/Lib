@@ -169,6 +169,7 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
             }
         }
     }
+
     protected Subscription login(String phone, String password) {
         return null;
     }
