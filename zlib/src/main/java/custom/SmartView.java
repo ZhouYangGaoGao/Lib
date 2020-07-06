@@ -46,8 +46,8 @@ public class SmartView extends LinearLayout {
     private float centerVMargin, centerHMargin, centerRMargin, centerLMargin;
     private int checkId,
             measure/*水平缩进方式<enum name="max" value="110" />
-            <enum name="custom" value="111" />
-            <enum name="different" value="112" /> */,
+                    <enum name="custom" value="111" />
+                    <enum name="different" value="112" /> */,
             mode;
     private FragmentWindow historyWindow;
 
@@ -432,6 +432,10 @@ public class SmartView extends LinearLayout {
 
     public void onCaptcha(OnClickListener onCaptcha) {
         this.onCaptcha = onCaptcha;
+    }
+
+    public void setCheckId(int checkId) {
+        this.checkId = checkId;
     }
 
     private int dip2px(float dipValue) {

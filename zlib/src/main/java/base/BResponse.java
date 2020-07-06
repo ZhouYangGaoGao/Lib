@@ -51,7 +51,8 @@ public class BResponse<T> {
     @Override
     public String toString() {
         return "BaseResponse{" +
-                "code='" + code + '\'' +
+                "Model='" + getModelName() + '\'' +
+                ", code='" + code + '\'' +
                 ", msg='" + msg + '\'' +
                 ", data=" + data +
                 ", success=" + success +

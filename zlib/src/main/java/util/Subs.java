@@ -25,7 +25,7 @@ public class Subs<T> extends Subscriber<BResponse<T>> {
     private BView<T> mView;
 
     public Subs(Observable<BResponse<T>> observable) {
-        this(null,observable);
+        this(null, observable);
     }
 
     public Subs(BView<T> mView, Observable<BResponse<T>> observable) {
@@ -36,7 +36,7 @@ public class Subs<T> extends Subscriber<BResponse<T>> {
     }
 
     public static <T> Subscription get(BView<T> view, Observable<BResponse<T>> observable) {
-        return new Subs<>(view,observable);
+        return new Subs<>(view, observable);
     }
 
     public static <T> Subscription get(Observable<BResponse<T>> observable) {
@@ -57,17 +57,11 @@ public class Subs<T> extends Subscriber<BResponse<T>> {
     @Override
     public void onNext(BResponse<T> baseBean) {
         onCompleted();
-
         if (baseBean == null) {
             onFail("无数据");
             return;
         }
-
-        if (baseBean.getData() != null)
-            LogUtils.e(baseBean.getModelName(), new Gson().toJson(baseBean));
-        else
-            LogUtils.e(Reflector.name(this), new Gson().toJson(baseBean));
-
+        LogUtils.e(mView == null ? "" : mView.getClass().getSimpleName(), baseBean.toString());
         if (baseBean.isSuccess() && baseBean.getData() != null)
             onSuccess(baseBean.getData());
         else {
@@ -78,6 +72,7 @@ public class Subs<T> extends Subscriber<BResponse<T>> {
 
     @Override
     public void onError(Throwable e) {
+        LogUtils.e(Reflector.name(this), "onError" + e.getMessage());
         e.printStackTrace();
         onFail(e.getMessage());
         onCompleted();
@@ -87,7 +82,7 @@ public class Subs<T> extends Subscriber<BResponse<T>> {
     }
 
     protected void onFail(String message) {
-        if (!TextUtils.isEmpty(message)) return;
+        if (TextUtils.isEmpty(message)) return;
         if (Looper.getMainLooper() != Looper.myLooper()) return;
         if (BApp.app().act() == null) return;
         Toast.makeText(BApp.app().act(), message, Toast.LENGTH_SHORT).show();

@@ -12,7 +12,6 @@ import custom.SmartView;
 import hawk.Hawk;
 import rx.Subscription;
 import util.GoTo;
-import util.ScreenUtils;
 
 public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> implements View.OnClickListener {
 
@@ -27,8 +26,8 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
     protected TextView next;
     protected TextView register;
 
-    private String mode;
-    private String toast;
+    protected String mode;
+    protected String toast;
 
     @Override
     public void beforeView() {
@@ -58,6 +57,7 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
     private void initReset() {
         titleView.centerTextView.setText("密码重置");
         toast = getString(R.string.str_reset_success);
+        password.setCheckId(0);
         password.setVisibility(View.VISIBLE);
         checkPassword.setVisibility(View.VISIBLE);
         next.setVisibility(View.VISIBLE);
@@ -120,7 +120,7 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
     public void success(M data) {
         toast(toast);
         Hawk.put(BConfig.LOGIN, data);
-        GoTo.start(goTo(data));
+        GoTo.start(goTo(data), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_RESET));
         if (isFinish()) getActivity().finish();
     }
 
@@ -156,7 +156,7 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
         if (view.getId() == R.id.next) {//重置密码页面 下一步按钮点击
             if (mode.equals(BConfig.LOGIN_MODE_CAPTCHA)) {
                 if (captcha.actionErrorCheck()) return;
-                if (isCaptchaRight()) {
+                if (captcha.getText().equals(captchaStr)) {
                     toast("验证成功");
                     GoTo.start(getClass(), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_RESET));
                 } else {
@@ -188,9 +188,7 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
 
     protected abstract Class<?> goTo(M data);
 
-    protected boolean isCaptchaRight() {
-        return false;
-    }
+    protected String captchaStr;
 
     protected boolean isFinish() {
         return true;

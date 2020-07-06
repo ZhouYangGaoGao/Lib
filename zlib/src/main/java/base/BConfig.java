@@ -129,7 +129,7 @@ public class BConfig {
                         .method(request.method(), body)
                         .url(urlNewBuilder.build())
                         .build();
-                LogUtils.e("Url==", newRequest.toString() + "\nHeader==" + newRequest.headers().toString());
+                LogUtils.e("Url==", newRequest.url() + "\nHeader==" + newRequest.headers().toString());
                 return chain.proceed(newRequest);
             }
         };
