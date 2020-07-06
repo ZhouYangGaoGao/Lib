@@ -1,5 +1,6 @@
 package base;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -92,6 +93,13 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
         login.setOnClickListener(this);
         next.setOnClickListener(this);
         register.setOnClickListener(this);
+        captcha.onCaptcha(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.sub(captcha(phone.getText()));
+            }
+        });
+        resetView();
         switch (mode) {
             case BConfig.LOGIN_MODE_LOGIN:
                 initLogin();
@@ -119,30 +127,47 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
     @Override
     public void completed() {
         login.setEnabled(true);
+        next.setEnabled(true);
+        register.setEnabled(true);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.login) {
+        if (view.getId() == R.id.login) {//登录按钮点击
             if (password.actionErrorCheck()) return;
             login.setEnabled(false);
-            presenter.action(login(phone.getText(), password.getText()));
-        } else if (view.getId() == R.id.register) {
-            if (mode.equals(BConfig.LOGIN_MODE_LOGIN)) {
-                resetView();
-                initRegister();
-                ScreenUtils.showKeyBoard(phone.centerEditText);
-                mode = BConfig.LOGIN_MODE_REGISTER;
-            } else {
-                if (captcha.actionErrorCheck()) return;
-                register.setEnabled(false);
-                presenter.action(captcha(phone.getText()));
-            }
-
-        } else if (view.getId() == R.id.next) {
-
+            presenter.sub(login(phone.getText(), password.getText()));
+            return;
         }
 
+        if (view.getId() == R.id.register) {//登录页面 注册按钮点击
+            if (mode.equals(BConfig.LOGIN_MODE_LOGIN)) {
+                GoTo.start(this.getClass(), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_REGISTER));
+                return;
+            }
+            if (mode.equals(BConfig.LOGIN_MODE_REGISTER)) {//注册页面 注册按钮点击
+                if (captcha.actionErrorCheck()) return;
+                register.setEnabled(false);
+                presenter.sub(register(phone.getText(), captcha.getText()));
+            }
+            return;
+        }
+
+        if (view.getId() == R.id.next) {//重置密码页面 下一步按钮点击
+            if (mode.equals(BConfig.LOGIN_MODE_CAPTCHA)) {
+                if (captcha.actionErrorCheck()) return;
+                if (isCaptchaRight()) {
+                    toast("验证成功");
+                    GoTo.start(getClass(), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_RESET));
+                } else {
+                    toast("验证码不正确");
+                }
+            } else {
+                if (checkPassword.actionErrorCheck()) return;
+                next.setEnabled(false);
+                presenter.sub(reset(password.getText(), checkPassword.getText()));
+            }
+        }
     }
 
     protected Subscription login(String phone, String password) {
@@ -162,6 +187,10 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
     }
 
     protected abstract Class goTo(M data);
+
+    protected boolean isCaptchaRight() {
+        return false;
+    }
 
     protected boolean isFinish() {
         return true;

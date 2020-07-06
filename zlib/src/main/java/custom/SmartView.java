@@ -34,6 +34,7 @@ import base.BConfig;
 import hawk.Hawk;
 import rx.Subscription;
 import rx.functions.Action1;
+import util.LogUtils;
 import util.RexUtils;
 import util.Timer;
 
@@ -141,8 +142,8 @@ public class SmartView extends LinearLayout {
             case 2://login
                 if (TextUtils.isEmpty(leftText)) leftText = "手机号";
                 if (delete) {
-                    if (rlIcon == null)
-                        rlIcon = getResources().getDrawable(R.drawable.ic_off_dark);
+                    if (rrIcon == null)
+                        rrIcon = getResources().getDrawable(R.drawable.ic_off_dark);
                     rightTextView.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -153,7 +154,7 @@ public class SmartView extends LinearLayout {
                 break;
             case 3://password
                 if (TextUtils.isEmpty(leftText)) leftText = "密码";
-                rlIcon = getResources().getDrawable(R.drawable.ic_eye);
+                rrIcon = getResources().getDrawable(R.drawable.ic_eye);
                 inputType = 1;
 //                centerEditText.setImeActionLabel("登录", EditorInfo.IME_ACTION_DONE);
                 rightTextView.setOnClickListener(new OnClickListener() {
@@ -193,8 +194,12 @@ public class SmartView extends LinearLayout {
                     public void onClick(View view) {
                         SmartView captchaCheckView = ((ViewGroup) getParent()).findViewById(checkId);
                         if (captchaCheckView != null && captchaCheckView.phoneErrorTest()) return;
-
+                        if (onCaptcha == null) {
+                            LogUtils.e("SmartView", "未设置验证码监听");
+                            return;
+                        }
                         rightTextView.setClickable(false);
+                        onCaptcha.onClick(rightTextView);
                         subscribe = Timer.interval(1000).subscribe(new Action1<Long>() {
                             @Override
                             public void call(Long aLong) {
@@ -209,7 +214,7 @@ public class SmartView extends LinearLayout {
                                     rightTextView.setTextColor(BConfig.getConfig().getColorTheme());
                                 } else {
                                     rightTextView.setTextColor(0xffbbbbbb);
-                                    rightTextView.setText("  "+(captchaSecond - aLong) + "s  ");
+                                    rightTextView.setText("  " + (captchaSecond - aLong) + "s  ");
                                 }
                             }
                         });
@@ -421,6 +426,12 @@ public class SmartView extends LinearLayout {
         if (captchaCheckView != null && (mode == 4 ? captchaCheckView.phoneErrorTest() : captchaCheckView.actionErrorCheck()))
             return true;
         else return emptyTest();
+    }
+
+    private OnClickListener onCaptcha;
+
+    public void onCaptcha(OnClickListener onCaptcha) {
+        this.onCaptcha = onCaptcha;
     }
 
     private int dip2px(float dipValue) {

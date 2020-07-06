@@ -12,11 +12,26 @@ public class LoginFragment extends BLoginFragment<LoginModel> {
 
     @Override
     protected Subscription login(String phone, String password) {
-        return new Subs<>(this, Manager.get().login(phone, password));
+        return Subs.get(this, Manager.get().login(phone, password));
     }
 
     @Override
-    protected Class goTo(LoginModel data) {
+    protected Subscription register(String phone, String captcha) {
+        return super.register(phone, captcha);
+    }
+
+    @Override
+    protected Subscription captcha(String phone) {
+        return super.captcha(phone);
+    }
+
+    @Override
+    protected Subscription reset(String password, String checkPassword) {
+        return super.reset(password, checkPassword);
+    }
+
+    @Override
+    protected Class<?> goTo(LoginModel data) {
         return MainActivity.class;
     }
 }

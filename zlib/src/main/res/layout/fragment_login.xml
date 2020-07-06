@@ -18,97 +18,65 @@
 
         <custom.SmartView
             android:id="@+id/phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="60dp"
-            android:layout_marginBottom="32dp"
-            android:visibility="gone"
-            app:mode="login"
-            tools:visibility="visible" />
+            style="@style/login"
+            android:layout_marginHorizontal="55dp"
+            app:mode="login" />
 
         <custom.SmartView
             android:id="@+id/captcha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="60dp"
-            android:layout_marginBottom="32dp"
-            android:visibility="gone"
+            style="@style/login"
+            android:layout_marginHorizontal="55dp"
             app:checkId="@id/phone"
-            app:mode="captcha"
-            tools:visibility="visible" />
+            app:mode="captcha" />
 
         <custom.SmartView
             android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="60dp"
-            android:layout_marginBottom="32dp"
-            android:visibility="gone"
+            style="@style/login"
+            android:layout_marginHorizontal="55dp"
             app:checkId="@id/phone"
-            app:mode="password"
-            tools:visibility="visible" />
+            app:mode="password" />
 
         <custom.SmartView
             android:id="@+id/checkPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="60dp"
-            android:layout_marginBottom="32dp"
-            android:visibility="gone"
+            style="@style/login"
+            android:layout_marginHorizontal="55dp"
             app:checkId="@id/password"
             app:leftText="确认密码"
-            app:mode="password"
-            tools:visibility="visible" />
+            app:mode="password" />
 
         <background.view.BLTextView
             android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginHorizontal="60dp"
-            android:layout_marginBottom="32dp"
-            android:gravity="center"
+            style="@style/login"
+            android:layout_marginHorizontal="55dp"
+            android:paddingVertical="10dp"
             android:text="@string/str_login"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:visibility="gone"
             app:bl_corners_radius="25dp"
             app:bl_pressed_solid_color="@color/colorTheme88"
             app:bl_unEnabled_solid_color="@color/colorTheme88"
-            tools:ignore="MissingPrefix"
-            tools:visibility="visible" />
+            app:bl_unPressed_solid_color="@color/colorTheme"
+            tools:ignore="MissingPrefix" />
 
         <background.view.BLTextView
             android:id="@+id/next"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginHorizontal="60dp"
-            android:layout_marginBottom="32dp"
-            android:gravity="center"
+            style="@style/login"
+            android:layout_marginHorizontal="55dp"
+            android:paddingVertical="10dp"
             android:text="@string/str_next"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:visibility="gone"
             app:bl_corners_radius="25dp"
             app:bl_pressed_solid_color="@color/colorTheme88"
             app:bl_unEnabled_solid_color="@color/colorTheme88"
-            tools:ignore="MissingPrefix"
-            tools:visibility="visible" />
+            app:bl_unPressed_solid_color="@color/colorTheme"
+            tools:ignore="MissingPrefix" />
 
         <background.view.BLTextView
             android:id="@+id/register"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginHorizontal="60dp"
-            android:layout_marginBottom="32dp"
-            android:gravity="center"
+            style="@style/login"
+            android:layout_marginHorizontal="55dp"
+            android:paddingVertical="10dp"
             android:text="@string/str_register"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:visibility="gone"
             app:bl_corners_radius="25dp"
             app:bl_pressed_solid_color="@color/colorTheme88"
             app:bl_unEnabled_solid_color="@color/colorTheme88"
-            tools:ignore="MissingPrefix"
-            tools:visibility="visible" />
+            app:bl_unPressed_solid_color="@color/colorTheme" />
     </LinearLayout>
 </custom.SmartView>

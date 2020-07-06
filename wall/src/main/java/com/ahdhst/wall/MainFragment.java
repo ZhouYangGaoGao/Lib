@@ -56,6 +56,7 @@ import java.util.TimerTask;
 
 import base.BActivity;
 import base.WebFragment;
+import util.GoTo;
 
 public class MainFragment extends BrowseSupportFragment {
     private static final String TAG = "MainFragment";
@@ -209,7 +210,7 @@ public class MainFragment extends BrowseSupportFragment {
                 getActivity().startActivity(intent, bundle);
             } else if (item instanceof String) {
                 if (((String) item).contains("管理")) {
-                    BActivity.start(WebFragment.class);
+                    GoTo.start(WebFragment.class);
                 } else {
                     Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT).show();
                 }

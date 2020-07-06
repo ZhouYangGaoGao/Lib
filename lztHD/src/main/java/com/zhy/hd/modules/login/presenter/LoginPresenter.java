@@ -18,7 +18,7 @@ public class LoginPresenter extends BPresenter<ILoginContract.View> implements I
 
     @Override
     public void login(String phone, String psw) {
-        sub(new Subs<>(mView, RetrofitHelper.get(Manager.class).login(phone, psw)));
+        sub(Subs.get(mView, RetrofitHelper.get(Manager.class).login(phone, psw)));
     }
 }
 
