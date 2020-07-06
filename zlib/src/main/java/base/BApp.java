@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference;
 
 import hawk.Hawk;
 
-public class BApp extends Application {
+public abstract class BApp extends Application implements Runnable{
     private static BApp app;
     private WeakReference<Activity> sCurrentActivityWeakRef;
 
@@ -20,10 +20,7 @@ public class BApp extends Application {
     public void onCreate() {
         super.onCreate();
         app = this;
-        Hawk.init(this).build();
-        if (!TextUtils.isEmpty(BConfig.getConfig().getBugly()))
-            Bugly.init(this, BConfig.getConfig().getBugly(), BuildConfig.DEBUG);
-        initActivityCallBack();
+        new Thread(this).start();
     }
 
     public static BApp app() {
@@ -33,7 +30,7 @@ public class BApp extends Application {
     public void logout() {
     }
 
-    public Activity currentActivity() {
+    public Activity act() {
         Activity currentActivity = null;
         if (sCurrentActivityWeakRef != null) {
             currentActivity = sCurrentActivityWeakRef.get();
@@ -79,4 +76,15 @@ public class BApp extends Application {
             }
         });
     }
+
+    @Override
+    public void run() {
+        Hawk.init(app).build();
+        initActivityCallBack();
+        initApp();
+        if (!TextUtils.isEmpty(BConfig.getConfig().getBugLy()))
+            Bugly.init(app, BConfig.getConfig().getBugLy(), BuildConfig.DEBUG);
+    }
+
+    protected abstract void initApp();
 }

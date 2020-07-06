@@ -1,22 +1,23 @@
 package base;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
+import com.zhy.android.R;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import annotation.InjectPresenter;
+import background.BackgroundLibrary;
 import butterknife.ButterKnife;
 import eventbus.hermeseventbus.HermesEventBus;
 import listener.OnResultListener;
@@ -27,77 +28,120 @@ import util.StatusBarUtil;
 
 public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivity implements BView<M> {
 
-    public static final int CREATE = 0;
-    public static final int RESUME = 1;
-    public int preData = 0;//0:在onCreate中加载  1:在onResume中加载
-    public P presenter;
-    public boolean useEventBus = false;
-    public boolean slidAble = false;
-    public int contentView = 0;
-    public String loadingName = "";
-    public String indicatorName = "";
+    protected P presenter;
+    protected int preData = 0;
+    protected boolean useEventBus = false;
+    protected boolean slidFinish = false;
+    protected boolean isFullScreen = BConfig.getConfig().isFullScreen();
+    protected int statusBarColor = BConfig.getConfig().getColorTheme();
+    protected int contentView = 0;
 
-    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         beforeView();
-        try {
-            setRequestedOrientation(BConfig.getConfig().getOrientation());
-            if (BConfig.getConfig().isFullScreen()) {
-                requestWindowFeature(Window.FEATURE_NO_TITLE);
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
-        } catch (Exception e) {
-        }
-        setContentView(contentView);
-        StatusBarUtil.setColor(this, BConfig.getConfig().getColorTheme(), 0);
+        fullScreen();
+        initPresenter(this);
+        BackgroundLibrary.inject(this);
+        contentView();
+        StatusBarUtil.setColor(this, statusBarColor, 0);
         ButterKnife.bind(this);
-        if (slidAble) {
-            Slidr.attach(this, new SlidrConfig.Builder().edge(true).build());
-        }
+        if (slidFinish) Slidr.attach(this, new SlidrConfig.Builder().edge(true).build());
         initView();
-        if (presenter != null) presenter.attachView(this);
         if (useEventBus) HermesEventBus.getDefault().register(this);
         afterView();
-        if (preData == CREATE) getData();
+        if (preData == BConfig.GET_DATA_CREATE) getData();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (preData == RESUME) getData();
+    private void contentView() {
+        View view = getView(contentView);
+        if (view.getBackground() == null)
+            view.setBackgroundColor(0xffffffff);
+        setContentView(view);
     }
 
-    @Override
-    public void getData() {
-
+    private void fullScreen() {
+        try {
+            if (isFullScreen) {
+                requestWindowFeature(1);
+                getWindow().setFlags(1024, 1024);
+            }
+        } catch (Exception ignored) {
+        }
     }
+
+    /**
+     * 保存使用注解的 Presenter 和默认的 presenter，用于解绑
+     */
+    private List<BPresenter> mInjectPresenters;
 
     @Override
     protected void onDestroy() {
         if (useEventBus) HermesEventBus.getDefault().unregister(this);
-        if (presenter != null) {
-            presenter.detachView();
-            presenter = null;
+        if (mInjectPresenters != null) {
+            for (BPresenter presenter : mInjectPresenters) {
+                presenter.detach();
+            }
+            mInjectPresenters.clear();
+            mInjectPresenters = null;
         }
         super.onDestroy();
     }
 
-    @Override
-    public void beforeView() {
+    protected void initPresenter(BView view) {
+        // 通过反射获取presenter的真实类型
+        Type viewType = view.getClass().getGenericSuperclass();
+        if (ParameterizedType.class.isAssignableFrom(viewType.getClass())) {
+            ParameterizedType pt = (ParameterizedType) viewType;
+            for (int i = 0; i < pt.getActualTypeArguments().length; i++) {
+                Class<?> aClass = (Class<?>) pt.getActualTypeArguments()[i];
+                if (BPresenter.class.isAssignableFrom(aClass)) {
+                    try {
+                        if (BActivity.class.isAssignableFrom(view.getClass())) {
+                            ((BActivity) view).presenter = (BPresenter) aClass.newInstance();
+                            ((BActivity) view).presenter.attach(view);
+                            if (mInjectPresenters == null)
+                                mInjectPresenters = new ArrayList<>();
+                            mInjectPresenters.add(((BActivity) view).presenter
+                            );
+                        } else {
+                            ((BFragment) view).presenter = (BPresenter) aClass.newInstance();
+                            ((BFragment) view).presenter.attach(view);
+                            if (mInjectPresenters == null)
+                                mInjectPresenters = new ArrayList<>();
+                            mInjectPresenters.add(((BFragment) view).presenter
+                            );
+                        }
+                    } catch (IllegalAccessException | InstantiationException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
+        }
 
-    }
-
-    @Override
-    public void initView() {
-
-    }
-
-    @Override
-    public void afterView() {
-
+        //获得某个类的所有的公共（public）的字段，包括父类中的字段
+        Field[] fields = view.getClass().getFields();
+        for (Field field : fields) {
+            //获取变量上面的注解类型
+            if (field.getAnnotation(InjectPresenter.class) != null) {
+                try {
+                    Class<? extends BPresenter> type = (Class<? extends BPresenter>) field.getType();
+                    BPresenter mInjectPresenter = type.newInstance();
+                    mInjectPresenter.attach(view);
+                    field.setAccessible(true);
+                    field.set(view, mInjectPresenter);
+                    if (mInjectPresenters == null)
+                        mInjectPresenters = new ArrayList<>();
+                    mInjectPresenters.add(mInjectPresenter);
+                } catch (IllegalAccessException | java.lang.InstantiationException e) {
+                    e.printStackTrace();
+                } catch (ClassCastException e) {
+                    e.printStackTrace();
+                    log("SubClass must extends Class:BPresenter");
+                }
+            }
+        }
     }
 
     private OnResultListener resultListener;
@@ -116,8 +160,31 @@ public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivi
     }
 
     @Override
-    public void log(String... message) {
-        LogUtils.e(message.length > 1 ? message[0] : getClass().getSimpleName(), message.length > 1 ? message[1] : message[0]);
+    protected void onResume() {
+        super.onResume();
+        if (preData == BConfig.GET_DATA_RESUME) getData();
+    }
+
+    @Override
+    public void beforeView() {
+    }
+
+    @Override
+    public void initView() {
+    }
+
+    @Override
+    public void afterView() {
+    }
+
+    @Override
+    public void getData() {
+    }
+
+
+    @Override
+    public void log(String... msg) {
+        LogUtils.e(getClass().getSimpleName(), msg.length > 1 ? msg[0] + "  " + msg[1] : msg[0]);
     }
 
     @Override
@@ -133,32 +200,14 @@ public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivi
 
     @Override
     public void success(M data) {
-        log("success");
     }
 
     @Override
     public void fail(String message) {
-        log("fail");
     }
 
     @Override
     public void completed() {
-        log("completed");
-    }
-
-
-    public static void start(Class<?> cls, String... arguments) {
-        if (BApp.app().currentActivity() == null) return;
-        Intent starter = new Intent(BApp.app().currentActivity(), cls);
-        starter.putExtra(BConstant.ARGUMENTS, arguments);
-        BApp.app().currentActivity().startActivity(starter);
-    }
-
-    public static void startResult(Class<?> cls, int reQuestCode, String... arguments) {
-        if (BApp.app().currentActivity() == null) return;
-        Intent starter = new Intent(BApp.app().currentActivity(), cls);
-        starter.putExtra(BConstant.ARGUMENTS, arguments);
-        BApp.app().currentActivity().startActivityForResult(starter, reQuestCode);
     }
 
     @Override

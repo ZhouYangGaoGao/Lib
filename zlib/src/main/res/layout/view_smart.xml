@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
-        android:imeActionLabel="走你"
+        android:imeActionLabel="下一步"
         android:imeOptions="flagNoExtractUi"
         android:paddingHorizontal="10dp"
         android:paddingVertical="0.5dp"

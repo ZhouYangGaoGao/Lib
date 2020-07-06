@@ -68,14 +68,12 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:name="base.WebActivity"/>
-        <activity
             android:name="com.luck.picture.lib.PictureSelectorCameraEmptyActivity"
             android:theme="@style/Picture.Theme.Translucent"
             android:windowSoftInputMode="adjustPan" />
 
         <activity android:name="com.luck.picture.lib.PicturePreviewActivity" />
+        <activity android:name="base.FragmentActivity" />
         <activity
             android:name="com.luck.picture.lib.PictureVideoPlayActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

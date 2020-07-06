@@ -5,20 +5,20 @@ import rx.subscriptions.CompositeSubscription;
 
 public class BPresenter<V extends BView> {
 
-    public V mView;
+    protected V mView;
     private CompositeSubscription mCompositeSubscription;
 
-    public void attachView(V view) {
+    protected void attach(V view) {
         this.mView = view;
     }
 
-    public void detachView() {
+    protected void detach() {
         if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
             mCompositeSubscription.unsubscribe();
         }
     }
 
-    public void subscribe(Subscription subscription) {
+    public void sub(Subscription subscription) {
         if (mCompositeSubscription == null) {
             mCompositeSubscription = new CompositeSubscription();
         }

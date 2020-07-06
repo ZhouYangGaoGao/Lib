@@ -10,6 +10,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="str_login">登 录</string>
+    <string name="str_register">注 册</string>
 
 
     <string name="picture_camera_roll">相机胶卷</string>
@@ -66,6 +67,11 @@
     <string name="permission_tips" >需要一些应用权限以继续操作此应用</string>
     <string name="rationale_ask_ok" >设置</string>
     <string name="rationale_ask_cancel" >取消</string>
+    <string name="str_login_success">登录成功</string>
+    <string name="str_next">下一步</string>
+    <string name="str_register_success">注册成功</string>
+    <string name="str_captcha_success">验证码发送成功</string>
+    <string name="str_reset_success">密码重置成功</string>
     <array name="load_name" >
         <item >BallPulseIndicator</item>
         <item >BallGridPulseIndicator</item>

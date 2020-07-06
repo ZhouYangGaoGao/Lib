@@ -1,6 +1,5 @@
 package com.zhy.app;
 
-import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
@@ -17,7 +16,6 @@ import com.zhy.app.modules.test.TestFragment;
 import base.BActivity;
 import base.WebFragment;
 import butterknife.BindView;
-import util.BundleCreator;
 import util.ScreenUtils;
 
 public class MainActivity extends BActivity {
@@ -34,11 +32,12 @@ public class MainActivity extends BActivity {
     @Override
     public void initView() {
         FragmentPagerItems.Creator creator = FragmentPagerItems.with(this);
-        creator.add("SmartView", SmartViewFragment.class);
         creator.add("SmartList", TestFragment.class);
-//        creator.add("Banner", BannerFragment.class);
-//        creator.add("picSelector", PhotoFragment.class);
-//        creator.add("WebFragment", WebFragment.class, BundleCreator.create("url","https://www.baidu.com"));
+        creator.add("SmartView", SmartViewFragment.class);
+        creator.add("AVLFragment", AVLFragment.class);
+        creator.add("Banner", BannerFragment.class);
+        creator.add("PhotoFragment", PhotoFragment.class);
+        creator.add("WebFragment", WebFragment.class);
         viewPager.setAdapter(new FragmentPagerItemAdapter(getSupportFragmentManager(), creator.create()));
         tabLayout.setViewPager(viewPager);
         viewPager.setOffscreenPageLimit(viewPager.getAdapter().getCount());

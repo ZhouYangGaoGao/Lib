@@ -22,6 +22,7 @@ import android.os.Handler;
 
 import androidx.leanback.app.BackgroundManager;
 import androidx.leanback.app.BrowseFragment;
+import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.ImageCardView;
@@ -34,7 +35,6 @@ import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
-import androidx.leanback.widget.TitleView;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -47,7 +47,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.request.RequestFutureTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.Collections;
@@ -55,9 +54,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import base.WebActivity;
+import base.BActivity;
+import base.WebFragment;
 
-public class MainFragment extends BrowseFragment {
+public class MainFragment extends BrowseSupportFragment {
     private static final String TAG = "MainFragment";
 
     private static final int BACKGROUND_UPDATE_DELAY = 300;
@@ -209,9 +209,7 @@ public class MainFragment extends BrowseFragment {
                 getActivity().startActivity(intent, bundle);
             } else if (item instanceof String) {
                 if (((String) item).contains("管理")) {
-                    Intent intent = new Intent(getActivity(), TestActivity.class);
-                    intent.putExtra("url","https://www.baidu.com");
-                    startActivity(intent);
+                    BActivity.start(WebFragment.class);
                 } else {
                     Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT).show();
                 }

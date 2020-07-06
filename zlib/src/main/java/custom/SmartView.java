@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.ActionMenuItem;
 
 import com.zhy.android.R;
 
@@ -41,7 +43,11 @@ public class SmartView extends LinearLayout {
     public RelativeLayout topContent;
     public View line;
     private float centerVMargin, centerHMargin, centerRMargin, centerLMargin;
-    private int checkId, measure, mode;
+    private int checkId,
+            measure/*水平缩进方式<enum name="max" value="110" />
+            <enum name="custom" value="111" />
+            <enum name="different" value="112" /> */,
+            mode;
     private FragmentWindow historyWindow;
 
     public SmartView(Context context) {
@@ -149,6 +155,7 @@ public class SmartView extends LinearLayout {
                 if (TextUtils.isEmpty(leftText)) leftText = "密码";
                 rlIcon = getResources().getDrawable(R.drawable.ic_eye);
                 inputType = 1;
+//                centerEditText.setImeActionLabel("登录", EditorInfo.IME_ACTION_DONE);
                 rightTextView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -175,7 +182,7 @@ public class SmartView extends LinearLayout {
                 rlp.height = -2;
                 rightTextView.setLayoutParams(rlp);
                 rightTextView.setBackground(new DrawableCreator.Builder()
-                        .setRipple(true,0x88888888)
+                        .setRipple(true, 0x88888888)
                         .setCornersRadius(dip2px(15))
                         .setSolidColor(0xffeeeeee).build());
 
@@ -202,7 +209,7 @@ public class SmartView extends LinearLayout {
                                     rightTextView.setTextColor(BConfig.getConfig().getColorTheme());
                                 } else {
                                     rightTextView.setTextColor(0xffbbbbbb);
-                                    rightTextView.setText((captchaSecond - aLong) + "秒后重新获取");
+                                    rightTextView.setText("  "+(captchaSecond - aLong) + "s  ");
                                 }
                             }
                         });
@@ -226,6 +233,7 @@ public class SmartView extends LinearLayout {
                 }
             });
         }
+
         leftTextView.setCompoundDrawablesWithIntrinsicBounds(llIcon, ltIcon, lrIcon, lbIcon);
         centerTextView.setCompoundDrawablesWithIntrinsicBounds(clIcon, ctIcon, crIcon, cbIcon);
         centerEditText.setCompoundDrawablesWithIntrinsicBounds(clIcon, ctIcon, crIcon, cbIcon);
@@ -303,7 +311,7 @@ public class SmartView extends LinearLayout {
                 public void afterTextChanged(Editable editable) {
                     if (!isEmpty() || history == null) return;
                     if (historyWindow == null) {
-                        historyWindow = new FragmentWindow(getContext());
+                        historyWindow = new FragmentWindow();
                         historyFragment = (HistoryFragment) historyWindow.setContentView(historyLayoutId);
                         if (historyFragment == null) return;
                         historyFragment.setEditText(centerEditText);

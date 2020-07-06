@@ -20,6 +20,6 @@ public interface ISmartContract {
     }
 
     interface Presenter extends IPresenter {
-        void getDatas();
+        boolean getDatas();
     }
 }

@@ -10,7 +10,7 @@
         android:id="@+id/topView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="SmartView  SmartView  SmartView  SmartView  SmartView  SmartView"
+        app:centerText="顶部模式:超出宽度跑马灯播放,进出透明度渐变"
         app:mode="top"
         app:rightText="文本检测" />
 
@@ -18,11 +18,11 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:leftText="Biu"
+        app:hint="搜索模式:默认有搜索历史,可自定义"
         app:back="false"
         app:icoPadding="6"
         app:mode="search"
-        app:rightText="历史" />
+        app:rightText="退出登录" />
 
     <custom.SmartView
         android:id="@+id/nameView"
@@ -80,10 +80,13 @@
         app:mode="password" />
 
     <custom.SmartView
+        android:id="@+id/testView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        app:mode="test" />
+        app:leftText="重置"
+        app:centerText="手机验证"
+        app:rightText="注册"
+        android:layout_marginHorizontal="40dp"/>
 
     <custom.SmartView
         android:layout_width="match_parent"

@@ -142,7 +142,7 @@ public class ScreenUtils {
      */
     public static Bitmap snapShotWithStatusBar() {
 
-        View view = BApp.app().currentActivity().getWindow().getDecorView();
+        View view = BApp.app().act().getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         Bitmap bmp = view.getDrawingCache();

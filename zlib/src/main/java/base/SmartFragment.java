@@ -6,6 +6,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
@@ -27,7 +29,7 @@ import util.ScreenUtils;
 
 public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> implements ISmartContract.View<M>, OnRefreshLoadMoreListener {
     @InjectPresenter
-    public SmartPresenter presenter;
+    public SmartPresenter<M> presenter;
     private HeaderGridView gridView;
     protected SmartRefreshLayout refreshLayout;
     protected SmartView mTopView;
@@ -37,22 +39,19 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshLoadMoreListener(this);
         refreshLayout.setEnableAutoLoadMore(autoLoad);
-        LinearLayout content = (LinearLayout) findViewById(R.id.content);
         gridView = (HeaderGridView) findViewById(R.id.gridView);
         mTopView = (SmartView) findViewById(R.id.mTopView);
         gridView.scrollAble = scrollAble;
         refreshLayout.setEnableLoadMore(!scrollAble);
         refreshLayout.setEnableRefresh(!scrollAble);
         gridView.setNumColumns(numColumns);
-        if (emptyView == null) {
-            emptyView = getView(R.layout.layout_empty);
-        }
-        content.addView(emptyView, new LinearLayout.LayoutParams(-1, 0, 1));
+        if (emptyView == null) emptyView = getView(R.layout.layout_empty);
+        ((LinearLayout) findViewById(R.id.content)).addView(emptyView,
+                new LinearLayout.LayoutParams(-1, 0, 1));
         gridView.setEmptyView(emptyView);
         if (heardView != null) gridView.addHeaderView(heardView);
         if (isCard > 0) {
-            horizontalSpacing = 0;
-            verticalSpacing = 0;
+            horizontalSpacing = verticalSpacing = 0;
             gridView.addHeaderView(new EmptySizeView(isCard / 2));
             gridView.addFooterView(new EmptySizeView(isCard / 2));
         }
@@ -97,9 +96,10 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
     private boolean autoLoad = false;
 
     /**
-     * listView 和 GridView 的适配器
+     * GridView 的适配器
      */
-    private CommonAdapter adapter;
+    private CommonAdapter<M> adapter;
+
     /**
      * 页码
      */
@@ -138,23 +138,21 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
     @Override
     public void getData() {
         if (presenter != null) {
-            presenter.getDatas();
+            if (!presenter.getDatas()) {
+                completed();
+            }
         } else {
-            log("presenter=null");
             completed();
         }
     }
 
     /**
      * 初始化主列表适配器
-     *
-     * @return
      */
-    private CommonAdapter initAdapter() {
+    private CommonAdapter<M> initAdapter() {
         return new CommonAdapter<M>(getContext(), mData, isCard > 0 ? R.layout.item_card : itemLayoutId) {
             /**
              * 当列表有头部天加时 列表为空要显示头部
-             * @return
              */
             @Override
             public boolean isEmpty() {
@@ -166,27 +164,23 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
 
             /**
              * 列表item的初始化 回调
-             * @param h
-             * @param i
              */
             @Override
             public void convert(ViewHolder h, M i) {
-                initCard(h);
+                if (isCard > 0) initCard(h);
                 SmartFragment.this.convert(h, i);
             }
         };
     }
 
     private void initCard(CommonAdapter.ViewHolder h) {
-        if (isCard > 0) {
-            ShadowLayout card = (ShadowLayout) h.getConvertView();
-            card.setShadowRadius(ScreenUtils.dip2px(isCard / 2f));
-            View view = View.inflate(getContext(), itemLayoutId, null);
-            view.setBackground(itemBg());
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(-1, -1);
-            params.setMargins(ScreenUtils.dip2px(isCard / 2f), 0, ScreenUtils.dip2px(isCard / 2f), 0);
-            card.addView(view, params);
-        }
+        ShadowLayout card = (ShadowLayout) h.getConvertView();
+        card.setShadowRadius(ScreenUtils.dip2px(isCard / 2f));
+        View view = View.inflate(getContext(), itemLayoutId, null);
+        view.setBackground(itemBg());
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(-1, -1);
+        params.setMargins(ScreenUtils.dip2px(isCard / 2f), 0, ScreenUtils.dip2px(isCard / 2f), 0);
+        card.addView(view, params);
     }
 
     protected Drawable itemBg() {
@@ -199,17 +193,12 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
 
     /**
      * item回调
-     *
-     * @param h
-     * @param i 数据源
      */
     protected void convert(CommonAdapter.ViewHolder h, M i) {
     }
 
     /**
      * 加载不可分页列表数据
-     *
-     * @return
      */
     @Override
     public Observable<BResponse<List<M>>> getList() {
@@ -218,8 +207,6 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
 
     /**
      * 加载可分页列表数据
-     *
-     * @return
      */
     @Override
     public Observable<BResponse<BList<M>>> getPageList() {
@@ -228,11 +215,9 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
 
     /**
      * 加载更多
-     *
-     * @param refreshLayout
      */
     @Override
-    public void onLoadMore(RefreshLayout refreshLayout) {
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         isRefresh = false;
         page++;
         getData();
@@ -240,11 +225,9 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
 
     /**
      * 刷新列表 重新获取数据
-     *
-     * @param refreshLayout
      */
     @Override
-    public void onRefresh(RefreshLayout refreshLayout) {
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         isRefresh = true;
         page = 1;
         getData();
@@ -252,8 +235,6 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
 
     /**
      * 数据加载成功 更新UI
-     *
-     * @param datas
      */
     @Override
     public void onDatas(List<M> datas) {
@@ -272,8 +253,6 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
 
     /**
      * 列表总数量
-     *
-     * @param total
      */
     @Override
     public void total(int total) {
@@ -282,8 +261,6 @@ public abstract class SmartFragment<M> extends BFragment<M, SmartPresenter<M>> i
 
     /**
      * 数据加载失败 吐司提示
-     *
-     * @param message
      */
     @Override
     public void fail(String message) {

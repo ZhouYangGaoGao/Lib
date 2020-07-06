@@ -22,7 +22,7 @@ public class GPSUtils {
     private LocationManager locationManager;
 
     private GPSUtils() {
-        this.mContext = BApp.app().currentActivity();
+        this.mContext = BApp.app().act();
     }
 
     public static GPSUtils location(OnLocationListener listener) {

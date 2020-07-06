@@ -14,12 +14,21 @@ import util.LogUtils;
 import util.SystemUtil;
 
 public class BConfig {
+    public static final String LOGIN = "login";
+    public static final String LOGIN_MODE = "mode";
+    public static final String LOGIN_MODE_LOGIN = "login";
+    public static final String LOGIN_MODE_REGISTER = "register";
+    public static final String LOGIN_MODE_RESET = "reset";
+    public static final String LOGIN_MODE_CAPTCHA = "captcha";
+    protected static final int GET_DATA_NEVER = -1;
+    protected static final int GET_DATA_CREATE = 0;
+    protected static final int GET_DATA_RESUME = 1;
     private static BConfig config;
     private Interceptor interceptor;
     private String baseUrl;
     private String client = "app";
     private String token = "0";
-    private String bugly ;
+    private String bugLy;
     private Object webInterface;
     private boolean fullScreen = false;
     private int colorTheme = 0xff36C177;
@@ -47,12 +56,13 @@ public class BConfig {
         return config;
     }
 
-    public String getBugly() {
-        return bugly;
+    public String getBugLy() {
+        return bugLy;
     }
 
-    public BConfig setBugly(String bugly) {
-        this.bugly = bugly;return config;
+    public BConfig setBugLy(String bugLy) {
+        this.bugLy = bugLy;
+        return config;
     }
 
     public BConfig setColorTheme(int colorTheme) {
@@ -136,6 +146,7 @@ public class BConfig {
     }
 
     public BConfig setOrientation(int orientation) {
-        this.orientation = orientation;return config;
+        this.orientation = orientation;
+        return config;
     }
 }

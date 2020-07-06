@@ -11,13 +11,14 @@ import androidx.fragment.app.Fragment;
 import com.zhy.android.R;
 
 import background.drawable.DrawableCreator;
+import base.BApp;
 
 public class FragmentWindow extends PopupWindow {
     private Context context;
 
-    public FragmentWindow(Context context) {
-        super(context);
-        this.context = context;
+    public FragmentWindow() {
+        super(BApp.app().act());
+        this.context = BApp.app().act();
     }
 
     public Fragment setContentView(int contentViewId, int fragmentId) {
@@ -36,11 +37,11 @@ public class FragmentWindow extends PopupWindow {
                 .build());
         setOutsideTouchable(true);
         if (context instanceof AppCompatActivity)
-       return  ((AppCompatActivity)context).getSupportFragmentManager().findFragmentById(fragmentId);
-        else return null;
+            return ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(fragmentId);
+        return null;
     }
 
-    public Fragment setContentView(int contentViewId){
-        return setContentView(contentViewId, R.id.historyFragment);
+    public Fragment setContentView(int contentViewId) {
+        return setContentView(contentViewId, R.id.fragment);
     }
 }

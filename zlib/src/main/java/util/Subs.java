@@ -12,25 +12,21 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import util.ExceptionHandle;
-import util.LogUtils;
-import util.NetUtil;
 
 /**
  * Subscriber基类,可以在这里处理client网络连接状况
- * （比如没有wifi，没有4g，没有联网等）
  * Created by yangyang on 2017/4/19.
  */
 
-public class Suber<T> extends Subscriber<BResponse<T>> {
+public class Subs<T> extends Subscriber<BResponse<T>> {
 
-    public Suber(Observable<BResponse<T>> observable) {
+    public Subs(Observable<BResponse<T>> observable) {
         this.tag = Thread.currentThread().getStackTrace()[4].getMethodName();
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(this);
     }
 
-    public Suber(BView<T> mView, Observable<BResponse<T>> observable) {
+    public Subs(BView<T> mView, Observable<BResponse<T>> observable) {
         this.mView = mView;
         this.tag = Thread.currentThread().getStackTrace()[4].getMethodName();
         observable.subscribeOn(Schedulers.io())
@@ -101,8 +97,8 @@ public class Suber<T> extends Subscriber<BResponse<T>> {
     }
 
     public void onFail(String message) {
-        if (message != null && Looper.getMainLooper() == Looper.myLooper() && BApp.app().currentActivity() != null)
-            Toast.makeText(BApp.app().currentActivity(),message,Toast.LENGTH_SHORT).show();
+        if (message != null && Looper.getMainLooper() == Looper.myLooper() && BApp.app().act() != null)
+            Toast.makeText(BApp.app().act(),message,Toast.LENGTH_SHORT).show();
     }
 
     public void onSuccess(T t) {

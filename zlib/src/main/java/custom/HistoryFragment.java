@@ -13,7 +13,7 @@ public class HistoryFragment extends SmartFragment<String> {
     @Override
     public void beforeView() {
         numColumns = 3;
-        itemLayoutId = R.layout.item_history;
+        itemLayoutId = R.layout.item_text;
         for (int i = 0; i < 10; i++) {
             mData.add("item" + 1);
         }

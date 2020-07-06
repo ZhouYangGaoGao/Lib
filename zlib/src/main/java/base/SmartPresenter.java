@@ -4,9 +4,8 @@ package base;
 import java.util.ArrayList;
 import java.util.List;
 
-import annotation.InjectPresenter;
 import rx.Observable;
-import util.Suber;
+import util.Subs;
 
 /**
  * @author ZhouYang
@@ -15,15 +14,12 @@ import util.Suber;
  * - generate by MvpAutoCodePlus plugin.
  */
 public class SmartPresenter<M> extends BPresenter<ISmartContract.View> implements ISmartContract.Presenter {
-    public SmartPresenter() {
-    }
 
     @Override
-    public void getDatas() {
-        final Observable suber = mView.getPageList();
-
-        if (suber != null)
-            subscribe(new Suber<BList<M>>(mView, suber) {
+    public boolean getDatas() {
+        Observable subs = mView.getPageList();
+        if (subs != null) {
+            sub(new Subs<BList<M>>(mView, subs) {
                 @Override
                 public void onSuccess(BList<M> mListModel) {
                     if (mListModel.getList() != null) {
@@ -35,10 +31,11 @@ public class SmartPresenter<M> extends BPresenter<ISmartContract.View> implement
                     }
                 }
             });
-        else {
-            final Observable suberList = mView.getList();
-            if (suberList != null)
-                subscribe(new Suber<List<M>>(mView, suberList) {
+            return true;
+        } else {
+            subs = mView.getList();
+            if (subs != null) {
+                sub(new Subs<List<M>>(mView, subs) {
                     @Override
                     public void onSuccess(List<M> mList) {
                         if (mList != null && mList.size() > 0) {
@@ -50,7 +47,10 @@ public class SmartPresenter<M> extends BPresenter<ISmartContract.View> implement
                         }
                     }
                 });
+                return true;
+            }
         }
+        return false;
     }
 }
 

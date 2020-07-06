@@ -14,6 +14,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.DefaultWebClient;
 import com.just.agentweb.WebChromeClient;
+import com.zhy.android.BuildConfig;
 import com.zhy.android.R;
 
 import java.util.Objects;
@@ -21,13 +22,12 @@ import java.util.Objects;
 /**
  * 通用网页
  */
-public class WebFragment extends BFragment<Object, BPresenter> {
+public class WebFragment extends BFragment {
 
-    RelativeLayout mWebParent;
+    private RelativeLayout mWebParent;
     private TextView titleView;
     public WebView mWebView;
     private AgentWeb mAgentWeb;
-    private String url = "url为空";
 
     @Override
     public void beforeView() {
@@ -38,17 +38,16 @@ public class WebFragment extends BFragment<Object, BPresenter> {
     @Override
     public void initView() {
         mWebParent = (RelativeLayout) findViewById(R.id.mWebParent);
-        String[] arguments = Objects.requireNonNull(getActivity()).getIntent().getStringArrayExtra(BConstant.ARGUMENTS);
-        if (arguments != null && arguments.length > 0) {
-            url = arguments[0];
-        } else if (getArguments() != null) {
-            url = getArguments().getString("url");
-        }else if (!TextUtils.isEmpty(getActivity().getIntent().getStringExtra("url"))){
-            url = getActivity().getIntent().getStringExtra("url");
+        String tmpUrl = "";
+        if (getArguments() != null) {
+            tmpUrl = getArguments().getString("url");
+        } else {
+            tmpUrl = getActivity().getIntent().getStringExtra("url");
         }
-        if (TextUtils.isEmpty(url)) return;
-        url = url + (url.contains("?") ? "&" : "?") + "token=" + BConfig.getConfig().getToken() + "&time=" + System.currentTimeMillis();
-        log(url);
+        if (TextUtils.isEmpty(tmpUrl)) {
+            tmpUrl = BuildConfig.DEBUG ? "https://www.baidu.com/" : "url为空";
+        }
+        log(tmpUrl = tmpUrl + (tmpUrl.contains("?") ? "&" : "?") + "token=" + BConfig.getConfig().getToken() + "&time=" + System.currentTimeMillis());
         WebChromeClient webChromeClient = new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView webView, String s) {
@@ -82,7 +81,7 @@ public class WebFragment extends BFragment<Object, BPresenter> {
                 .addJavascriptInterface("android", BConfig.getConfig().getWebInterface())
                 .createAgentWeb()
                 .ready()
-                .go(url);
+                .go(tmpUrl);
     }
 
     @Override
@@ -94,10 +93,6 @@ public class WebFragment extends BFragment<Object, BPresenter> {
 
     public boolean onBackPressed() {
         return mAgentWeb.back();
-    }
-
-    public void reLoad(){
-        mWebView.reload();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.zhy.hd.modules.login.view;
 
+import android.content.Intent;
 import android.widget.Button;
 
 import com.google.gson.Gson;
@@ -16,6 +17,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import custom.SmartView;
 import hawk.Hawk;
+import util.BundleCreator;
+import util.GoTo;
 
 /**
  * @author ZhouYang
@@ -35,13 +38,12 @@ public class LoginActivity extends BActivity<LoginModel, LoginPresenter> impleme
 
     @Override
     public void beforeView() {
-        presenter = new LoginPresenter();
+        go(Hawk.get(Constant.LOGIN));
         contentView = R.layout.activity_login;
     }
 
     @Override
     public void initView() {
-        go(Hawk.get(Constant.LOGIN));
     }
 
     @OnClick(R.id.btn_login)
@@ -60,7 +62,8 @@ public class LoginActivity extends BActivity<LoginModel, LoginPresenter> impleme
     private void go(LoginModel data) {
         if (data != null) {
             BConfig.getConfig().setToken(data.getToken());
-            start(MainActivity.class, "https://www.ahlzz.com/web/commandCenter?user=" + new Gson().toJson(data));
+            GoTo.start(MainActivity.class, new Intent().putExtra("url",
+                    "https://www.ahlzz.com/web/commandCenter?user=" + new Gson().toJson(data)));
             finish();
         }
     }

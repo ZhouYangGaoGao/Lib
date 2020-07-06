@@ -1,11 +1,11 @@
 package com.zhy.hd.modules.login.presenter;
 
 import com.zhy.hd.base.Manager;
-import util.Suber;
 import com.zhy.hd.modules.login.contract.ILoginContract;
-import com.zhy.hd.modules.login.model.LoginModel;
 
 import base.BPresenter;
+import util.RetrofitHelper;
+import util.Subs;
 
 /**
  * @author ZhouYang
@@ -18,7 +18,7 @@ public class LoginPresenter extends BPresenter<ILoginContract.View> implements I
 
     @Override
     public void login(String phone, String psw) {
-        subscribe(new Suber<LoginModel>(mView, Manager.getManager().login(phone, psw)));
+        sub(new Subs<>(mView, RetrofitHelper.get(Manager.class).login(phone, psw)));
     }
 }
 

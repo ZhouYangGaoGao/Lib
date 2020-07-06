@@ -58,7 +58,7 @@ public class PermissionFragment extends Fragment implements EasyPermissions.Perm
             names.put(文件写入, "文件写入");
             if (mPerms.length > 0)
                 fragment.mPerms = mPerms;
-            ((AppCompatActivity) BApp.app().currentActivity()).getSupportFragmentManager().beginTransaction().add(R.id.mRootView, fragment).commit();
+            ((AppCompatActivity) BApp.app().act()).getSupportFragmentManager().beginTransaction().add(R.id.mRootView, fragment).commit();
         } else {
             fragment.listener = listener;
             if (mPerms.length > 0)

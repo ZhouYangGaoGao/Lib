@@ -4,7 +4,6 @@ import android.view.View;
 
 public interface BView<M> {
 
-
     void log(String... message);
 
     void dialog(String... message);
@@ -20,7 +19,6 @@ public interface BView<M> {
     void fail(String message);
 
     void completed();
-
 
     void initView();
 

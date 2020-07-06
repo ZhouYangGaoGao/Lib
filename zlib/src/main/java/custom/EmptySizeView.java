@@ -13,7 +13,7 @@ public class EmptySizeView extends View {
         super(context);
     }
     public EmptySizeView(int size) {
-        this(BApp.app().currentActivity());
+        this(BApp.app().act());
         setLayoutParams(new AbsListView.LayoutParams(1, ScreenUtils.dip2px(size)));
     }
 }
