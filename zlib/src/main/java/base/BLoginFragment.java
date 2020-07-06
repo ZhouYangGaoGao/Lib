@@ -186,7 +186,7 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
         return null;
     }
 
-    protected abstract Class goTo(M data);
+    protected abstract Class<?> goTo(M data);
 
     protected boolean isCaptchaRight() {
         return false;
