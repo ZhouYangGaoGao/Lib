@@ -20,6 +20,7 @@ public class BConfig {
     public static final String LOGIN_MODE_REGISTER = "register";
     public static final String LOGIN_MODE_RESET = "reset";
     public static final String LOGIN_MODE_CAPTCHA = "captcha";
+    public static final String TOP_SHOW = "showTop";
     protected static final int GET_DATA_NEVER = -1;
     protected static final int GET_DATA_CREATE = 0;
     protected static final int GET_DATA_RESUME = 1;

@@ -20,6 +20,11 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <application>
+
+        <activity android:name="base.BSplashActivity"/>
+        <activity android:name="base.BHomeActivity"/>
+        <activity android:name="base.BFragmentActivity"/>
+
         <!--图片预览界面-->
         <activity
             android:name="cn.bingoogolapple.photopicker.activity.CCRPhotoPreviewActivity"
@@ -73,7 +78,6 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity android:name="com.luck.picture.lib.PicturePreviewActivity" />
-        <activity android:name="base.FragmentActivity" />
         <activity
             android:name="com.luck.picture.lib.PictureVideoPlayActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

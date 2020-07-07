@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.leanback.app.BackgroundManager;
-import androidx.leanback.app.BrowseFragment;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.HeaderItem;
@@ -54,8 +53,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import base.BActivity;
-import base.WebFragment;
+import base.BWebFragment;
 import util.GoTo;
 
 public class MainFragment extends BrowseSupportFragment {
@@ -210,7 +208,7 @@ public class MainFragment extends BrowseSupportFragment {
                 getActivity().startActivity(intent, bundle);
             } else if (item instanceof String) {
                 if (((String) item).contains("管理")) {
-                    GoTo.start(WebFragment.class);
+                    GoTo.start(BWebFragment.class);
                 } else {
                     Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT).show();
                 }

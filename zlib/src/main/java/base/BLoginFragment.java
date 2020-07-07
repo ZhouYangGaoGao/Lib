@@ -73,6 +73,7 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
 
     private void initLogin() {
         titleView.centerTextView.setText("登录");
+        titleView.setBack(false);
         toast = getString(R.string.str_login_success);
         phone.setVisibility(View.VISIBLE);
         password.setVisibility(View.VISIBLE);
@@ -186,7 +187,9 @@ public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> 
         return null;
     }
 
-    protected abstract Class<?> goTo(M data);
+    protected Class<?> goTo(M data) {
+        return null;
+    }
 
     protected String captchaStr;
 

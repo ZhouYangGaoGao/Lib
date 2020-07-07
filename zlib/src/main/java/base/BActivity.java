@@ -8,11 +8,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.zhy.android.R;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +19,7 @@ import listener.OnResultListener;
 import slidr.Slidr;
 import slidr.model.SlidrConfig;
 import util.LogUtils;
+import util.Reflector;
 import util.StatusBarUtil;
 
 public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivity implements BView<M> {
@@ -34,7 +30,7 @@ public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivi
     protected boolean slidFinish = false;
     protected boolean isFullScreen = BConfig.getConfig().isFullScreen();
     protected int statusBarColor = BConfig.getConfig().getColorTheme();
-    protected int contentView = 0;
+    protected int contentViewId = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +50,7 @@ public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivi
     }
 
     private void contentView() {
-        View view = getView(contentView);
+        View view = getView(contentViewId);
         if (view.getBackground() == null)
             view.setBackgroundColor(0xffffffff);
         setContentView(view);
@@ -73,14 +69,15 @@ public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivi
     /**
      * 保存使用注解的 Presenter 和默认的 presenter，用于解绑
      */
-    private List<BPresenter> mInjectPresenters;
+    private List<BPresenter<BView<?>>> mInjectPresenters = new ArrayList<>();
 
     @Override
     protected void onDestroy() {
         if (useEventBus) HermesEventBus.getDefault().unregister(this);
         if (mInjectPresenters != null) {
-            for (BPresenter presenter : mInjectPresenters) {
-                presenter.detach();
+            for (BPresenter<BView<?>> presenter : mInjectPresenters) {
+                if (presenter != null)
+                    presenter.detach();
             }
             mInjectPresenters.clear();
             mInjectPresenters = null;
@@ -88,60 +85,30 @@ public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivi
         super.onDestroy();
     }
 
-    protected void initPresenter(BView view) {
-        // 通过反射获取presenter的真实类型
-        Type viewType = view.getClass().getGenericSuperclass();
-        if (ParameterizedType.class.isAssignableFrom(viewType.getClass())) {
-            ParameterizedType pt = (ParameterizedType) viewType;
-            for (int i = 0; i < pt.getActualTypeArguments().length; i++) {
-                Class<?> aClass = (Class<?>) pt.getActualTypeArguments()[i];
-                if (BPresenter.class.isAssignableFrom(aClass)) {
-                    try {
-                        if (BActivity.class.isAssignableFrom(view.getClass())) {
-                            ((BActivity) view).presenter = (BPresenter) aClass.newInstance();
-                            ((BActivity) view).presenter.attach(view);
-                            if (mInjectPresenters == null)
-                                mInjectPresenters = new ArrayList<>();
-                            mInjectPresenters.add(((BActivity) view).presenter
-                            );
-                        } else {
-                            ((BFragment) view).presenter = (BPresenter) aClass.newInstance();
-                            ((BFragment) view).presenter.attach(view);
-                            if (mInjectPresenters == null)
-                                mInjectPresenters = new ArrayList<>();
-                            mInjectPresenters.add(((BFragment) view).presenter
-                            );
-                        }
-                    } catch (IllegalAccessException | InstantiationException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                }
-            }
-        }
+    /**
+     * 获取fragment或activity中泛型或注解的presenter
+     * @param view
+     */
+    protected void initPresenter(BView<?> view) {
+        List<BPresenter<BView<?>>> injects = Reflector.get(view, InjectPresenter.class);
+        if (injects != null && injects.size() > 0)
+            for (BPresenter<BView<?>> inject : injects)
+                if (inject != null) addPresenter(view, inject);
 
-        //获得某个类的所有的公共（public）的字段，包括父类中的字段
-        Field[] fields = view.getClass().getFields();
-        for (Field field : fields) {
-            //获取变量上面的注解类型
-            if (field.getAnnotation(InjectPresenter.class) != null) {
-                try {
-                    Class<? extends BPresenter> type = (Class<? extends BPresenter>) field.getType();
-                    BPresenter mInjectPresenter = type.newInstance();
-                    mInjectPresenter.attach(view);
-                    field.setAccessible(true);
-                    field.set(view, mInjectPresenter);
-                    if (mInjectPresenters == null)
-                        mInjectPresenters = new ArrayList<>();
-                    mInjectPresenters.add(mInjectPresenter);
-                } catch (IllegalAccessException | java.lang.InstantiationException e) {
-                    e.printStackTrace();
-                } catch (ClassCastException e) {
-                    e.printStackTrace();
-                    log("SubClass must extends Class:BPresenter");
-                }
-            }
-        }
+        BPresenter<BView<?>> bPresenter = Reflector.get(view, 1);
+        if (bPresenter == null) return;
+        addPresenter(view, bPresenter);
+        if (BActivity.class.isAssignableFrom(view.getClass()))
+            presenter = (P) bPresenter;
+        else
+            ((BFragment) view).presenter = bPresenter;
+    }
+
+    private void addPresenter(BView<?> view, BPresenter<BView<?>> presenter) {
+        if (presenter == null) return;
+        presenter.attach(view);
+        if (mInjectPresenters == null) mInjectPresenters = new ArrayList<>();
+        mInjectPresenters.add(presenter);
     }
 
     private OnResultListener resultListener;

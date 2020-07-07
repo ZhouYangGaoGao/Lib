@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:back="false"
     app:centerText="登录"
     app:mode="top">
 
@@ -47,10 +46,12 @@
         <background.view.BLTextView
             android:id="@+id/login"
             style="@style/login"
+            android:layout_width="160dp"
             android:layout_marginHorizontal="55dp"
             android:paddingVertical="10dp"
             android:text="@string/str_login"
             app:bl_corners_radius="25dp"
+            android:layout_marginTop="30dp"
             app:bl_pressed_solid_color="@color/colorTheme88"
             app:bl_unEnabled_solid_color="@color/colorTheme88"
             app:bl_unPressed_solid_color="@color/colorTheme"
@@ -59,9 +60,11 @@
         <background.view.BLTextView
             android:id="@+id/next"
             style="@style/login"
+            android:layout_width="160dp"
             android:layout_marginHorizontal="55dp"
             android:paddingVertical="10dp"
             android:text="@string/str_next"
+            android:layout_marginTop="30dp"
             app:bl_corners_radius="25dp"
             app:bl_pressed_solid_color="@color/colorTheme88"
             app:bl_unEnabled_solid_color="@color/colorTheme88"
@@ -71,9 +74,11 @@
         <background.view.BLTextView
             android:id="@+id/register"
             style="@style/login"
+            android:layout_width="160dp"
             android:layout_marginHorizontal="55dp"
             android:paddingVertical="10dp"
             android:text="@string/str_register"
+            android:layout_marginTop="30dp"
             app:bl_corners_radius="25dp"
             app:bl_pressed_solid_color="@color/colorTheme88"
             app:bl_unEnabled_solid_color="@color/colorTheme88"

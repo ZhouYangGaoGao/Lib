@@ -9,9 +9,9 @@ import com.zhy.app.R;
 
 import java.util.Collections;
 
-import base.SmartFragment;
+import base.BSmartFragment;
 
-public class AVLFragment extends SmartFragment<String> {
+public class AVLFragment extends BSmartFragment<String> {
     @Override
     public void beforeView() {
         numColumns = 3;

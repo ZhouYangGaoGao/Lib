@@ -10,7 +10,7 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 
 import base.BApp;
-import base.PermissionFragment;
+import base.BPermissionFragment;
 
 /**
  * 获取用户的地理位置
@@ -44,14 +44,14 @@ public class GPSUtils {
     private void get(OnLocationListener listener, boolean updates) {
         mOnLocationListener = listener;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(mContext, PermissionFragment.精确位置) != 0 &&
-                ActivityCompat.checkSelfPermission(mContext, PermissionFragment.大致位置) != 0) {
-            PermissionFragment.request(new PermissionFragment.OnPermissionListener() {
+        if (ActivityCompat.checkSelfPermission(mContext, BPermissionFragment.精确位置) != 0 &&
+                ActivityCompat.checkSelfPermission(mContext, BPermissionFragment.大致位置) != 0) {
+            BPermissionFragment.request(new BPermissionFragment.OnPermissionListener() {
                 @Override
                 public void onPermissionSuccess() {
                     start(updates);
                 }
-            }, PermissionFragment.精确位置, PermissionFragment.大致位置);
+            }, BPermissionFragment.精确位置, BPermissionFragment.大致位置);
             return;
         } else start(updates);
     }

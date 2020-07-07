@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/mRootView"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        app:stl_defaultTabTextAllCaps="false"
+        app:stl_defaultTabTextColor="@color/tab_colors"
+        app:stl_defaultTabTextSize="10sp"
+        app:stl_distributeEvenly="true"
+        app:stl_dividerThickness="0dp"
+        app:stl_indicatorThickness="0dp"
+        app:stl_overlineColor="#4D000000"
+        app:stl_overlineThickness="0.5dp"
+        app:stl_underlineThickness="0dp" />
+</LinearLayout>
+
+    <!--
+        stl_indicatorAlwaysInCenter	如果设置为true，则活动标签始终显示在中央（如报亭Google应用），默认为false
+        stl_indicatorWithoutPadding	如果设置为true，则绘制指标而不填充制表符，默认为false
+        stl_indicatorInFront	在下划线前绘制指标，默认为false
+        stl_indicatorInterpolation	指标的行为：'线性'或'智能'
+        stl_indicatorGravity	指标的绘制位置：“底部”或“顶部”或“中心”，默认为“底部”
+        stl_indicatorColor	指示灯的颜色
+        stl_indicatorColors	指示灯的多种颜色，可以为每个标签设置颜色
+        stl_indicatorThickness	指标的厚度
+        stl_indicatorWidth	指标宽度，默认'自动'
+        stl_indicatorCornerRadius	指针圆角的半径
+        stl_overlineColor	顶线的颜色
+        stl_overlineThickness	顶线的厚度
+        stl_underlineColor	底线的颜色
+        stl_underlineThickness	底线的厚度
+        stl_dividerColor	标签之间的分隔线的颜色
+        stl_dividerColors	选项卡之间的多个分隔线颜色可以设置每个选项卡的颜色
+        stl_dividerThickness	分隔器的厚度
+        stl_defaultTabBackground	每个标签的背景drawable。通常它设置StateListDrawable
+        stl_defaultTabTextAllCaps	如果设置为true，则所有制表符都将为大写，默认为true
+        stl_defaultTabTextColor	默认情况下包含的选项卡的文本颜色
+        stl_defaultTabTextSize	默认情况下包含的选项卡的文本大小
+        stl_defaultTabTextHorizo​​ntalPadding	默认情况下包含的选项卡的文本布局填充
+        stl_defaultTabTextMinWidth	标签的最小宽度
+        stl_customTabTextLayoutId	布局ID定义自定义选项卡。如果未指定布局，请使用默认选项卡
+        stl_customTabTextViewId	自定义选项卡布局中的文本视图ID。如果未使用customTabTextLayoutId定义，则不起作用
+        stl_distributeEvenly	如果设置为true，则每个选项卡的权重相同，默认为false
+        stl_clickable	如果设置为false，则禁用选项卡单击，默认为true
+        stl_titleOffset	如果设置为“auto_center”，则选项卡在中间的滑动位置将保持在中心位置。如果指定尺寸，它将偏离左边缘，默认为24dp
+        stl_drawDecorationAfterTab	绘制选项卡后绘制装饰（指示符和线条），默认为false
+        -->

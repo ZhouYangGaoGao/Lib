@@ -30,7 +30,7 @@
         <activity android:name=".DetailsActivity"  />
         <activity android:name=".PlaybackActivity"/>
         <activity android:name=".BrowseErrorActivity" />
-        <activity android:name="base.FragmentActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name="base.BFragmentActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>

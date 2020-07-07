@@ -5,10 +5,10 @@ import com.zhy.app.R;
 
 import java.util.Collections;
 
-import base.PagerFragment;
+import base.BPagerFragment;
 import custom.AutoScrollViewPager;
 
-public class BannerFragment extends PagerFragment<String> {
+public class BannerFragment extends BPagerFragment<String> {
 
     @Override
     public void beforeView() {

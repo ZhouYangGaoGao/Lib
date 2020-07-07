@@ -185,4 +185,5 @@
         <item name="picture.folder_checked_dot">@drawable/picture_orange_oval</item>
     </style>
     <style name="BaseNoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar" />
+
 </resources>

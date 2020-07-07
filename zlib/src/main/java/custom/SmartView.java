@@ -24,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.ActionMenuItem;
 
+import com.zhy.android.BuildConfig;
 import com.zhy.android.R;
 
 import java.util.ArrayList;
@@ -137,10 +138,10 @@ public class SmartView extends LinearLayout {
                         .setSolidColor(0xffffffff).build());
                 crIcon = getResources().getDrawable(android.R.drawable.ic_menu_search);
                 centerEditText.setImeOptions(0x00000003);
-
                 break;
             case 2://login
                 if (TextUtils.isEmpty(leftText)) leftText = "手机号";
+                if (leftText.contains("手机")) inputType = 0;
                 if (delete) {
                     if (rrIcon == null)
                         rrIcon = getResources().getDrawable(R.drawable.ic_off_dark);
@@ -156,7 +157,6 @@ public class SmartView extends LinearLayout {
                 if (TextUtils.isEmpty(leftText)) leftText = "密码";
                 rrIcon = getResources().getDrawable(R.drawable.ic_eye);
                 inputType = 1;
-//                centerEditText.setImeActionLabel("登录", EditorInfo.IME_ACTION_DONE);
                 rightTextView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -222,9 +222,9 @@ public class SmartView extends LinearLayout {
                 });
                 break;
             case 5:
-                if (TextUtils.isEmpty(leftText)) leftText = "标题";
-                if (TextUtils.isEmpty(centerText)) centerText = "内容";
-                if (TextUtils.isEmpty(rightText)) rightText = "备注";
+                if (BuildConfig.DEBUG && TextUtils.isEmpty(leftText)) leftText = "标题";
+                if (BuildConfig.DEBUG && TextUtils.isEmpty(centerText)) centerText = "内容";
+                if (BuildConfig.DEBUG && TextUtils.isEmpty(rightText)) rightText = "备注";
                 centerEditText.setVisibility(GONE);
                 break;
         }

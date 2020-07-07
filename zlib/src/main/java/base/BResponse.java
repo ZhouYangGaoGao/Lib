@@ -1,5 +1,7 @@
 package base;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class BResponse<T> {
@@ -54,7 +56,7 @@ public class BResponse<T> {
                 "Model='" + getModelName() + '\'' +
                 ", code='" + code + '\'' +
                 ", msg='" + msg + '\'' +
-                ", data=" + data +
+                ", data=" + (data == null ? "null" : new Gson().toJson(data)) +
                 ", success=" + success +
                 '}';
     }

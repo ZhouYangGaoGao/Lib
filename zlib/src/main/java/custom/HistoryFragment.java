@@ -7,9 +7,9 @@ import com.zhy.android.R;
 import com.zhy.android.adapter.CommonAdapter;
 
 import background.drawable.DrawableCreator;
-import base.SmartFragment;
+import base.BSmartFragment;
 
-public class HistoryFragment extends SmartFragment<String> {
+public class HistoryFragment extends BSmartFragment<String> {
     @Override
     public void beforeView() {
         numColumns = 3;

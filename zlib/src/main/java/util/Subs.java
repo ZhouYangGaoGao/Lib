@@ -23,6 +23,7 @@ import rx.schedulers.Schedulers;
 public class Subs<T> extends Subscriber<BResponse<T>> {
 
     private BView<T> mView;
+    private String tag;
 
     public Subs(Observable<BResponse<T>> observable) {
         this(null, observable);
@@ -30,6 +31,7 @@ public class Subs<T> extends Subscriber<BResponse<T>> {
 
     public Subs(BView<T> mView, Observable<BResponse<T>> observable) {
         this.mView = mView;
+        tag = mView == null ? Reflector.name(this) + "" : mView.getClass().getSimpleName();
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this);
@@ -56,29 +58,29 @@ public class Subs<T> extends Subscriber<BResponse<T>> {
 
     @Override
     public void onNext(BResponse<T> baseBean) {
-        onCompleted();
         if (baseBean == null) {
             onFail("无数据");
-            return;
+        } else {
+            LogUtils.e(tag, baseBean.toString());
+            if (baseBean.isSuccess() && baseBean.getData() != null)
+                onSuccess(baseBean.getData());
+            else {
+                if (onCode(baseBean.getCode())) onFail(baseBean.getMsg());
+            }
         }
-        LogUtils.e(mView == null ? "" : mView.getClass().getSimpleName(), baseBean.toString());
-        if (baseBean.isSuccess() && baseBean.getData() != null)
-            onSuccess(baseBean.getData());
-        else {
-            onCode(baseBean.getCode());
-            onFail(baseBean.getMsg());
-        }
+        onCompleted();
     }
 
     @Override
     public void onError(Throwable e) {
-        LogUtils.e(Reflector.name(this), "onError" + e.getMessage());
+        LogUtils.e(tag, e.getMessage());
         e.printStackTrace();
         onFail(e.getMessage());
         onCompleted();
     }
 
-    protected void onCode(String code) {
+    protected boolean onCode(String code) {
+        return true;
     }
 
     protected void onFail(String message) {
