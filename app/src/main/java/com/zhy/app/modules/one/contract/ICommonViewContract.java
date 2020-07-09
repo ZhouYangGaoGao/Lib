@@ -3,8 +3,6 @@ package com.zhy.app.modules.one.contract;
 import com.zhy.app.modules.one.model.CommonViewModel;
 
 import base.BView;
-import base.IPresenter;
-import base.IModel;
 
 /**
  * @author ZhouYang
@@ -17,9 +15,9 @@ public interface ICommonViewContract {
     interface View extends BView<CommonViewModel> {
     }
 
-    interface Presenter extends IPresenter {
+    interface Presenter {
     }
 
-    interface Model extends IModel {
+    interface Model {
     }
 }

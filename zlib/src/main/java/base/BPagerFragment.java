@@ -12,14 +12,14 @@ import com.zhy.android.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import annotation.InjectPresenter;
+import annotation.Presenter;
 import custom.AutoScrollViewPager;
 import rx.Observable;
 import util.ImageUtils;
 
-public abstract class BPagerFragment<M> extends BFragment<M, SmartPresenter<M>> implements
-        ISmartContract.View<M>, AutoScrollViewPager.OnPageClickListener {
-    @InjectPresenter
+public abstract class BPagerFragment<M> extends BFragment implements
+        AutoScrollViewPager.OnPageClickListener {
+    @Presenter
     public SmartPresenter presenter;
     protected AutoScrollViewPager mViewPager;
     private View mRootView;
@@ -33,7 +33,7 @@ public abstract class BPagerFragment<M> extends BFragment<M, SmartPresenter<M>> 
         contentViewId = R.layout.fragment_pager;
     }
 
-    @Override
+//    @Override
     public void onDatas(List<M> datas) {
         mData.clear();
         mData.addAll(datas);
@@ -45,15 +45,15 @@ public abstract class BPagerFragment<M> extends BFragment<M, SmartPresenter<M>> 
 
     }
 
-    @Override
-    public Observable<BResponse<List<M>>> getList() {
-        return null;
-    }
-
-    @Override
-    public Observable<BResponse<BList<M>>> getPageList() {
-        return null;
-    }
+//    @Override
+//    public Observable<BResponse<List<M>>> getList() {
+//        return null;
+//    }
+//
+//    @Override
+//    public Observable<BResponse<BList<M>>> getPageList() {
+//        return null;
+//    }
 
     @Override
     public void initView() {
@@ -161,8 +161,8 @@ public abstract class BPagerFragment<M> extends BFragment<M, SmartPresenter<M>> 
         }
     }
 
-    @Override
-    public void total(int total) {
-
-    }
+//    @Override
+//    public void total(int total) {
+//
+//    }
 }

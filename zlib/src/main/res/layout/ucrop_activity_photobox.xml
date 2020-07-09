@@ -30,7 +30,7 @@
         android:layout_below="@+id/toolbar"
         android:background="@color/ucrop_color_default_crop_frame">
 
-        <com.yalantis.ucrop.view.UCropView
+        <photopicker.ucrop.view.UCropView
             android:id="@+id/ucrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

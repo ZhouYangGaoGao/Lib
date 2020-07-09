@@ -19,6 +19,6 @@ public class BaseApp extends BApp {
     protected void initApp() {
         BConfig.getConfig().setBaseUrl("https://www.ahlzz.com/api/")
                 .setClient("cms")
-                .setToken("88a5f621de3e2594d0410825b93209a1");
+                .setToken("28660e36f6f8c2f14ec22e5322f03de6");
     }
 }

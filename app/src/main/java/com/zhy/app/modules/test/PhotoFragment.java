@@ -20,22 +20,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.style.PictureCropParameterStyle;
-import com.luck.picture.lib.style.PictureParameterStyle;
+import photopicker.lib.PictureSelector;
+import photopicker.lib.config.PictureConfig;
+import photopicker.lib.config.PictureMimeType;
+import photopicker.lib.entity.LocalMedia;
+import photopicker.lib.style.PictureCropParameterStyle;
+import photopicker.lib.style.PictureParameterStyle;
 import com.zhy.app.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import base.BConfig;
-import cn.bingoogolapple.photopicker.adapter.GridImageAdapter;
+import photopicker.adapter.GridImageAdapter;
 import custom.FullyGridLayoutManager;
 import custom.GlideEngine;
-import util.ScreenUtils;
 
 /**
  * author：luck

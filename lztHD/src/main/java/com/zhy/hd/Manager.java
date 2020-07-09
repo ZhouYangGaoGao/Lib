@@ -3,7 +3,6 @@ package com.zhy.hd;
 
 import base.BConfig;
 import base.BManager;
-import base.BResponse;
 import rx.Observable;
 import util.BodyMap;
 import util.MD5Util;

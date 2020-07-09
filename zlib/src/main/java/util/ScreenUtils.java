@@ -1,7 +1,6 @@
 
 package util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -101,25 +100,19 @@ public class ScreenUtils {
 
     /**
      * 获得状态栏的高度
-     *
-     * @param context
      * @return
      */
-    public static int getStatusHeight(Context context) {
-
+    public static int getStatusHeight() {
         int statusHeight = -1;
         try {
-
             Class<?> clazz = Class.forName("com.android.internal.R$dimen");
             Object object = clazz.newInstance();
             int height = Integer.parseInt(clazz.getField("status_bar_height")
                     .get(object).toString());
-            statusHeight = context.getResources().getDimensionPixelSize(height);
+            statusHeight = BApp.app().getResources().getDimensionPixelSize(height);
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
         return statusHeight;
 
@@ -157,17 +150,16 @@ public class ScreenUtils {
     /**
      * 获取当前屏幕截图，不包含状态栏
      *
-     * @param activity
      * @return
      */
-    public static Bitmap snapShotWithoutStatusBar(Activity activity) {
+    public static Bitmap snapShotWithoutStatusBar() {
 
-        View view = activity.getWindow().getDecorView();
+        View view = BApp.app().act().getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         Bitmap bmp = view.getDrawingCache();
         Rect frame = new Rect();
-        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        BApp.app().act().getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
         int statusBarHeight = frame.top;
 
         int width = getScreenWidth();
@@ -186,10 +178,8 @@ public class ScreenUtils {
         int ori = mConfiguration.orientation; //获取屏幕方向
 
         if (ori == mConfiguration.ORIENTATION_LANDSCAPE) {
-//横屏
             return true;
         } else if (ori == mConfiguration.ORIENTATION_PORTRAIT) {
-//竖屏
             return false;
         }
         return false;

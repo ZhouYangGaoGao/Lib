@@ -74,7 +74,7 @@ public class SmartView extends LinearLayout {
         centerRMargin = t.getFloat(R.styleable.SmartView_centerRMargin, 0);
         centerLMargin = t.getFloat(R.styleable.SmartView_centerLMargin, 0);
         mode = t.getInt(R.styleable.SmartView_mode, 10);
-        measure = t.getInt(R.styleable.SmartView_measure, 112);
+        measure = t.getInt(R.styleable.SmartView_measure, 0);
         int inputType = t.getInt(R.styleable.SmartView_inputType, -1);
         int captchaSecond = t.getInt(R.styleable.SmartView_captchaSecond, 20);
         int gravity = t.getInt(R.styleable.SmartView_gravity, mode == 0 ? 11 : -1);
@@ -128,9 +128,11 @@ public class SmartView extends LinearLayout {
         switch (mode) {
             case 10://common
             case 0://top
+                if (measure == 0) measure = 110;
                 centerEditText.setVisibility(GONE);
                 break;
             case 1://search
+                centerTextView.setVisibility(GONE);
                 initHistory(historyAble, historyLayout);
                 centerTextView.setVisibility(GONE);
                 centerEditText.setBackground(new DrawableCreator.Builder()
@@ -140,7 +142,9 @@ public class SmartView extends LinearLayout {
                 centerEditText.setImeOptions(0x00000003);
                 break;
             case 2://login
+                centerTextView.setVisibility(GONE);
                 if (TextUtils.isEmpty(leftText)) leftText = "手机号";
+                if (TextUtils.isEmpty(centerText)) centerText = "17600117227";
                 if (leftText.contains("手机")) inputType = 0;
                 if (delete) {
                     if (rrIcon == null)
@@ -154,7 +158,9 @@ public class SmartView extends LinearLayout {
                 }
                 break;
             case 3://password
+                centerTextView.setVisibility(GONE);
                 if (TextUtils.isEmpty(leftText)) leftText = "密码";
+                if (TextUtils.isEmpty(centerText)) centerText = "321654";
                 rrIcon = getResources().getDrawable(R.drawable.ic_eye);
                 inputType = 1;
                 rightTextView.setOnClickListener(new OnClickListener() {
@@ -174,6 +180,7 @@ public class SmartView extends LinearLayout {
                 });
                 break;
             case 4://captcha 验证码
+                centerTextView.setVisibility(GONE);
                 if (TextUtils.isEmpty(leftText)) leftText = "验证码";
                 if (TextUtils.isEmpty(rightText)) rightText = "获取验证码";
                 inputType = 0;
@@ -227,6 +234,8 @@ public class SmartView extends LinearLayout {
                 if (BuildConfig.DEBUG && TextUtils.isEmpty(rightText)) rightText = "备注";
                 centerEditText.setVisibility(GONE);
                 break;
+            default:
+                measure = 112;
         }
 
         if (back) {

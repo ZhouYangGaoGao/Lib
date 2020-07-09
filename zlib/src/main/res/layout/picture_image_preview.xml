@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.luck.picture.lib.photoview.PhotoView
+    <photopicker.lib.photoview.PhotoView
         android:id="@+id/preview_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp" />
 
-    <com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView
+    <photopicker.lib.widget.longimage.SubsamplingScaleImageView
         android:id="@+id/longImg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

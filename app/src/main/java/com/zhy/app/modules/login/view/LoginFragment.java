@@ -2,12 +2,12 @@ package com.zhy.app.modules.login.view;
 
 import com.zhy.app.MainActivity;
 import com.zhy.app.base.Manager;
+import com.zhy.app.base.Subs;
 import com.zhy.app.modules.login.model.LoginModel;
 
 import base.BConfig;
 import base.BLoginFragment;
 import rx.Subscription;
-import util.Subs;
 
 public class LoginFragment extends BLoginFragment<LoginModel> {
 
@@ -25,7 +25,7 @@ public class LoginFragment extends BLoginFragment<LoginModel> {
     protected Subscription captcha(String phone) {
         return new Subs<LoginModel>(this,Manager.get().login(phone, "123456")) {
             @Override
-            protected void onSuccess(LoginModel loginModel) {
+            public void onSuccess(LoginModel loginModel) {
                 toast(toast + "  " + captcha.getText());
                 captchaStr = "123456";
             }

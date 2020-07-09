@@ -5,32 +5,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.luck.picture.lib.PictureSelectionModel;
-import com.luck.picture.lib.PictureSelector;
+import photopicker.lib.PictureSelectionModel;
+import photopicker.lib.PictureSelector;
+
 import com.zhy.android.R;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.decoration.GridSpacingItemDecoration;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.style.PictureParameterStyle;
-import com.luck.picture.lib.tools.ScreenUtils;
+
+import photopicker.lib.config.PictureConfig;
+import photopicker.lib.config.PictureMimeType;
+import photopicker.lib.decoration.GridSpacingItemDecoration;
+import photopicker.lib.entity.LocalMedia;
+import photopicker.lib.style.PictureParameterStyle;
 
 import java.util.List;
 
 import base.BActivity;
-import base.BFragment;
-import cn.bingoogolapple.photopicker.adapter.GridImageAdapter;
+import photopicker.adapter.GridImageAdapter;
 import listener.OnResultListener;
-import util.LogUtils;
+import util.ScreenUtils;
 
 public class PicSelectView extends RecyclerView implements OnResultListener {
     private GridImageAdapter adapter;
@@ -62,7 +60,7 @@ public class PicSelectView extends RecyclerView implements OnResultListener {
         int compressSize = t.getInt(R.styleable.PicSelectView_compressSize, 1000);
         int type = t.getInt(R.styleable.PicSelectView_type, 1);
         int offset = t.getInt(R.styleable.PicSelectView_offset, 1);
-        this.offset = ScreenUtils.dip2px(context, offset);
+        this.offset = ScreenUtils.dip2px(offset);
         boolean onlyCamera = t.getBoolean(R.styleable.PicSelectView_onlyCamera, false);
         boolean showCamera = t.getBoolean(R.styleable.PicSelectView_showCamera, true);
         boolean compress = t.getBoolean(R.styleable.PicSelectView_compress, false);
@@ -74,7 +72,7 @@ public class PicSelectView extends RecyclerView implements OnResultListener {
         boolean onlyShow = t.getBoolean(R.styleable.PicSelectView_onlyShow, false);
         t.recycle();
         addItemDecoration(new GridSpacingItemDecoration(numColumns, (int) this.offset, false));
-        setLayoutManager(new GridLayoutManager(context, numColumns));
+        setLayoutManager(new GridLayoutManager(context, numColumns, orientation, false));
         addListener = onlyShow ? null : new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +103,8 @@ public class PicSelectView extends RecyclerView implements OnResultListener {
 
     public void init() {
         if (adapter != null) return;
-        setAdapter(adapter = new GridImageAdapter(getContext(), (int) ((getMeasuredWidth() - (offset * (numColumns - 1))) / numColumns), addListener));
+        setAdapter(adapter = new GridImageAdapter(getContext(), (int) ((getMeasuredWidth() - (offset
+                * (numColumns - 1))- getPaddingLeft() - getPaddingRight()) / numColumns ), addListener));
         adapter.setSelectMax(max);
         adapter.setOnItemClickListener((position, v) -> {
             LocalMedia media = adapter.getList().get(position);

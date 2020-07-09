@@ -11,7 +11,7 @@ public class GoTo {
 
     public static void start(Class<?> cls, Intent... intents) {
         if (cls == null) return;
-        BApp.app().act().startActivity(intent(cls, intents));
+        BApp.app().startActivity(intent(cls, intents));
     }
 
     private static Intent intent(Class<?> cls, Intent[] intents) {

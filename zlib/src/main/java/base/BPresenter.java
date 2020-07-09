@@ -3,7 +3,7 @@ package base;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public class BPresenter<V extends BView> {
+public class BPresenter<V extends BView<?>> {
 
     protected V mView;
     private CompositeSubscription mCompositeSubscription;
@@ -18,11 +18,13 @@ public class BPresenter<V extends BView> {
         }
     }
 
-    public void sub(Subscription subscription) {
+    public boolean sub(Subscription subscription) {
+        if (subscription == null) return false;
         if (mCompositeSubscription == null) {
             mCompositeSubscription = new CompositeSubscription();
         }
         mCompositeSubscription.add(subscription);
+        return true;
     }
 
 }

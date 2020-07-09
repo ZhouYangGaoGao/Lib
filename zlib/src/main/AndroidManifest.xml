@@ -27,7 +27,7 @@
 
         <!--图片预览界面-->
         <activity
-            android:name="cn.bingoogolapple.photopicker.activity.CCRPhotoPreviewActivity"
+            android:name="photopicker.view.CCRPhotoPreviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/CCRPPTheme"
@@ -35,7 +35,7 @@
 
         <!--图片选择界面-->
         <activity
-            android:name="cn.bingoogolapple.photopicker.activity.CCRPhotoPickerActivity"
+            android:name="photopicker.view.CCRPhotoPickerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/CCRPPTheme"
@@ -43,14 +43,14 @@
 
         <!--图片选择预览界面-->
         <activity
-            android:name="cn.bingoogolapple.photopicker.activity.CCRPhotoPickerPreviewActivity"
+            android:name="photopicker.view.CCRPhotoPickerPreviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/CCRPPTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <provider
-            android:name="cn.bingoogolapple.photopicker.util.CCRPhotoFileProvider"
+            android:name="photopicker.utils.CCRPhotoFileProvider"
             android:authorities="${applicationId}.bga_photo_picker.file_provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -59,7 +59,7 @@
                 android:resource="@xml/bga_photo_picker_file_paths" />
         </provider>
         <provider
-            android:name="com.luck.picture.lib.PictureFileProvider"
+            android:name="photopicker.utils.CCRPhotoFileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -69,28 +69,28 @@
         </provider>
 
         <activity
-            android:name="com.luck.picture.lib.PictureSelectorActivity"
+            android:name="photopicker.lib.PictureSelectorActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name="com.luck.picture.lib.PictureSelectorCameraEmptyActivity"
+            android:name="photopicker.lib.PictureSelectorCameraEmptyActivity"
             android:theme="@style/Picture.Theme.Translucent"
             android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name="com.luck.picture.lib.PicturePreviewActivity" />
+        <activity android:name="photopicker.lib.PicturePreviewActivity" />
         <activity
-            android:name="com.luck.picture.lib.PictureVideoPlayActivity"
+            android:name="photopicker.lib.PicturePlayVideoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensor" />
-        <activity android:name="com.luck.picture.lib.PictureExternalPreviewActivity" />
+        <activity android:name="photopicker.lib.PictureExternalPreviewActivity" />
         <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
+            android:name="photopicker.ucrop.UCropActivity"
             android:theme="@style/Base.Theme.NoActionBar" />
         <activity
-            android:name="com.yalantis.ucrop.PictureMultiCuttingActivity"
+            android:name="photopicker.ucrop.PictureMultiCuttingActivity"
             android:theme="@style/Base.Theme.NoActionBar" />
 
-        <activity android:name="com.luck.picture.lib.PicturePlayAudioActivity" />
+<!--        <activity android:name="photopicker.lib.PicturePlayVideoActivity" />-->
 
     </application>
 </manifest>

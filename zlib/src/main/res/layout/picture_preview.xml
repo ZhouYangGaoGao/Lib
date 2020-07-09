@@ -8,7 +8,7 @@
     <include layout="@layout/picture_preview_title_bar" />
 
 
-    <com.luck.picture.lib.widget.PreviewViewPager
+    <photopicker.lib.widget.PreviewViewPager
         android:id="@+id/preview_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

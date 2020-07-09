@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
@@ -17,19 +18,19 @@ import com.zhy.android.adapter.CommonAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import annotation.InjectPresenter;
+import annotation.Presenter;
 import background.drawable.DrawableCreator;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
 import custom.ShadowLayout;
 import custom.SmartView;
 import rx.Observable;
+import rx.Subscription;
 import util.ScreenUtils;
 
-public abstract class BSmartFragment<M> extends BFragment<M, SmartPresenter<M>> implements
-        ISmartContract.View<M>, OnRefreshLoadMoreListener {
+public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLoadMoreListener {
 
-    @InjectPresenter
+    @Presenter
     public SmartPresenter<M> presenter;
     private HeaderGridView gridView;
     protected SmartRefreshLayout refreshLayout;
@@ -63,7 +64,7 @@ public abstract class BSmartFragment<M> extends BFragment<M, SmartPresenter<M>> 
         if (BuildConfig.DEBUG) mTopView.centerTextView.setText(getClass().getSimpleName());
     }
 
-    private int horizontalSpacing = 1, verticalSpacing = 1;
+    protected int horizontalSpacing = 1, verticalSpacing = 1;
     protected View heardView, footView, emptyView;
 
     /**
@@ -139,13 +140,17 @@ public abstract class BSmartFragment<M> extends BFragment<M, SmartPresenter<M>> 
     @Override
     public void getData() {
         if (presenter != null) {
-            if (!presenter.getDatas()) {
+            if (!presenter.sub(get())) {
                 completed();
             }
         } else {
             completed();
         }
     }
+
+    protected Subscription get(){
+        return null;
+    };
 
     /**
      * 初始化主列表适配器
@@ -185,12 +190,12 @@ public abstract class BSmartFragment<M> extends BFragment<M, SmartPresenter<M>> 
 
     private void initCard(CommonAdapter.ViewHolder h) {
         ShadowLayout card = (ShadowLayout) h.getConvertView();
-        card.setShadowRadius(ScreenUtils.dip2px(isCard / 2f));
+//        card.setShadowRadius(ScreenUtils.dip2px(isCard / 2f));
         View view = View.inflate(getContext(), itemLayoutId, null);
         view.setBackground(itemBg());
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(-1, -1);
-        params.setMargins(ScreenUtils.dip2px(isCard / 2f), 0, ScreenUtils.dip2px(isCard / 2f), 0);
-        card.addView(view, params);
+//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(-1, -1);
+//        params.setMargins(ScreenUtils.dip2px(isCard / 2f), 0, ScreenUtils.dip2px(isCard / 2f), 0);
+        card.addView(view);
     }
 
     protected Drawable itemBg() {
@@ -205,22 +210,8 @@ public abstract class BSmartFragment<M> extends BFragment<M, SmartPresenter<M>> 
      * item回调
      */
     protected void convert(CommonAdapter.ViewHolder h, M i) {
-    }
-
-    /**
-     * 加载不可分页列表数据
-     */
-    @Override
-    public Observable<BResponse<List<M>>> getList() {
-        return null;
-    }
-
-    /**
-     * 加载可分页列表数据
-     */
-    @Override
-    public Observable<BResponse<BList<M>>> getPageList() {
-        return null;
+        if (h.getView(R.id.title)!=null)
+            h.setText(R.id.title,new Gson().toJson(i));
     }
 
     /**
@@ -243,14 +234,24 @@ public abstract class BSmartFragment<M> extends BFragment<M, SmartPresenter<M>> 
         getData();
     }
 
-    /**
-     * 数据加载成功 更新UI
-     */
-    @Override
+//    /**
+//     * 数据加载成功 更新UI
+//     */
+//    @Override
     public void onDatas(List<M> datas) {
         if (isRefresh) mData.clear();
         mData.addAll(datas);
         upData();
+    }
+
+    @Override
+    public void success(Object data) {
+        if (BList.class.isAssignableFrom(data.getClass())){
+            onDatas(((BList) data).getList());
+            total(((BList) data).getTotal());
+        }else if (List.class.isAssignableFrom(data.getClass())){
+            onDatas((List<M>) data);
+        }
     }
 
     /**
@@ -264,9 +265,7 @@ public abstract class BSmartFragment<M> extends BFragment<M, SmartPresenter<M>> 
     /**
      * 列表总数量
      */
-    @Override
     public void total(int total) {
-
     }
 
     /**

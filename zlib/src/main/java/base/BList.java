@@ -27,12 +27,4 @@ public class BList<T> {
     public void setList(List<T> list) {
         this.list = list;
     }
-
-    @Override
-    public String toString() {
-        return "ListModel{" +
-                "total='" + total + '\'' +
-                ", list=" + list +
-                '}';
-    }
 }

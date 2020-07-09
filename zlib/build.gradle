@@ -21,15 +21,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true
     }
 }
 
 dependencies {
     api 'com.google.android.material:material:1.1.0'
     api 'androidx.annotation:annotation:1.1.0'
-    api 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    api 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     api 'androidx.lifecycle:lifecycle-common:2.1.0'
     api 'com.google.code.gson:gson:2.8.6'
     api 'com.wang.avi:library:2.1.3'
@@ -55,3 +55,20 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     api 'pub.devrel:easypermissions:3.0.0'
 }
+
+task clearJar(type: Delete) {
+    delete 'build/zlib_1.0.jar' //jar包的名字，随便命名 
+}
+task makeJar(type: Jar) {
+    //指定生成的jar名 
+    baseName 'zlib_1.0'
+    //从哪里打包class文件 
+    from('build/intermediates/packaged-classes/debug/default/')
+    //打包到jar后的目录结构 
+    into('build/')
+    //去掉不需要打包的目录和文件 
+    exclude( 'BuildConfig.class', 'R.class')
+    //去掉R开头的文件  
+    exclude{it.name.startsWith('R');}
+}
+makeJar.dependsOn(clearJar, build)

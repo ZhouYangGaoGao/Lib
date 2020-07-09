@@ -9,7 +9,6 @@ import base.BConfig;
 import base.BLoginFragment;
 import rx.Subscription;
 import util.GoTo;
-import util.Subs;
 
 /**
  * @author ZhouYang

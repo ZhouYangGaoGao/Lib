@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.zhy.android.R;
 
-import annotation.InjectPresenter;
+import annotation.Presenter;
 import custom.SmartView;
 import hawk.Hawk;
 import rx.Subscription;
@@ -15,7 +15,7 @@ import util.GoTo;
 
 public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> implements View.OnClickListener {
 
-    @InjectPresenter
+    @Presenter
     public LoginPresenter presenter;
     protected SmartView titleView;
     protected SmartView phone;

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import annotation.InjectPresenter;
+import annotation.Presenter;
 import background.BackgroundLibrary;
 import butterknife.ButterKnife;
 import eventbus.hermeseventbus.HermesEventBus;
@@ -90,7 +90,7 @@ public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivi
      * @param view
      */
     protected void initPresenter(BView<?> view) {
-        List<BPresenter<BView<?>>> injects = Reflector.get(view, InjectPresenter.class);
+        List<BPresenter<BView<?>>> injects = Reflector.get(view, Presenter.class);
         if (injects != null && injects.size() > 0)
             for (BPresenter<BView<?>> inject : injects)
                 if (inject != null) addPresenter(view, inject);

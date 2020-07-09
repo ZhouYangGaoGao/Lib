@@ -10,12 +10,14 @@ import com.zhy.app.modules.one.contract.ICommonViewContract;
 import com.zhy.app.modules.one.model.CommonViewModel;
 import com.zhy.app.modules.one.presenter.CommonViewPresenter;
 
+import background.drawable.DrawableCreator;
 import base.BApp;
 import base.BConfig;
 import base.BFragment;
 import butterknife.BindView;
 import custom.SmartView;
 import util.GoTo;
+import util.ScreenUtils;
 
 /**
  * @author ZhouYang
@@ -49,6 +51,7 @@ public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPres
 
     @Override
     public void afterView() {
+
         topView.rightTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -29,8 +29,10 @@ public class TestFragment extends BSmartFragment<Class> {
 //        heardView = getView(R.layout.layout_test_heard);
 //        footView = getView(R.layout.layout_test_foot);
         itemLayoutId = R.layout.item_text;
-        isCard = 15;
-        mData.addAll(Arrays.asList(SLikeFragment.class,AVLFragment.class, BWebFragment.class, BannerFragment.class,
+        isCard = 10;
+        mData.addAll(Arrays.asList(NewsFragment.class
+                ,PicSelectViewFragment.class,SLikeFragment.class,AVLFragment.class,
+                BWebFragment.class, BannerFragment.class,
                 PhotoFragment.class, SmartViewFragment.class));
     }
 
@@ -71,5 +73,6 @@ public class TestFragment extends BSmartFragment<Class> {
             }
         });
     }
+
 }
 

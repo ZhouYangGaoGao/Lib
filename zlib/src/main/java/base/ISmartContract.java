@@ -15,11 +15,12 @@ public interface ISmartContract {
     interface View<M> extends BView<M>{
         void total(int total);
         void onDatas(List<M> datas);
-        Observable<BResponse<BList<M>>> getPageList();
-        Observable<BResponse<List<M>>> getList();
+        void onPagerDatas(BList<M> datas);
+        Observable<BBean<BList<M>>> getPageList();
+        Observable<BBean<List<M>>> getList();
     }
 
-    interface Presenter extends IPresenter {
+    interface Presenter {
         boolean getDatas();
     }
 }

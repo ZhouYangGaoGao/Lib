@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.luck.picture.lib.widget.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<photopicker.lib.widget.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/picture_color_light_grey"
@@ -18,4 +18,4 @@
         android:textColor="@color/picture_color_white"
         android:textSize="14dp" />
 
-</com.luck.picture.lib.widget.SquareRelativeLayout>
+</photopicker.lib.widget.SquareRelativeLayout>

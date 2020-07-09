@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
 
-        <com.yalantis.ucrop.view.UCropView
+        <photopicker.ucrop.view.UCropView
             android:id="@+id/ucrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
