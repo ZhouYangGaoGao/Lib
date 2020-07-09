@@ -29,7 +29,7 @@ public class LoginFragment extends BLoginFragment<LoginModel> {
     protected Subscription login(String phone, String password) {
         return new Subs<LoginModel>(Manager.get().login(phone, password)) {
             @Override
-            protected void onSuccess(LoginModel o) {
+            public void onSuccess(LoginModel o) {
                 BConfig.getConfig().setToken(o.getToken());
                 GoTo.start(MainActivity.class, new Intent().putExtra(Constant.URL, Constant.url+ new Gson().toJson(o)));
                 success(o);

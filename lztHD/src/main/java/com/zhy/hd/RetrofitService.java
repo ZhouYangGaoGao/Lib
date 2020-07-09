@@ -8,5 +8,5 @@ import rx.Observable;
 
 public interface RetrofitService {
     @POST("pub/login")
-    Observable<BResponse<LoginModel>> login(@Body RequestBody body);
+    Observable<BaseBean<LoginModel>> login(@Body RequestBody body);
 }
