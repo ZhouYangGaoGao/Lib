@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -72,3 +71,6 @@ task makeJar(type: Jar) {
     exclude{it.name.startsWith('R');}
 }
 makeJar.dependsOn(clearJar, build)
+repositories {
+    mavenCentral()
+}

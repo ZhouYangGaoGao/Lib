@@ -7,8 +7,8 @@
     <color name="colorTheme">#ff36C177</color>
     <color name="colorTheme88">#8836C177</color>
 
-    <color name="cardview_shadow_end_color">#03000000</color>
-    <color name="cardview_shadow_start_color">#1136c117</color>
+    <color name="end_color">#00000000</color>
+    <color name="start_color">#11000000</color>
 
     <color name="picture_color_grey">#393a3e</color>
     <color name="picture_color_black">#000000</color>
@@ -58,4 +58,10 @@
 
     <!--more-->
     <color name="ucrop_color_ba3">#b0567ba3</color>
+    <color name="color_list_bg">#ffffff</color>
+    <color name="color_top_text">#ffffff</color>
+    <color name="color_title_text">#000000</color>
+    <color name="color_top_bg">#00BCD4</color>
+    <color name="color_ripple">#88888888</color>
+    <color name="status_bar">#00BCD4</color>
 </resources>

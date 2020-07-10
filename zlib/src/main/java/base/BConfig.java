@@ -10,6 +10,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import util.CardUtils;
 import util.LogUtils;
 import util.SystemUtil;
 
@@ -42,6 +43,11 @@ public class BConfig {
     }
 
     private BConfig() {
+    }
+
+    public BConfig initCardView() {
+        CardUtils.init();
+        return config;
     }
 
     public int getColorTheme() {

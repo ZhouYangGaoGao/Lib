@@ -16,6 +16,7 @@ import base.BConfig;
 import base.BFragment;
 import butterknife.BindView;
 import custom.SmartView;
+import listener.OnSmartClickListener;
 import util.GoTo;
 import util.ScreenUtils;
 
@@ -26,7 +27,7 @@ import util.ScreenUtils;
  * - generate by MvpAutoCodePlus plugin.
  */
 
-public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPresenter> implements ICommonViewContract.View {
+public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPresenter> implements ICommonViewContract.View, OnSmartClickListener {
     @BindView(R.id.searchView)
     SmartView searchView;
     @BindView(R.id.phone)
@@ -43,15 +44,28 @@ public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPres
     SmartView testView;
     @BindView(R.id.checkPassword)
     SmartView checkPassword;
+    @BindView(R.id.clickView)
+    SmartView clickView;
 
     @Override
     public void beforeView() {
         contentViewId = R.layout.fragment_commonview;
     }
 
+    /**
+     * SmartBar点击事件
+     *
+     * @param textView 0:leftTextView 1:centerTextView 2:rightTextView
+     * @param drawable 0:左图 1:上图 2:右图 3:下图 -1:文字
+     */
+    @Override
+    public void onClick(SmartView smartView, int textView, int drawable) {
+        toast("textView=" + textView + "     drawable=" + drawable);
+    }
+
     @Override
     public void afterView() {
-
+        clickView.setListener(this,1,2);
         topView.rightTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +99,8 @@ public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPres
             }
         });
     }
+
+
 }
 
 

@@ -28,25 +28,41 @@
         app:rightText="退出登录" />
 
 
-    <custom.card.CardView
+
+    <custom.SmartView
+        android:id="@+id/clickView"
         android:layout_width="match_parent"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="10dp"
-        app:cardShadowColorEnd="@color/app_color_transparent"
-        app:cardShadowColorStart="@color/cardview_shadow_start_color"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorTheme"
+        app:centerHMargin="130"
+        app:measure="custom"
+        app:textColor="@color/white"
+        app:defHeight="90"
+        app:leftText="0"
+        app:centerText="1"
+        app:rightText="2"
+        app:llIcon="@drawable/ic_delete_photo"
+        app:ltIcon="@drawable/ic_delete_photo"
+        app:lrIcon="@drawable/ic_delete_photo"
+        app:lbIcon="@drawable/ic_delete_photo"
+        app:clIcon="@drawable/ic_delete_photo"
+        app:ctIcon="@drawable/ic_delete_photo"
+        app:crIcon="@drawable/ic_delete_photo"
+        app:cbIcon="@drawable/ic_delete_photo"
+        app:rlIcon="@drawable/ic_delete_photo"
+        app:rtIcon="@drawable/ic_delete_photo"
+        app:rrIcon="@drawable/ic_delete_photo"
+        app:rbIcon="@drawable/ic_delete_photo"/>
 
-        <custom.SmartView
-            android:id="@+id/nameView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
-            app:leftText="姓名"
-            app:lrIcon="@drawable/ic_person"
-            app:mode="login"
-            app:onlyIcon="true" />
-    </custom.card.CardView>
-
+    <custom.SmartView
+        android:id="@+id/nameView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        app:leftText="姓名"
+        app:lrIcon="@drawable/ic_person"
+        app:mode="login"
+        app:onlyIcon="true" />
 
     <custom.SmartView
         android:id="@+id/phone"

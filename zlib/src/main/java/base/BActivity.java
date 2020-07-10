@@ -8,6 +8,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.zhy.android.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,19 +24,20 @@ import util.LogUtils;
 import util.Reflector;
 import util.StatusBarUtil;
 
-public abstract class BActivity<M, P extends BPresenter> extends AppCompatActivity implements BView<M> {
+public abstract class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActivity implements BView<M> {
 
     protected P presenter;
     protected int preData = 0;
     protected boolean useEventBus = false;
     protected boolean slidFinish = false;
     protected boolean isFullScreen = BConfig.getConfig().isFullScreen();
-    protected int statusBarColor = BConfig.getConfig().getColorTheme();
+    protected int statusBarColor ;
     protected int contentViewId = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        statusBarColor = getResources().getColor(R.color.status_bar);
         beforeView();
         fullScreen();
         initPresenter(this);

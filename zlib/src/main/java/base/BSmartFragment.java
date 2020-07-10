@@ -1,11 +1,12 @@
 package base;
 
-import android.graphics.drawable.Drawable;
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 
 import com.google.gson.Gson;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -22,10 +23,9 @@ import annotation.Presenter;
 import background.drawable.DrawableCreator;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
-import custom.ShadowLayout;
 import custom.SmartView;
-import rx.Observable;
 import rx.Subscription;
+import util.CardUtils;
 import util.ScreenUtils;
 
 public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLoadMoreListener {
@@ -53,9 +53,11 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
         gridView.setEmptyView(emptyView);
         if (heardView != null) gridView.addHeaderView(heardView);
         if (isCard > 0) {
-            horizontalSpacing = verticalSpacing = 0;
-            gridView.addHeaderView(new EmptySizeView(isCard / 2));
-            gridView.addFooterView(new EmptySizeView(isCard / 2));
+            gridView.addHeaderView(new EmptySizeView(isCard * 4 / 5));
+            gridView.addFooterView(new EmptySizeView(isCard / 5));
+            params = new FrameLayout.LayoutParams(-1, -2);
+            verticalSpacing = isCard - 10;
+            horizontalSpacing = verticalSpacing - (isCard / 5);
         }
         if (footView != null) gridView.addFooterView(footView);
         gridView.setAdapter(adapter = initAdapter());
@@ -66,6 +68,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
 
     protected int horizontalSpacing = 1, verticalSpacing = 1;
     protected View heardView, footView, emptyView;
+    private FrameLayout.LayoutParams params;
 
     /**
      * 可滑动
@@ -148,9 +151,9 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
         }
     }
 
-    protected Subscription get(){
+    protected Subscription get() {
         return null;
-    };
+    }
 
     /**
      * 初始化主列表适配器
@@ -174,6 +177,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
             @Override
             public void convert(ViewHolder h, M i) {
                 if (isCard > 0) initCard(h);
+                else setBg(h.getConvertView());
                 BSmartFragment.this.convert(h, i);
                 h.setClick(new View.OnClickListener() {
                     @Override
@@ -189,29 +193,30 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
     }
 
     private void initCard(CommonAdapter.ViewHolder h) {
-        ShadowLayout card = (ShadowLayout) h.getConvertView();
-//        card.setShadowRadius(ScreenUtils.dip2px(isCard / 2f));
-        View view = View.inflate(getContext(), itemLayoutId, null);
-        view.setBackground(itemBg());
-//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(-1, -1);
-//        params.setMargins(ScreenUtils.dip2px(isCard / 2f), 0, ScreenUtils.dip2px(isCard / 2f), 0);
-        card.addView(view);
+        CardView cardView = h.getView(R.id.cardView);
+        cardView.addView(setBg(getView(itemLayoutId)));
+        cardView.setRadius(ScreenUtils.dip2px(cardRadius));
+        params.setMargins(ScreenUtils.dip2px(isCard), 0, (h.getmPosition() + 1) % numColumns == 0 ? ScreenUtils.dip2px(isCard) : 0, 0);
+        cardView.setLayoutParams(params);
+        CardUtils.setCardShadowColor(cardView, getResources().getColor(R.color.start_color), getResources().getColor(R.color.end_color));
     }
 
-    protected Drawable itemBg() {
-        return new DrawableCreator.Builder()
+    @SuppressLint("NewApi")
+    protected View setBg(View view) {
+        view.setForeground(new DrawableCreator.Builder()
                 .setRipple(true, 0x88888888)
-                .setCornersRadius(ScreenUtils.dip2px(cardRadius))
-                .setPressedSolidColor(cardPressedColor, cardColor)
-                .build();
+                .setCornersRadius(ScreenUtils.dip2px(isCard > 0 ? cardRadius : 0))
+                .setPressedSolidColor(0x11000000, 0x00ffffff)
+                .build());
+        return view;
     }
 
     /**
      * item回调
      */
     protected void convert(CommonAdapter.ViewHolder h, M i) {
-        if (h.getView(R.id.title)!=null)
-            h.setText(R.id.title,new Gson().toJson(i));
+        if (h.getView(R.id.title) != null)
+            h.setText(R.id.title, new Gson().toJson(i));
     }
 
     /**
@@ -234,7 +239,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
         getData();
     }
 
-//    /**
+    //    /**
 //     * 数据加载成功 更新UI
 //     */
 //    @Override
@@ -246,10 +251,10 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
 
     @Override
     public void success(Object data) {
-        if (BList.class.isAssignableFrom(data.getClass())){
+        if (BList.class.isAssignableFrom(data.getClass())) {
             onDatas(((BList) data).getList());
             total(((BList) data).getTotal());
-        }else if (List.class.isAssignableFrom(data.getClass())){
+        } else if (List.class.isAssignableFrom(data.getClass())) {
             onDatas((List<M>) data);
         }
     }

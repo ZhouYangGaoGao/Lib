@@ -13,10 +13,10 @@ import hawk.Hawk;
 import rx.Subscription;
 import util.GoTo;
 
-public abstract class BLoginFragment<M> extends BFragment<M, LoginPresenter<M>> implements View.OnClickListener {
+public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<M>>> implements View.OnClickListener {
 
     @Presenter
-    public LoginPresenter presenter;
+    public BPresenter<BView<M>> presenter;
     protected SmartView titleView;
     protected SmartView phone;
     protected SmartView captcha;

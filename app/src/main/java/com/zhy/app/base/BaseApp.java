@@ -1,5 +1,6 @@
 package com.zhy.app.base;
 
+import com.zhy.app.modules.login.model.LoginModel;
 import com.zhy.app.modules.login.view.LoginFragment;
 
 import base.BApp;
@@ -10,15 +11,17 @@ import util.GoTo;
 public class BaseApp extends BApp {
 
     @Override
-    public void logout(){
+    public void logout() {
         Hawk.deleteAll();
         GoTo.start(LoginFragment.class);
     }
 
     @Override
     protected void initApp() {
+        LoginModel user = Hawk.get(BConfig.LOGIN);
         BConfig.getConfig().setBaseUrl("https://www.ahlzz.com/api/")
                 .setClient("cms")
-                .setToken("28660e36f6f8c2f14ec22e5322f03de6");
+                .initCardView()
+                .setToken(user==null?"0":(user.getToken()+""));
     }
 }
