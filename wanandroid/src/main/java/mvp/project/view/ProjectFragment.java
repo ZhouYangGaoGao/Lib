@@ -42,7 +42,7 @@ public class ProjectFragment extends BSmartFragment<Article> {
         title.setOnClickListener(v -> {
             if (title.drawableIndex == -1)
                 GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, i.getLink()));
-            toast("请先登录-->" + title.drawableIndex);
+            else toast("请先登录-->" + title.drawableIndex);
         });
     }
 

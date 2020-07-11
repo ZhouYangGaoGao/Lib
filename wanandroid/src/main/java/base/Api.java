@@ -6,6 +6,7 @@ import java.util.Map;
 
 import mvp.chapter.model.Article;
 import mvp.chapter.model.Chapter;
+import mvp.home.model.Banner;
 import mvp.login.model.LoginModel;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -35,6 +36,9 @@ public interface Api {
 
     @GET("wxarticle/chapters/json")
     Observable<BaseBean<List<Chapter>>> chapters();
+
+    @GET("banner/json")
+    Observable<BaseBean<List<Banner>>> banner();
 
     @GET("wxarticle/list/{id}/{page}/json")
     Observable<BaseBean<MList<Article>>> article(@Path("id") int id, @Path("page") int page);

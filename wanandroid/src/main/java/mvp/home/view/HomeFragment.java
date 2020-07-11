@@ -18,10 +18,10 @@ import util.GoTo;
 public class HomeFragment extends BSmartFragment<Article> {
     @Override
     public void beforeView() {
+        heardView = getView(R.layout.fragment_banner);
         itemLayoutId = R.layout.item_text;
-        showTopBar = false;
         isCard = 10;
-        showTopBar=true;
+        showTopBar = true;
     }
 
     @Override
@@ -39,13 +39,14 @@ public class HomeFragment extends BSmartFragment<Article> {
         title.setLeftRes(R.drawable.ic_favorite_border);
         title.setRightRes(R.drawable.ic_favorite_24);
         title.setOnClickListener(v -> {
-            if (title.drawableIndex==-1)GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, i.getLink()));
-            toast("请先登录-->" + title.drawableIndex);
+            if (title.drawableIndex == -1)
+                GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, i.getLink()));
+            else toast("请先登录-->" + title.drawableIndex);
         });
     }
 
     @Override
     protected Subscription get() {
-        return Subs.get(this, Manager.getApi().list( page));
+        return Subs.get(this, Manager.getApi().list(page));
     }
 }

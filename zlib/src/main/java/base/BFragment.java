@@ -35,11 +35,11 @@ public abstract class BFragment<M, P extends BPresenter> extends Fragment implem
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        beforeView();
         if (BActivity.class.isAssignableFrom(getActivity().getClass())) {
             activity = (BActivity) getActivity();
             activity.initPresenter(this);
         }
+        beforeView();
         if (useEventBus) HermesEventBus.getDefault().register(this);
     }
 

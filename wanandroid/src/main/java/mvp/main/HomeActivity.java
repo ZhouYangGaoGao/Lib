@@ -7,6 +7,7 @@ import base.BConfig;
 import base.BHomeActivity;
 import base.BWebFragment;
 import mvp.chapter.view.ChapterFragment;
+import mvp.home.view.BannerFragment;
 import mvp.home.view.HomeFragment;
 import mvp.main.view.MyFragment;
 import mvp.project.view.ProjectFragment;

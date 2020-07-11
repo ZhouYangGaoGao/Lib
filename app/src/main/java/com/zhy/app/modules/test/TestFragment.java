@@ -12,6 +12,7 @@ import java.util.Arrays;
 import base.BPermissionFragment;
 import base.BSmartFragment;
 import base.BWebFragment;
+import custom.TextView;
 import util.GPSUtils;
 import util.GoTo;
 
@@ -26,8 +27,6 @@ public class TestFragment extends BSmartFragment<Class> {
 
     @Override
     public void beforeView() {
-//        heardView = getView(R.layout.layout_test_heard);
-//        footView = getView(R.layout.layout_test_foot);
         numColumns = 2;
         itemLayoutId = R.layout.item_text;
         isCard = 10;

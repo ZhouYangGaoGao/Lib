@@ -47,7 +47,7 @@ public abstract class BPagerFragment<M> extends BFragment implements
     public void onData(List<M> datas) {
         mData.clear();
         mData.addAll(datas);
-        adapter.notifyDataSetChanged();
+        upDate();
     }
 
     @Override
