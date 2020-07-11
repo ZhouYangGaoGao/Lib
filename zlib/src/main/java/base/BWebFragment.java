@@ -40,25 +40,31 @@ public class BWebFragment extends BFragment {
     @Override
     public void initView() {
         mSmartView = (SmartView) findViewById(R.id.mSmartView);
+        mSmartView.centerTextView.setText(title);
+        boolean back = getIntent().getBooleanExtra(BConfig.BACK, false);
+        if (!back) back = getArguments().getBoolean(BConfig.BACK, false);
+        mSmartView.setBack(back);
+
         if (!getIntent().getBooleanExtra(BConfig.TOP_SHOW, true))
             mSmartView.topContent.setVisibility(View.GONE);
         String tmpUrl = "";
         if (getArguments() != null) {
-            tmpUrl = getArguments().getString("url");
+            tmpUrl = getArguments().getString(BConfig.URL);
         } else {
-            tmpUrl = getActivity().getIntent().getStringExtra("url");
+            tmpUrl = getActivity().getIntent().getStringExtra(BConfig.URL);
         }
         if (TextUtils.isEmpty(tmpUrl)) {
             tmpUrl = BuildConfig.DEBUG ? "https://www.baidu.com/" : "url为空";
         }
         log(tmpUrl = tmpUrl + (tmpUrl.contains("?") ? "&" : "?") + "token=" + BConfig.getConfig().getToken() + "&time=" + System.currentTimeMillis());
+        String finalTitle = title;
         WebChromeClient webChromeClient = new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView webView, String s) {
                 super.onReceivedTitle(webView, s);
                 if (titleView != null)
                     titleView.setText(s);
-                else mSmartView.centerTextView.setText(s);
+                else if (TextUtils.isEmpty(finalTitle)) mSmartView.centerTextView.setText(s);
             }
         };
         CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(-1, -1);
@@ -83,7 +89,7 @@ public class BWebFragment extends BFragment {
                 .setWebChromeClient(webChromeClient)
                 .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
                 .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-                .addJavascriptInterface("android", BConfig.getConfig().getWebInterface())
+                .addJavascriptInterface(BConfig.ANDROID, BConfig.getConfig().getWebInterface())
                 .createAgentWeb()
                 .ready()
                 .go(tmpUrl);

@@ -3,11 +3,13 @@ package base;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -28,6 +30,7 @@ public abstract class BFragment<M, P extends BPresenter> extends Fragment implem
     protected boolean useEventBus = false;
     private Unbinder unbinder;
     private BActivity activity;
+    protected String title;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +49,9 @@ public abstract class BFragment<M, P extends BPresenter> extends Fragment implem
         if (contentView == null)
             contentView = inflater.inflate(contentViewId == 0 ? R.layout.layout_list : contentViewId, null);
         unbinder = ButterKnife.bind(this, contentView);
+        title = getIntent().getStringExtra(BConfig.TITLE);
+        if (TextUtils.isEmpty(title) && getArguments() != null)
+            title = getArguments().getString(BConfig.TITLE, "");
         initView();
         return contentView;
     }
@@ -70,7 +76,7 @@ public abstract class BFragment<M, P extends BPresenter> extends Fragment implem
         super.onDestroyView();
     }
 
-    protected View findViewById(int id) {
+    protected View findViewById(@IdRes int id) {
         return contentView.findViewById(id);
     }
 

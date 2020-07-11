@@ -31,7 +31,7 @@ public class NetUtil {
      * @return
      */
     public static boolean isNetworkAvailable() {
-        ConnectivityManager manager = (ConnectivityManager) BApp.app().act().getSystemService(
+        ConnectivityManager manager = (ConnectivityManager) BApp.app().getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         if (null == manager)
             return false;

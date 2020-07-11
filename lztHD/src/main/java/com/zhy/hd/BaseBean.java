@@ -1,9 +1,9 @@
 package com.zhy.hd;
 
-import base.BBean;
+import base.BResponse;
 import base.BSub;
 
-public class BaseBean<T> implements BBean<T> {
+public class BaseBean<T> extends BResponse<T> {
 
     private String code;
     private String msg;
@@ -43,8 +43,9 @@ public class BaseBean<T> implements BBean<T> {
     }
 
     @Override
-    public void setOnNext(BSub<? extends BBean<T>, T> sub) {
+    public boolean setOnNext(BSub<? extends BResponse<T>, T> sub) {
         if (success && data != null) sub.onSuccess(data);
         else if (sub.onCode(code)) sub.onFail(msg);
+        return true;
     }
 }

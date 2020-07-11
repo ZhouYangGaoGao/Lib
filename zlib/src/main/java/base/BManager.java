@@ -2,14 +2,15 @@ package base;
 
 import java.lang.reflect.ParameterizedType;
 
+import retrofit2.http.GET;
+import rx.Observable;
+import util.Reflector;
 import util.RetrofitHelper;
 
 public class BManager<S> {
     protected S service;
-    private static Class aClass;
 
     protected BManager() {
-        aClass = this.getClass();
         try {
             // 通过反射获取RetrofitService的真实类型
             ParameterizedType pt = (ParameterizedType) this.getClass().getGenericSuperclass();
@@ -20,8 +21,11 @@ public class BManager<S> {
         }
     }
 
-    private static <T> T get() {
-        return (T) RetrofitHelper.get(aClass);
+    public static BManager get() {
+        return RetrofitHelper.get(BManager.class);
     }
 
+    public static Observable<Object> test() {
+        return RetrofitHelper.get(TestApi.class).test();
+    }
 }

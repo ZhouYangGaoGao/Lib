@@ -1,6 +1,7 @@
 package base;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ import background.drawable.DrawableCreator;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
 import custom.SmartView;
+import hawk.Hawk;
 import rx.Subscription;
 import util.CardUtils;
 import util.ScreenUtils;
@@ -31,7 +33,7 @@ import util.ScreenUtils;
 public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLoadMoreListener {
 
     @Presenter
-    public SmartPresenter<M> presenter;
+    public BPresenter<BView<M>> presenter;
     private HeaderGridView gridView;
     protected SmartRefreshLayout refreshLayout;
     protected SmartView mTopView;
@@ -47,6 +49,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
         refreshLayout.setEnableLoadMore(!scrollAble);
         refreshLayout.setEnableRefresh(!scrollAble);
         gridView.setNumColumns(numColumns);
+        mTopView.topContent.setVisibility(showTopBar ? View.VISIBLE : View.GONE);
         if (emptyView == null) emptyView = getView(R.layout.layout_empty);
         ((LinearLayout) findViewById(R.id.content)).addView(emptyView,
                 new LinearLayout.LayoutParams(-1, 0, 1));
@@ -63,7 +66,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
         gridView.setAdapter(adapter = initAdapter());
         gridView.setHorizontalSpacing(ScreenUtils.dip2px(horizontalSpacing));
         gridView.setVerticalSpacing(ScreenUtils.dip2px(verticalSpacing));
-        if (BuildConfig.DEBUG) mTopView.centerTextView.setText(getClass().getSimpleName());
+        mTopView.centerTextView.setText(title);
     }
 
     protected int horizontalSpacing = 1, verticalSpacing = 1;
@@ -74,6 +77,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
      * 可滑动
      */
     protected boolean scrollAble = false;
+    protected boolean showTopBar = true;
 
     /**
      * 是否卡片模式 0:否  >0:间距
@@ -108,7 +112,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
     /**
      * 页码
      */
-    private int page = 1;
+    protected int page = 1;
 
     /**
      * 主列表数据
@@ -243,7 +247,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
 //     * 数据加载成功 更新UI
 //     */
 //    @Override
-    public void onDatas(List<M> datas) {
+    public void onData(List<M> datas) {
         if (isRefresh) mData.clear();
         mData.addAll(datas);
         upData();
@@ -251,11 +255,12 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
 
     @Override
     public void success(Object data) {
+        if (data == null) return;
         if (BList.class.isAssignableFrom(data.getClass())) {
-            onDatas(((BList) data).getList());
-            total(((BList) data).getTotal());
+            onData(((BList<M>) data).getList());
+            total(((BList<M>) data).getTotal());
         } else if (List.class.isAssignableFrom(data.getClass())) {
-            onDatas((List<M>) data);
+            onData((List<M>) data);
         }
     }
 

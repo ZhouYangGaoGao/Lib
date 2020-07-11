@@ -9,7 +9,9 @@ import util.GoTo;
 public class BaseApp extends BApp {
     @Override
     protected void initApp() {
-        BConfig.getConfig().setBaseUrl("https://www.wanandroid.com/");
+        BConfig.getConfig()
+                .setBaseUrl("https://www.wanandroid.com/")
+                .initCardView();
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.zhy.android.R;
 import annotation.Presenter;
 import custom.SmartView;
 import hawk.Hawk;
+import listener.OnSmartClickListener;
 import rx.Subscription;
 import util.GoTo;
 
@@ -94,12 +95,12 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<M>>
         login.setOnClickListener(this);
         next.setOnClickListener(this);
         register.setOnClickListener(this);
-        captcha.onCaptcha(new View.OnClickListener() {
+        captcha.setListener(new OnSmartClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(SmartView smartView, int textViewIndex, int drawableIndex) {
                 presenter.sub(captcha(phone.getText()));
             }
-        });
+        },2);
         resetView();
         switch (mode) {
             case BConfig.LOGIN_MODE_LOGIN:

@@ -60,44 +60,43 @@ public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPres
      */
     @Override
     public void onClick(SmartView smartView, int textView, int drawable) {
-        toast("textView=" + textView + "     drawable=" + drawable);
+        switch (smartView.getId()) {
+            case R.id.topView:
+                if (checkPassword.actionErrorCheck()) return;
+                toast(phone.getText() + "\n" + captcha.getText() + "\n" + password.getText());
+                break;
+            case R.id.searchView:
+                BApp.app().logout();
+                break;
+            case R.id.clickView:
+                toast("smartView=" + "clickView" + "\ntextView=" + textView + "\ndrawable=" + drawable);
+                break;
+            case R.id.captcha:
+                toast("发送验证码");
+                break;
+            case R.id.testView:
+                switch (textView) {
+                    case 0:
+                        GoTo.start(LoginFragment.class, new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_RESET));
+                        break;
+                    case 1:
+                        GoTo.start(LoginFragment.class, new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_CAPTCHA));
+                        break;
+                    case 2:
+                        GoTo.start(LoginFragment.class, new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_REGISTER));
+                        break;
+                }
+                break;
+        }
     }
 
     @Override
     public void afterView() {
-        clickView.setListener(this,1,2);
-        topView.rightTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkPassword.actionErrorCheck()) return;
-                toast(phone.getText() + "\n" + captcha.getText() + "\n" + password.getText());
-            }
-        });
-        searchView.rightTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BApp.app().logout();
-            }
-        });
-
-        testView.leftTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GoTo.start(LoginFragment.class, new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_RESET));
-            }
-        });
-        testView.centerTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GoTo.start(LoginFragment.class, new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_CAPTCHA));
-            }
-        });
-        testView.rightTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GoTo.start(LoginFragment.class, new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_REGISTER));
-            }
-        });
+        clickView.setListener(this, 1, 2);
+        topView.setListener(this, 2);
+        searchView.setListener(this, 2);
+        captcha.setListener(this, 2);
+        testView.setListener(this);
     }
 
 

@@ -11,5 +11,6 @@ public class Subs<T> extends BSub<BaseBean<T>,T> {
     public Subs(BView<T> mView, Observable<BaseBean<T>> observable) {
         super(mView, observable);
     }
+
 }
 

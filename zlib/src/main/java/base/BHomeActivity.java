@@ -11,10 +11,10 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import com.zhy.android.R;
 
+import annotation.Presenter;
 import util.ScreenUtils;
 
 public class BHomeActivity extends BActivity {
-
     protected ViewPager viewPager;
     protected SmartTabLayout tabLayout;
     protected LinearLayout mRootView;

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.zhy.android.R;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -20,7 +21,7 @@ import util.Reflector;
  * Created by YangYang on 2017/4/19.
  */
 
-public class BSub<M extends BBean<T>, T> extends Subscriber<M> {
+public class BSub<M extends BResponse<T>, T> extends Subscriber<M> {
 
     private BView<T> mView;
     private String tag;
@@ -31,17 +32,17 @@ public class BSub<M extends BBean<T>, T> extends Subscriber<M> {
 
     public BSub(BView<T> mView, Observable<M> observable) {
         this.mView = mView;
-        tag = mView == null ? Reflector.name(this,1) + "" : mView.getClass().getSimpleName();
+        tag = mView == null ? Reflector.name(this, 1) + "" : mView.getClass().getSimpleName();
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this);
     }
 
-    public static <M extends BBean<T>, T> Subscription get(BView<T> view, Observable<M> observable) {
+    public static <M extends BResponse<T>, T> Subscription get(BView<T> view, Observable<M> observable) {
         return new BSub<M, T>(view, observable);
     }
 
-    public static <M extends BBean<T>, T> Subscription get(Observable<M> observable) {
+    public static <M extends BResponse<T>, T> Subscription get(Observable<M> observable) {
         return get(null, observable);
     }
 
@@ -67,10 +68,15 @@ public class BSub<M extends BBean<T>, T> extends Subscriber<M> {
     @Override
     public void onNext(M m) {
         if (m == null) {
-            onFail("无数据");
+            onFail(BApp.app().getString(R.string.str_no_data));
         } else {
             LogUtils.e(tag, new Gson().toJson(m));
-            m.setOnNext( this);
+            m.setOnNext(this);
+//            if (!) {
+//                if (m.getData() == null)
+//                    onFail(BApp.app().getString(R.string.str_no_data));
+//                else onSuccess(m.getData());
+//            }
         }
         onCompleted();
     }

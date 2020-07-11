@@ -9,7 +9,7 @@
         android:name=".BaseApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Base.Theme.NoActionBar">
+        android:theme="@style/AppTheme">
         <activity android:name="mvp.main.HomeActivity"/>
         <activity android:name="mvp.main.view.SplashActivity">
             <intent-filter>

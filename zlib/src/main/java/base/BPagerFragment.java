@@ -15,12 +15,13 @@ import java.util.List;
 import annotation.Presenter;
 import custom.AutoScrollViewPager;
 import rx.Observable;
+import rx.Subscription;
 import util.ImageUtils;
 
 public abstract class BPagerFragment<M> extends BFragment implements
         AutoScrollViewPager.OnPageClickListener {
     @Presenter
-    public SmartPresenter presenter;
+    public BPresenter<BView<M>> presenter;
     protected AutoScrollViewPager mViewPager;
     private View mRootView;
     protected SmartTabLayout indicator;
@@ -33,8 +34,17 @@ public abstract class BPagerFragment<M> extends BFragment implements
         contentViewId = R.layout.fragment_pager;
     }
 
-//    @Override
-    public void onDatas(List<M> datas) {
+    @Override
+    public void success(Object data) {
+        if (BList.class.isAssignableFrom(data.getClass())) {
+            onData(((BList) data).getList());
+            total(((BList) data).getTotal());
+        } else if (List.class.isAssignableFrom(data.getClass())) {
+            onData((List<M>) data);
+        }
+    }
+
+    public void onData(List<M> datas) {
         mData.clear();
         mData.addAll(datas);
         adapter.notifyDataSetChanged();
@@ -44,16 +54,6 @@ public abstract class BPagerFragment<M> extends BFragment implements
     public void onPageClick(AutoScrollViewPager pager, int position) {
 
     }
-
-//    @Override
-//    public Observable<BResponse<List<M>>> getList() {
-//        return null;
-//    }
-//
-//    @Override
-//    public Observable<BResponse<BList<M>>> getPageList() {
-//        return null;
-//    }
 
     @Override
     public void initView() {
@@ -111,8 +111,17 @@ public abstract class BPagerFragment<M> extends BFragment implements
 
     @Override
     public void getData() {
-        if (presenter == null) return;
-        presenter.getDatas();
+        if (presenter != null) {
+            if (!presenter.sub(get())) {
+                completed();
+            }
+        } else {
+            completed();
+        }
+    }
+
+    protected Subscription get() {
+        return null;
     }
 
     @Override
@@ -161,8 +170,7 @@ public abstract class BPagerFragment<M> extends BFragment implements
         }
     }
 
-//    @Override
-//    public void total(int total) {
-//
-//    }
+    public void total(int total) {
+
+    }
 }

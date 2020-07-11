@@ -3,15 +3,20 @@ package base;
 
 import com.zhy.android.R;
 
+import annotation.Presenter;
 import hawk.Hawk;
 import rx.functions.Action1;
 import util.GoTo;
 import util.StatusBarUtil;
 import util.Timer;
 
-public class BSplashActivity extends BActivity {
+public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
+
+    @Presenter
+    public BPresenter<BView<?>> presenter;
     protected int bgId = R.mipmap.bga_pp_ic_holder_dark;
     protected Class loginCls = BLoginFragment.class, homeCls = BHomeActivity.class;
+
     {
         contentViewId = R.layout.frame_layout;
         statusBarColor = 0xffffffff;
@@ -20,7 +25,7 @@ public class BSplashActivity extends BActivity {
     @Override
     public void initView() {
         findViewById(R.id.content).setBackgroundResource(bgId);
-        StatusBarUtil.setTransparentForImageView(this,null);
+        StatusBarUtil.setTransparentForImageView(this, null);
         Timer.timer(17).subscribe(new Action1<Long>() {
             @Override
             public void call(Long aLong) {

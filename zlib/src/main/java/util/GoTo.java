@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.fragment.app.Fragment;
 
 import base.BApp;
+import base.BConfig;
 import base.BFragmentActivity;
 
 public class GoTo {
@@ -22,6 +23,7 @@ public class GoTo {
 
         if (Fragment.class.isAssignableFrom(cls)) {
             intent.putExtra("cls", cls);
+            intent.putExtra(BConfig.BACK, true);
             cls = BFragmentActivity.class;
         }
         return intent.setClass(BApp.app().act(), cls);

@@ -9,12 +9,12 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.LayoutDirection;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,8 +33,6 @@ import base.BConfig;
 import hawk.Hawk;
 import listener.OnSmartClickListener;
 import rx.Subscription;
-import rx.functions.Action1;
-import util.LogUtils;
 import util.RexUtils;
 import util.Timer;
 
@@ -44,11 +42,13 @@ public class SmartView extends LinearLayout {
     public RelativeLayout topContent;
     public View line;
     private float centerVMargin, centerHMargin, centerRMargin, centerLMargin;
-    private int checkId, measure, mode;
+    private int checkId, measure, mode, captchaSecond;
     private static final int MEASURE_MAX = 110;//等于大的那边
     private static final int MEASURE_CUSTOM = 111;//使用自定义
     private static final int MEASURE_DIFFERENT = 112;//填充空余
     private FragmentWindow historyWindow;
+    private Subscription subscribe;
+
 
     public SmartView(Context context) {
         this(context, null);
@@ -74,7 +74,7 @@ public class SmartView extends LinearLayout {
         mode = t.getInt(R.styleable.SmartView_mode, 10);
         measure = t.getInt(R.styleable.SmartView_measure, 0);
         int inputType = t.getInt(R.styleable.SmartView_inputType, -1);
-        int captchaSecond = t.getInt(R.styleable.SmartView_captchaSecond, 20);
+        captchaSecond = t.getInt(R.styleable.SmartView_captchaSecond, 20);
         int gravity = t.getInt(R.styleable.SmartView_gravity, mode == 0 ? 11 : -1);
         checkId = t.getResourceId(R.styleable.SmartView_checkId, 0);
         int historyLayout = t.getResourceId(R.styleable.SmartView_historyLayout, R.layout.fragment_pop);
@@ -133,6 +133,7 @@ public class SmartView extends LinearLayout {
                 centerTextView.setVisibility(VISIBLE);
                 break;
             case 1://search
+                centerEditText.setImeActionLabel("搜索", EditorInfo.IME_ACTION_SEARCH);
                 centerEditText.setVisibility(VISIBLE);
                 initHistory(historyAble, historyLayout);
                 centerEditText.setBackground(new DrawableCreator.Builder()
@@ -195,40 +196,6 @@ public class SmartView extends LinearLayout {
                         .setRipple(true, getResources().getColor(R.color.color_ripple))
                         .setCornersRadius(dip2px(15))
                         .setSolidColor(0xffeeeeee).build());
-
-                rightTextView.setOnClickListener(new OnClickListener() {
-                    Subscription subscribe;
-
-                    @Override
-                    public void onClick(View view) {
-                        SmartView captchaCheckView = ((ViewGroup) getParent()).findViewById(checkId);
-                        if (captchaCheckView != null && captchaCheckView.phoneErrorTest()) return;
-                        if (onCaptcha == null) {
-                            LogUtils.e("SmartView", getContext().getString(R.string.str_no_captcha_listener));
-                            return;
-                        }
-                        rightTextView.setClickable(false);
-                        onCaptcha.onClick(rightTextView);
-                        subscribe = Timer.interval(1000).subscribe(new Action1<Long>() {
-                            @Override
-                            public void call(Long aLong) {
-                                if (((Activity) context).isFinishing() && !subscribe.isUnsubscribed()) {
-                                    subscribe.unsubscribe();
-                                    return;
-                                }
-                                if (captchaSecond - aLong == 0 && !subscribe.isUnsubscribed()) {
-                                    subscribe.unsubscribe();
-                                    rightTextView.setClickable(true);
-                                    rightTextView.setText(R.string.str_get_agin);
-                                    rightTextView.setTextColor(BConfig.getConfig().getColorTheme());
-                                } else {
-                                    rightTextView.setTextColor(0xffbbbbbb);
-                                    rightTextView.setText("  " + (captchaSecond - aLong) + "s  ");
-                                }
-                            }
-                        });
-                    }
-                });
                 break;
             case 5:
                 if (BuildConfig.DEBUG && TextUtils.isEmpty(leftText)) leftText = "标题";
@@ -300,7 +267,7 @@ public class SmartView extends LinearLayout {
         rightTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, sp2px(mode == 4 ? smallTextSize : bigTextSize));
         centerEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, sp2px(bigTextSize));
         centerTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, sp2px(bigTextSize));
-        if (measure == 111)
+        if (measure == MEASURE_CUSTOM)
             initCenterMargin(dip2px(centerVMargin),
                     width(dip2px(centerLMargin), centerHMargin),
                     width(dip2px(centerRMargin), centerHMargin));
@@ -334,29 +301,26 @@ public class SmartView extends LinearLayout {
                         historyFragment.setEditText(centerEditText);
                     }
                     if (historyFragment != null) {
-                        historyFragment.onDatas(history);
+                        historyFragment.onData(history);
                         historyWindow.showAsDropDown(line);
                     }
                 }
             });
-            centerEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(android.widget.TextView textView, int i, KeyEvent keyEvent) {
-                    if (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER || keyEvent.getKeyCode() == KeyEvent.KEYCODE_SEARCH)) {
-                        String text = getText();
-                        if (history == null) {
-                            history = new ArrayList<>();
-                        }
-                        if (history.contains(text)) {
-                            history.remove(text);
-                        }
-                        if (!TextUtils.isEmpty(text)) {
-                            history.add(0, text);
-                            if (history.size() > 10) history.remove(9);
-                        }
+            centerEditText.setOnEditorActionListener((textView, i, keyEvent) -> {
+                if (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER || keyEvent.getKeyCode() == KeyEvent.KEYCODE_SEARCH)) {
+                    String text = getText();
+                    if (history == null) {
+                        history = new ArrayList<>();
                     }
-                    return false;
+                    if (history.contains(text)) {
+                        history.remove(text);
+                    }
+                    if (!TextUtils.isEmpty(text)) {
+                        history.add(0, text);
+                        if (history.size() > 10) history.remove(9);
+                    }
                 }
+                return false;
             });
         }
     }
@@ -364,12 +328,7 @@ public class SmartView extends LinearLayout {
     public void setBack(boolean back) {
         if (back) {
             leftTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back, 0, 0, 0);
-            leftTextView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((Activity) getContext()).finish();
-                }
-            });
+            leftTextView.setOnClickListener(view -> ((Activity) getContext()).finish());
         } else {
             leftTextView.setOnClickListener(null);
             leftTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -440,22 +399,15 @@ public class SmartView extends LinearLayout {
         else return emptyTest();
     }
 
-    private OnClickListener onCaptcha;
-
-    public void onCaptcha(OnClickListener onCaptcha) {
-        this.onCaptcha = onCaptcha;
-    }
-
     public void setCheckId(int checkId) {
         this.checkId = checkId;
     }
 
     /**
-     *
      * @param listener 返回被点击的SmartView 被点击的TextView坐标 被点击的图标坐标
-     * @param indexs 不填时,左中右三个都设置点击监听
-     *               填数字0:左边点击 1:中间点击 2:右边点击
-     *               可选多个
+     * @param indexs   不填时,左中右三个都设置点击监听
+     *                 填数字0:左边点击 1:中间点击 2:右边点击
+     *                 可选多个
      */
     public void setListener(OnSmartClickListener listener, int... indexs) {
         if (indexs.length == 0) {
@@ -473,9 +425,32 @@ public class SmartView extends LinearLayout {
     private void initClick(int index, OnSmartClickListener listener) {
         TextView clickView = index == 0 ? leftTextView : (index == 1 ? centerTextView : rightTextView);
         clickView.setOnClickListener(new OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 listener.onClick(SmartView.this, index, clickView.drawableIndex);
+                if (index == 2 && mode == 4) initCaptcha();
+            }
+        });
+    }
+
+    private void initCaptcha() {
+        SmartView captchaCheckView = ((ViewGroup) getParent()).findViewById(checkId);
+        if (captchaCheckView != null && captchaCheckView.phoneErrorTest()) return;
+        rightTextView.setClickable(false);
+        subscribe = Timer.interval(1000).subscribe(aLong -> {
+            if (((Activity) getContext()).isFinishing() && !subscribe.isUnsubscribed()) {
+                subscribe.unsubscribe();
+                return;
+            }
+            if (captchaSecond - aLong == 0 && !subscribe.isUnsubscribed()) {
+                subscribe.unsubscribe();
+                rightTextView.setClickable(true);
+                rightTextView.setText(R.string.str_get_agin);
+                rightTextView.setTextColor(BConfig.getConfig().getColorTheme());
+            } else {
+                rightTextView.setTextColor(0xffbbbbbb);
+                rightTextView.setText("  " + (captchaSecond - aLong) + "s  ");
             }
         });
     }
