@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    app:hideLine="true"
     app:measure="max"
     app:mode="top">
 
@@ -16,6 +17,7 @@
         app:srlEnableNestedScrolling="false">
 
         <com.scwang.smart.refresh.header.ClassicsHeader
+            android:id="@+id/refreshHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white" />
@@ -36,6 +38,7 @@
         </LinearLayout>
 
         <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:id="@+id/refreshFooter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white" />

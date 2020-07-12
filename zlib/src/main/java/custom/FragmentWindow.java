@@ -12,6 +12,7 @@ import com.zhy.android.R;
 
 import background.drawable.DrawableCreator;
 import base.BApp;
+import util.ScreenUtils;
 
 public class FragmentWindow extends PopupWindow {
     private Context context;
@@ -44,4 +45,5 @@ public class FragmentWindow extends PopupWindow {
     public Fragment setContentView(int contentViewId) {
         return setContentView(contentViewId, R.id.fragment);
     }
+
 }

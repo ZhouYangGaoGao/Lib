@@ -11,10 +11,11 @@ public class SplashActivity extends BSplashActivity {
     public void beforeView() {
         homeCls= HomeActivity.class;
         loginCls= LoginFragment.class;
+        delay=1000;
     }
 
     @Override
     public void afterView() {
-        presenter.sub(new TestSub());
+//        presenter.sub(new TestSub());
     }
 }

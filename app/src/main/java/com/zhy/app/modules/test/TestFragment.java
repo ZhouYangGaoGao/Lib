@@ -12,7 +12,6 @@ import java.util.Arrays;
 import base.BPermissionFragment;
 import base.BSmartFragment;
 import base.BWebFragment;
-import custom.TextView;
 import util.GPSUtils;
 import util.GoTo;
 
@@ -48,14 +47,14 @@ public class TestFragment extends BSmartFragment<Class> {
 
     @Override
     public void afterView() {
-        mTopView.rightTextView.setText("权限");
-        mTopView.rightTextView.setOnClickListener(
+        mSmartView.rightTextView.setText("权限");
+        mSmartView.rightTextView.setOnClickListener(
                 view -> BPermissionFragment.request(()
-                        -> mTopView.centerTextView.setText("权限都有了")));
+                        -> mSmartView.centerTextView.setText("权限都有了")));
 
-        mTopView.setBack(false);
-        mTopView.leftTextView.setText("定位");
-        mTopView.leftTextView.setOnClickListener(new View.OnClickListener() {
+        mSmartView.setBack(false);
+        mSmartView.leftTextView.setText("定位");
+        mSmartView.leftTextView.setOnClickListener(new View.OnClickListener() {
             GPSUtils gpsUtils;
 
             @Override
@@ -64,7 +63,7 @@ public class TestFragment extends BSmartFragment<Class> {
 
                     @Override
                     public void location(Location location) {
-                        mTopView.centerTextView.setText(location == null ? "定位失败" :
+                        mSmartView.centerTextView.setText(location == null ? "定位失败" :
                                 location.getLongitude() + "<-定位->"
                                         + location.getLatitude());
                         if (gpsUtils != null) gpsUtils.removeListener();

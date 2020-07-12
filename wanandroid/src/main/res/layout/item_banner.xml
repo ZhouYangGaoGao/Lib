@@ -10,8 +10,13 @@
 
     <custom.TextView
         android:id="@+id/mTextView"
-        android:layout_width="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_alignParentRight="true"
-        android:layout_height="wrap_content"/>
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:lines="1"
+        android:ellipsize="end"
+        android:paddingHorizontal="15dp"
+        android:layout_alignParentBottom="true"
+        android:background="#33000000" />
 </RelativeLayout>

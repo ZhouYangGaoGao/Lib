@@ -7,7 +7,9 @@ import java.util.Map;
 import mvp.chapter.model.Article;
 import mvp.chapter.model.Chapter;
 import mvp.home.model.Banner;
+import mvp.home.model.Friend;
 import mvp.login.model.LoginModel;
+import mvp.main.model.HotKey;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -39,6 +41,12 @@ public interface Api {
 
     @GET("banner/json")
     Observable<BaseBean<List<Banner>>> banner();
+
+    @GET("hotkey/json")
+    Observable<BaseBean<List<HotKey>>> hotKey();
+
+    @GET("friend/json")
+    Observable<BaseBean<List<Friend>>> friend();
 
     @GET("wxarticle/list/{id}/{page}/json")
     Observable<BaseBean<MList<Article>>> article(@Path("id") int id, @Path("page") int page);

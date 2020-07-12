@@ -22,7 +22,7 @@ public class AVLFragment extends BSmartFragment<String> {
 
     @Override
     public void afterView() {
-        mTopView.topContent.setVisibility(View.GONE);
+        mSmartView.topContent.setVisibility(View.GONE);
     }
 
     @Override

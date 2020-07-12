@@ -1,12 +1,26 @@
 package custom;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
+import background.drawable.DrawableCreator;
+import background.drawable.DrawableFactory;
+import util.ScreenUtils;
+
 public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     public int drawableIndex = -1;
+    private boolean isAutoZoom;
+
 
     public TextView(Context context) {
         this(context, null);
@@ -86,4 +100,79 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
         return this;
     }
 
+    public void setAutoZoom(boolean autoZoom) {
+        isAutoZoom = autoZoom;
+    }
+
+    public void setRipple(int rippleColor) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            setForeground(new DrawableCreator.Builder()
+                    .setPressedSolidColor(0x11ffffff,0x00ffffff)
+                    .setRipple(true, rippleColor).build());
+        }
+    }
+
+    public void setRipple(int drawableIndex, int rippleColor) {
+        switch (drawableIndex) {
+            case 0:
+                setLeftDrawable(new DrawableCreator.Builder()
+                        .setUnPressedDrawable(getCompoundDrawables()[0])
+                        .setRipple(true, rippleColor).build());
+                break;
+            case 1:
+                setTopDrawable(new DrawableCreator.Builder()
+                        .setUnPressedDrawable(getCompoundDrawables()[1])
+                        .setRipple(true, rippleColor).build());
+                break;
+            case 2:
+                setRightDrawable(new DrawableCreator.Builder()
+                        .setUnPressedDrawable(getCompoundDrawables()[2])
+                        .setRipple(true, rippleColor).build());
+                break;
+            case 3:
+                setBottomDrawable(new DrawableCreator.Builder()
+                        .setUnPressedDrawable(getCompoundDrawables()[3])
+                        .setRipple(true, rippleColor).build());
+                break;
+            default:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    setRipple(rippleColor);
+                }
+        }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+
+        if (isAutoZoom) {
+            float defaultTextSize = 0;
+            int maxWidth = 0;
+            TextPaint paint = getPaint();
+            if (defaultTextSize == 0.0f) {
+                defaultTextSize = getTextSize();
+            }
+            float textSize = defaultTextSize;
+            paint.setTextSize(textSize);
+            if (maxWidth == 0)
+                maxWidth = getWidth();
+            float textViewWidth = maxWidth - getPaddingLeft() - getPaddingRight();//不包含左右padding的空间宽度
+            String text = getText().toString();
+            float textWidth = paint.measureText(text);
+            while (textWidth > textViewWidth) {
+                if (textWidth - textViewWidth < 50) {
+                    textSize -= 0.01;
+                } else {
+                    textSize -= 0.1;
+                }
+                paint.setTextSize(textSize);
+                textWidth = paint.measureText(text);
+            }
+        }
+        super.onDraw(canvas);
+    }
+    //drawable.setBounds(0,0,30,35);//第一0是距左边距离，第二0是距上边距离，30、35分别是长宽
+
+    public void setDrawablePadding(int dp){
+        setCompoundDrawablePadding(ScreenUtils.dip2px(dp));
+    }
 }

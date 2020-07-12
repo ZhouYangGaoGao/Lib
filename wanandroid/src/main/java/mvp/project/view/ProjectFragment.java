@@ -27,10 +27,10 @@ public class ProjectFragment extends BSmartFragment<Article> {
 
     @Override
     public void afterView() {
-        mTopView.setBack(false);
-        mTopView.rightTextView.setRightRes(R.drawable.ic_list_more);
-        mTopView.leftTextView.setLeftRes(R.drawable.ic_list_more);
-        mTopView.rightTextView.setLeftRes(android.R.drawable.ic_menu_search);
+        mSmartView.setBack(false);
+        mSmartView.rightTextView.setRightRes(R.drawable.ic_list_more);
+        mSmartView.leftTextView.setLeftRes(R.drawable.ic_list_more);
+        mSmartView.rightTextView.setLeftRes(android.R.drawable.ic_menu_search);
     }
 
     @Override

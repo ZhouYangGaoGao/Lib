@@ -42,7 +42,7 @@ public class SmartView extends LinearLayout {
     public RelativeLayout topContent;
     public View line;
     private float centerVMargin, centerHMargin, centerRMargin, centerLMargin;
-    private int checkId, measure, mode, captchaSecond;
+    private int checkId, measure, mode = 10, captchaSecond;
     private static final int MEASURE_MAX = 110;//等于大的那边
     private static final int MEASURE_CUSTOM = 111;//使用自定义
     private static final int MEASURE_DIFFERENT = 112;//填充空余
@@ -71,7 +71,7 @@ public class SmartView extends LinearLayout {
         centerHMargin = t.getFloat(R.styleable.SmartView_centerHMargin, 60);
         centerRMargin = t.getFloat(R.styleable.SmartView_centerRMargin, 0);
         centerLMargin = t.getFloat(R.styleable.SmartView_centerLMargin, 0);
-        mode = t.getInt(R.styleable.SmartView_mode, 10);
+        mode = t.getInt(R.styleable.SmartView_mode, mode);
         measure = t.getInt(R.styleable.SmartView_measure, 0);
         int inputType = t.getInt(R.styleable.SmartView_inputType, -1);
         captchaSecond = t.getInt(R.styleable.SmartView_captchaSecond, 20);
@@ -124,23 +124,19 @@ public class SmartView extends LinearLayout {
         if (getBackground() == null && (mode < 2)) {
             view.setBackgroundColor(getResources().getColor(R.color.color_top_bg));//top search 模式默认主题颜色背景
         }
-        if (hideLine) line.setVisibility(GONE);
         switch (mode) {
             case 10://common
             case 0://top
                 if (measure == 0) measure = MEASURE_MAX;
                 centerEditText.setVisibility(GONE);
                 centerTextView.setVisibility(VISIBLE);
+                hideLine = true;
                 break;
             case 1://search
-                centerEditText.setImeActionLabel("搜索", EditorInfo.IME_ACTION_SEARCH);
-                centerEditText.setVisibility(VISIBLE);
+                hideLine = true;
                 initHistory(historyAble, historyLayout);
-                centerEditText.setBackground(new DrawableCreator.Builder()
-                        .setCornersRadius(dip2px(25))
-                        .setSolidColor(0xffffffff).build());
                 crIcon = getResources().getDrawable(android.R.drawable.ic_menu_search);
-                centerEditText.setImeOptions(0x00000003);
+                search();
                 break;
             case 2://login
                 centerEditText.setVisibility(VISIBLE);
@@ -207,6 +203,7 @@ public class SmartView extends LinearLayout {
                 centerTextView.setVisibility(VISIBLE);
                 measure = MEASURE_DIFFERENT;
         }
+        if (hideLine) line.setVisibility(GONE);
 
         if (back) {
             llIcon = getResources().getDrawable(R.drawable.ic_arrow_back);
@@ -276,9 +273,23 @@ public class SmartView extends LinearLayout {
 
     }
 
+    public void search() {
+        centerEditText.setImeActionLabel("搜索", EditorInfo.IME_ACTION_SEARCH);
+        centerEditText.setVisibility(VISIBLE);
+        centerTextView.setVisibility(GONE);
+        centerEditText.setBackground(new DrawableCreator.Builder()
+                .setCornersRadius(dip2px(25))
+                .setSolidColor(0xffffffff).build());
+        centerEditText.setImeOptions(0x00000003);
+        centerEditText.setGravity(Gravity.CENTER_VERTICAL);
+        centerEditText.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(android.R.drawable.ic_menu_search),null,null,null);
+        initHistory(true, R.layout.fragment_pop);
+    }
+
     private void initHistory(boolean historyAble, int historyLayoutId) {
         if (historyAble) {
-            centerEditText.addTextChangedListener(new TextWatcher() {
+            history=Hawk.get("SmartView_"+getId());
+                    centerEditText.addTextChangedListener(new TextWatcher() {
                 HistoryFragment historyFragment;
 
                 @Override
@@ -302,7 +313,7 @@ public class SmartView extends LinearLayout {
                     }
                     if (historyFragment != null) {
                         historyFragment.onData(history);
-                        historyWindow.showAsDropDown(line);
+                        historyWindow.showAsDropDown(SmartView.this);
                     }
                 }
             });
@@ -464,4 +475,6 @@ public class SmartView extends LinearLayout {
         final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
+
+
 }

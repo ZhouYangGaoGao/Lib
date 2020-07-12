@@ -23,7 +23,7 @@ public class HistoryFragment extends BSmartFragment<String> {
     public void afterView() {
         refreshLayout.setEnableRefresh(false);
         refreshLayout.setEnableLoadMore(false);
-        mTopView.topContent.setVisibility(View.GONE);
+        mSmartView.topContent.setVisibility(View.GONE);
     }
 
     EditText editText;
