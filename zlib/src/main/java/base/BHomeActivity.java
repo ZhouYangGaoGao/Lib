@@ -21,7 +21,7 @@ public class BHomeActivity extends BActivity {
     protected int textSize = 11;
     protected int tPadding = 4;
     protected int bPadding = 2;
-    private int[] icons = {R.drawable.ic_baidu, R.drawable.ic_baidu};
+    protected int[] icons = {R.drawable.ic_baidu, R.drawable.ic_baidu};
 
     {
         contentViewId = R.layout.activity_home;
@@ -46,9 +46,4 @@ public class BHomeActivity extends BActivity {
     protected FragmentPagerItems.Creator initFragments(FragmentPagerItems.Creator creator) {
         return creator.add("百1度", BWebFragment.class).add("百2度", BWebFragment.class);
     }
-
-    protected void setIcons(int... icons) {
-        this.icons = icons;
-    }
-
 }

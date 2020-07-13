@@ -33,7 +33,9 @@ import base.BConfig;
 import hawk.Hawk;
 import listener.OnSmartClickListener;
 import rx.Subscription;
+import util.LogUtils;
 import util.RexUtils;
+import util.ScreenUtils;
 import util.Timer;
 
 public class SmartView extends LinearLayout {
@@ -46,6 +48,9 @@ public class SmartView extends LinearLayout {
     private static final int MEASURE_MAX = 110;//等于大的那边
     private static final int MEASURE_CUSTOM = 111;//使用自定义
     private static final int MEASURE_DIFFERENT = 112;//填充空余
+    private static final int MODE_SEARCH = 1;//搜索
+    private static final int MODE_TOP = 0;//顶部
+    private static final int MODE_LOGIN = 2;//登录
     private FragmentWindow historyWindow;
     private Subscription subscribe;
 
@@ -60,7 +65,6 @@ public class SmartView extends LinearLayout {
 
     public SmartView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.SmartView);
         int orientation = t.getInt(R.styleable.SmartView_android_orientation, 0);
         float height = t.getFloat(R.styleable.SmartView_defHeight, -2);
@@ -134,9 +138,9 @@ public class SmartView extends LinearLayout {
                 break;
             case 1://search
                 hideLine = true;
-                initHistory(historyAble, historyLayout);
                 crIcon = getResources().getDrawable(android.R.drawable.ic_menu_search);
                 search();
+                initHistory(historyAble, historyLayout);
                 break;
             case 2://login
                 centerEditText.setVisibility(VISIBLE);
@@ -204,15 +208,9 @@ public class SmartView extends LinearLayout {
                 measure = MEASURE_DIFFERENT;
         }
         if (hideLine) line.setVisibility(GONE);
-
         if (back) {
             llIcon = getResources().getDrawable(R.drawable.ic_arrow_back);
-            leftTextView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((Activity) getContext()).finish();
-                }
-            });
+            setBack(back);
         }
 
         leftTextView.setCompoundDrawablesWithIntrinsicBounds(llIcon, ltIcon, lrIcon, lbIcon);
@@ -273,7 +271,7 @@ public class SmartView extends LinearLayout {
 
     }
 
-    public void search() {
+    public SmartView search() {
         centerEditText.setImeActionLabel("搜索", EditorInfo.IME_ACTION_SEARCH);
         centerEditText.setVisibility(VISIBLE);
         centerTextView.setVisibility(GONE);
@@ -282,14 +280,16 @@ public class SmartView extends LinearLayout {
                 .setSolidColor(0xffffffff).build());
         centerEditText.setImeOptions(0x00000003);
         centerEditText.setGravity(Gravity.CENTER_VERTICAL);
-        centerEditText.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(android.R.drawable.ic_menu_search),null,null,null);
-        initHistory(true, R.layout.fragment_pop);
+        centerEditText.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(android.R.drawable.ic_menu_search), null, null, null);
+//        initHistory(true, R.layout.fragment_pop);
+
+        return this;
     }
 
-    private void initHistory(boolean historyAble, int historyLayoutId) {
+    public void initHistory(boolean historyAble, int historyLayoutId) {
         if (historyAble) {
-            history=Hawk.get("SmartView_"+getId());
-                    centerEditText.addTextChangedListener(new TextWatcher() {
+            history = Hawk.get("SmartView_" + getId());
+            centerEditText.addTextChangedListener(new TextWatcher() {
                 HistoryFragment historyFragment;
 
                 @Override
@@ -313,7 +313,7 @@ public class SmartView extends LinearLayout {
                     }
                     if (historyFragment != null) {
                         historyFragment.onData(history);
-                        historyWindow.showAsDropDown(SmartView.this);
+                        historyWindow.showAsDropDown(topContent);
                     }
                 }
             });
@@ -327,6 +327,9 @@ public class SmartView extends LinearLayout {
                         history.remove(text);
                     }
                     if (!TextUtils.isEmpty(text)) {
+                        if (listener != null) {
+                            listener.onClick(SmartView.this, 3, 0);
+                        }
                         history.add(0, text);
                         if (history.size() > 10) history.remove(9);
                     }
@@ -336,8 +339,10 @@ public class SmartView extends LinearLayout {
         }
     }
 
+    private boolean back;
+
     public void setBack(boolean back) {
-        if (back) {
+        if (this.back = back) {
             leftTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back, 0, 0, 0);
             leftTextView.setOnClickListener(view -> ((Activity) getContext()).finish());
         } else {
@@ -414,6 +419,8 @@ public class SmartView extends LinearLayout {
         this.checkId = checkId;
     }
 
+    private OnSmartClickListener listener;
+
     /**
      * @param listener 返回被点击的SmartView 被点击的TextView坐标 被点击的图标坐标
      * @param indexs   不填时,左中右三个都设置点击监听
@@ -421,25 +428,28 @@ public class SmartView extends LinearLayout {
      *                 可选多个
      */
     public void setListener(OnSmartClickListener listener, int... indexs) {
+        this.listener = listener;
         if (indexs.length == 0) {
-            initClick(0, listener);
-            initClick(1, listener);
-            initClick(2, listener);
+            initClick(0);
+            initClick(1);
+            initClick(2);
         } else {
             for (int index : indexs) {
                 if (index >= 0 && index <= 2)
-                    initClick(index, listener);
+                    initClick(index);
             }
         }
     }
 
-    private void initClick(int index, OnSmartClickListener listener) {
+    private void initClick(int index) {
         TextView clickView = index == 0 ? leftTextView : (index == 1 ? centerTextView : rightTextView);
         clickView.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 listener.onClick(SmartView.this, index, clickView.drawableIndex);
+                if (back && index == 0 && leftTextView.drawableIndex == 0)
+                    ((Activity) getContext()).finish();
                 if (index == 2 && mode == 4) initCaptcha();
             }
         });
