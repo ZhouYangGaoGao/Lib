@@ -79,6 +79,9 @@ public class ViewHolder {
         return (T) view;
     }
 
+    public custom.TextView getTextView(int id){
+        return getView(id);
+    }
     /**
      * 为TextView设置字符串
      *
@@ -103,14 +106,12 @@ public class ViewHolder {
         TextView view = getView(viewId);
         view.setText(Html.fromHtml(text));
         return this;
-
     }
 
     public ViewHolder setTextColor(int viewId, int color0x) {
         TextView view = getView(viewId);
         view.setTextColor(color0x);
         return this;
-
     }
 
     /**

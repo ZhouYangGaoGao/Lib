@@ -101,6 +101,7 @@ public class RetrofitHelper {
                 .writeTimeout(55, TimeUnit.SECONDS)
                 .sslSocketFactory(SSLSocketClient.getSSLSocketFactory())
                 .hostnameVerifier(SSLSocketClient.getHostnameVerifier())
+                .cookieJar(BConfig.getConfig().getCookieJar())
                 .addInterceptor(interceptor == null ? BConfig.getConfig().getInterceptor() : interceptor)
                 .build();
 

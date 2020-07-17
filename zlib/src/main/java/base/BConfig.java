@@ -3,8 +3,12 @@ package base;
 import android.content.pm.ActivityInfo;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import hawk.Hawk;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -19,6 +23,7 @@ public class BConfig {
     public static final String LOGIN_MODE = "mode";
     public static final String LOGIN_MODE_LOGIN = "login";
     public static final String LOGIN_MODE_REGISTER = "register";
+    public static final String REGISTER = "register";
     public static final String LOGIN_MODE_RESET = "reset";
     public static final String LOGIN_MODE_CAPTCHA = "captcha";
     public static final String TOP_SHOW = "showTop";
@@ -35,10 +40,11 @@ public class BConfig {
     public static final String USER_NAME = "username";
     public static final String PAGE = "page";
     public static final String ID = "id";
-    public static final String SMART_LISTENER = "smartListener";
     public static final String TABS = "tabs";
+    public static final String COOKIES = "cookies";
     private static BConfig config;
     private Interceptor interceptor;
+    private CookieJar cookieJar;
     private String baseUrl;
     private String client = "app";
     private String token = "0";
@@ -61,6 +67,29 @@ public class BConfig {
         CardUtils.init();
         return config;
     }
+
+    public CookieJar getCookieJar() {
+        if (cookieJar == null)
+            cookieJar = new CookieJar() {
+                @Override
+                public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                    if ((url.toString().contains(LOGIN) || url.toString().contains(REGISTER)) && cookies.size() > 0)
+                        Hawk.put(COOKIES, cookies);
+                }
+
+                @Override
+                public List<Cookie> loadForRequest(HttpUrl url) {
+                    return Hawk.get(COOKIES, new ArrayList<>());
+                }
+            };
+        return cookieJar;
+    }
+
+    public BConfig setCookieJar(CookieJar cookieJar) {
+        this.cookieJar = cookieJar;
+        return this;
+    }
+
 
     public int getColorTheme() {
         return colorTheme;

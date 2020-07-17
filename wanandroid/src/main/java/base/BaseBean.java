@@ -34,8 +34,7 @@ public class BaseBean<T> extends BResponse<T> {
 
     @Override
     public boolean setOnNext(BSub<? extends BResponse<T>, T> sub) {
-        if ("0".equals(errorCode) && data != null) sub.onSuccess(data);
-        else if ("-1001".equals(errorCode)) ToastUtils.s(BApp.app().act(),"登录失效,请重新登录");
+        if ("0".equals(errorCode)) sub.onSuccess(data);
         else if (sub.onCode(errorCode)) sub.onFail(errorMsg);
         return true;
     }

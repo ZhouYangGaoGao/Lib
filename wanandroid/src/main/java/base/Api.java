@@ -32,8 +32,34 @@ public interface Api {
     @GET("article/list/{page}/json")
     Observable<BaseBean<MList<Article>>> list(@Path(BConfig.PAGE) int page);
 
-    @POST("article/query/{page}/json")//k=
-    Observable<BaseBean<MList<Article>>> query(@Path(BConfig.PAGE) int page,@Query("k") String k);
+    //收藏网站列表
+    @GET("lg/collect/usertools/json")
+    Observable<BaseBean<MList<Article>>> collectTools();
+
+    //收藏站内文章
+    @POST("lg/collect/{id}/json")
+    Observable<BaseBean<Object>> collect(@Path(BConfig.ID) int id);
+
+    //收藏站外文章 title，author，link
+    @POST("lg/collect/add/json")
+    Observable<BaseBean<Object>> collectAdd(@Query(BConfig.TITLE) String title,
+                                            @Query("author") String author,
+                                            @Query("link") String link);
+
+    //取消收藏 ->文章列表
+    @POST("lg/uncollect_originId/{id}/json")
+    Observable<BaseBean<Object>> unCollect(@Path(BConfig.ID) int id);
+
+    //取消收藏 ->我的收藏  originId:列表页下发，无则为-1
+    @POST("lg/uncollect/{id}/json?originId=-1")
+    Observable<BaseBean<Object>> unMyCollect(@Path(BConfig.ID) int id);
+
+    //收藏文章列表
+    @GET("lg/collect/list/{page}/json")
+    Observable<BaseBean<MList<Article>>> collectList(@Path(BConfig.PAGE) int page);
+
+    @POST("article/query/{page}/json")
+    Observable<BaseBean<MList<Article>>> query(@Path(BConfig.PAGE) int page, @Query("k") String k);
 
     @GET("article/list/{page}/json?")
     Observable<BaseBean<MList<Article>>> treeList(@Path(BConfig.PAGE) int page, @Query("cid") int cid);

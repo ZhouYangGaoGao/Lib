@@ -51,7 +51,7 @@ public class MyFragment extends BFragment {
     @Override
     public void afterView() {
         LoginModel user = Hawk.get(BConfig.LOGIN);
-        mPhone.setText(user.getPublicName());
+        mPhone.setText(user.getUsername());
     }
 
     @OnClick({R.id.mRootView, R.id.mIcon, R.id.mCollect, R.id.mTheme, R.id.mUpDate, R.id.mLogout})

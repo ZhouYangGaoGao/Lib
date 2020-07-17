@@ -2,7 +2,6 @@ package mvp.navigation.view;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
@@ -103,7 +102,7 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
                     @Override
                     public void onClick(View v) {
                         GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, article.getLink()));
-                        new SmartModel(R.drawable.ic_list_more, R.drawable.ic_favorite_white) {
+                        new SmartModel(R.drawable.ic_list_more, R.drawable.ic_favorite_white_border) {
                             @Override
                             public void onClick(SmartView sv, int viewIndex, int resIndex) {
                                 if (viewIndex == 2 && resIndex == 2) {

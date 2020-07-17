@@ -4,6 +4,7 @@ import android.view.View;
 
 import base.BConfig;
 import base.BLoginFragment;
+import base.BaseApp;
 import base.Manager;
 import base.Subs;
 import mvp.login.model.LoginModel;
@@ -35,5 +36,12 @@ public class LoginFragment extends BLoginFragment<LoginModel> {
     @Override
     protected Class<?> goTo(LoginModel data) {
         return HomeActivity.class;
+    }
+
+    @Override
+    public void success(LoginModel data) {
+        data.setPassword(password.getText());
+        BaseApp.app().setUser(data);
+        super.success(data);
     }
 }
