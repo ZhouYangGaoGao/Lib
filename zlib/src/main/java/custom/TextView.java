@@ -6,8 +6,10 @@ import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -173,6 +175,14 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
                     setRipple(rippleColor);
                 }
         }
+    }
+
+
+    public void setMarquee() {
+        setSingleLine();
+        setHorizontalFadingEdgeEnabled(true);
+        setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        setMarqueeRepeatLimit(-1);
     }
 
     @Override

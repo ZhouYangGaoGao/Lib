@@ -1,3 +1,9 @@
-<resources>
-
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="my_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textSize">@dimen/dim_big_title_size</item>
+        <item name="android:layout_marginHorizontal" tools:ignore="NewApi">15dp</item>
+    </style>
 </resources>

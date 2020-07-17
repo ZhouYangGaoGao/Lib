@@ -97,18 +97,20 @@ public class BWebFragment extends BFragment {
                 .useDefaultIndicator()
                 .setWebView(mWebView)
                 .setWebViewClient(new com.just.agentweb.WebViewClient() {//拦截错误链接
+
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                        if (!RexUtils.checkURL(request.getUrl().toString())) return true;
+                        log(BConfig.URL, request.getUrl().toString());
+                        if (!request.getUrl().toString().contains("http")) return true;
                         return super.shouldOverrideUrlLoading(view, request);
                     }
 
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        if (!RexUtils.checkURL(url)) return true;
+                        log("0" + BConfig.URL, url);
+                        if (!url.contains("http")) return true;
                         return super.shouldOverrideUrlLoading(view, url);
                     }
-
                 })
                 .setWebChromeClient(webChromeClient)
                 .setMainFrameErrorView(R.layout.agentweb_error_page, -1)

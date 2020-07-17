@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import mvp.chapter.model.Article;
-import mvp.home.model.Banner;
-import mvp.home.model.Friend;
 import mvp.login.model.LoginModel;
-import mvp.main.model.HotKey;
 import mvp.navigation.model.Navigation;
 import mvp.tree.model.Tree;
 import retrofit2.http.FieldMap;
@@ -48,13 +45,13 @@ public interface Api {
     Observable<BaseBean<List<Tree>>> chapters();
 
     @GET("banner/json")
-    Observable<BaseBean<List<Banner>>> banner();
+    Observable<BaseBean<List<Article>>> banner();
 
     @GET("hotkey/json")
-    Observable<BaseBean<List<HotKey>>> hotKey();
+    Observable<BaseBean<List<Article>>> hotKey();
 
     @GET("friend/json")
-    Observable<BaseBean<List<Friend>>> friend();
+    Observable<BaseBean<List<Article>>> friend();
 
     @GET("navi/json")
     Observable<BaseBean<List<Navigation>>> navigation();

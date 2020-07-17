@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mTopView"
+    android:id="@+id/mRootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -30,7 +30,7 @@
 
         <custom.TextView
             android:layout_width="wrap_content"
-            android:id="@+id/phone"
+            android:id="@+id/mPhone"
             android:text="17600117227"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
@@ -41,34 +41,25 @@
 
     </RelativeLayout>
 
-    <custom.SmartView
-        android:id="@+id/mName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="50dp"
-        app:leftText="昵称" />
+    <custom.TextView
+        android:id="@+id/mCollect"
+        style="@style/my_text"
+        android:text="我的收藏" />
 
-    <custom.SmartView
-        android:id="@+id/mPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
-        app:leftText="手机" />
+    <custom.TextView
+        android:id="@+id/mTheme"
+        style="@style/my_text"
+        android:text="黑白" />
 
-    <custom.SmartView
+    <custom.TextView
         android:id="@+id/mUpDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
-        app:leftText="更新" />
+        style="@style/my_text"
+        android:text="更新" />
 
-    <custom.SmartView
+    <custom.TextView
         android:id="@+id/mLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
-        app:leftText="退出登录" />
+        style="@style/my_text"
+        android:text="退出登录" />
 
 
 </LinearLayout>

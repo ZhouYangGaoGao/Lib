@@ -136,10 +136,12 @@ public class SmartView extends LinearLayout {
         }
         switch (mode) {
             case 10://common
+                break;
             case 0://top
                 if (measure == 0) measure = MEASURE_MAX;
                 centerEditText.setVisibility(GONE);
                 centerTextView.setVisibility(VISIBLE);
+                centerTextView.setMarquee();
                 hideLine = true;
                 break;
             case 1://search
@@ -216,7 +218,7 @@ public class SmartView extends LinearLayout {
         if (hideLine) line.setVisibility(GONE);
         if (back) {
             llIcon = getResources().getDrawable(R.drawable.ic_arrow_back);
-            setBack(back);
+            setBack(true);
         }
 
         initIcon(llIcon, ltIcon, lrIcon, lbIcon, clIcon, ctIcon, crIcon, cbIcon, rlIcon, rtIcon, rrIcon, rbIcon);
@@ -376,6 +378,7 @@ public class SmartView extends LinearLayout {
     public void setBack(boolean back) {
         if (this.back = back) {
             leftTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back, 0, 0, 0);
+            leftTextView.setDrawablePadding(0);
             leftTextView.setOnClickListener(view -> ((Activity) getContext()).finish());
         } else {
             leftTextView.setOnClickListener(null);
@@ -491,9 +494,9 @@ public class SmartView extends LinearLayout {
 
         if (SmartModel.class.isAssignableFrom(listener.getClass())) {
             SmartModel smartModel = (SmartModel) listener;
-            for (int j = 0; j < smartModel.drawableRes[index].length; j++) {
-                if (smartModel.drawableRes[index][j] != 0) {
-                    textView.setRes(j, smartModel.drawableRes[index][j]);
+            for (int j = 0; j < smartModel.res[index].length; j++) {
+                if (smartModel.res[index][j] != 0) {
+                    textView.setRes(j, smartModel.res[index][j]);
                 }
             }
             if (!TextUtils.isEmpty(smartModel.text[index])) {

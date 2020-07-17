@@ -41,7 +41,7 @@ public class HomeActivity extends BHomeActivity implements SmartListener {
         mSmartView.leftTextView.setLeftRes(R.drawable.ic_list_more);
         mSmartView.rightTextView.setLeftRes(R.drawable.ic_search);
         mSmartView.rightTextView.setDrawablePadding(8);
-        mSmartView.setListener(this);
+        mSmartView.setListener(this,0,2);
     }
 
     @Override

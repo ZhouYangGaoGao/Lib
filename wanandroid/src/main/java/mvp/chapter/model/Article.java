@@ -1,5 +1,7 @@
 package mvp.chapter.model;
 
+import android.text.TextUtils;
+
 public class Article {
     /**
      * apkLink :
@@ -57,7 +59,7 @@ public class Article {
     }
 
     public String getTitle() {
-        return title;
+        return TextUtils.isEmpty(title) ? name : title;
     }
 
     public boolean isCollect() {
@@ -79,4 +81,53 @@ public class Article {
     public String getAuthor() {
         return author;
     }
+
+
+    /**
+     * 常用网站
+     * icon :
+     * id : 16
+     * link : https://github.com/android-cn/android-dev-com
+     * name : 国外大牛博客集合
+     * order : 2
+     * visible : 1
+     */
+
+    private String name;
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * banner
+     * desc : 享学~
+     * id : 29
+     * imagePath : https://wanandroid.com/blogimgs/2087429c-f6ac-43dd-9ffe-8af871b6deb8.png
+     * isVisible : 1
+     * order : 0
+     * title : &ldquo;学不动了，也得学！&rdquo;
+     * type : 0
+     * url : https://mp.weixin.qq.com/s/PRv6SAZlklz4DRm1EsBdew
+     */
+
+    private String imagePath;
+    private String url;
+    public String getImagePath() {
+        return imagePath;
+    }
+    public String getUrl() {
+        return url;
+    }
+
+
+    /**
+     *
+     * HotKey
+     * id : 9
+     * link :
+     * name : Studio3
+     * order : 1
+     * visible : 1
+     */
+
 }

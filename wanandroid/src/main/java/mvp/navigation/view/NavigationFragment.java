@@ -2,6 +2,7 @@ package mvp.navigation.view;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
@@ -9,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.necer.ndialog.ChoiceDialog;
 import com.zhy.wanandroid.R;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -58,7 +57,10 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
 
             @Override
             public void convert(ViewHolder h, Navigation i) {
-                h.setText(R.id.title, i.getName());
+                TextView title = h.getView(R.id.title);
+                title.setText(i.getName());
+                title.setAutoZoom(true);
+                title.setSingleLine();
                 h.getConvertView().setBackground(new DrawableCreator.Builder().setSelectedSolidColor(
                         0xffeeeeee, 0x33000000).build());
                 h.setClick(new View.OnClickListener() {
@@ -92,42 +94,21 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
             public void onBindChildViewHolder(BaseViewHolder holder, Navigation navigation, int childPosition) {
                 Article article = navigation.getArticles().get(childPosition);
                 TextView textView = holder.get(R.id.title);
+                textView.setAutoZoom(true);
                 textView.setSingleLine();
                 textView.setBackground(new DrawableCreator.Builder().setPressedSolidColor(
                         0x33000000, 0x11000000).build());
-                holder.setText(R.id.title, article.getTitle());
+                textView.setText(article.getTitle());
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, article.getLink()));
-                        new SmartModel() {
+                        new SmartModel(R.drawable.ic_list_more, R.drawable.ic_favorite_white) {
                             @Override
-                            protected void init() {
-                                drawableRes[2][2] = R.drawable.ic_list_more;
-                                drawableRes[2][0] = R.drawable.ic_favorite_top;
-                                indexes = new int[]{2};
-                                EventBus.getDefault().postSticky(this);
-                            }
-
-                            @Override
-                            public void onClick(SmartView smartView, int textViewIndex, int drawableIndex) {
-                                if (textViewIndex == 2 && drawableIndex == 2) {
-                                    Dialogs.show(new ChoiceDialog.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(android.widget.TextView onClickView, int position) {
-                                            if (position == 0) {
-                                                startActivity(Intent.createChooser(new Intent()
-                                                        .setAction(Intent.ACTION_SEND).setType("text/plain")
-                                                        .putExtra(Intent.EXTRA_SUBJECT, article.getTitle())
-                                                        .putExtra(Intent.EXTRA_TEXT, article.getLink()), "分享到"));
-                                            } else if (position == 1) {
-                                                Uri uri = Uri.parse(article.getLink());
-                                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                                startActivity(intent);
-                                            }
-                                        }
-                                    }, "分享", "用浏览器打开");
-                                } else if (textViewIndex == 2 && drawableIndex == 0) {
+                            public void onClick(SmartView sv, int viewIndex, int resIndex) {
+                                if (viewIndex == 2 && resIndex == 2) {
+                                    showDialog(article);
+                                } else if (viewIndex == 2 && resIndex == 0) {
                                     toast("请先登录");
                                 }
                             }
@@ -139,6 +120,24 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, ScreenUtils.dip2px(1), false));
         mRecyclerView.setLayoutManager(layoutManager = new GridLayoutManager(getContext(), 2, adapter));
 
+    }
+
+    private void showDialog(Article article) {
+        Dialogs.show(new ChoiceDialog.OnItemClickListener() {
+            @Override
+            public void onItemClick(android.widget.TextView onClickView, int position) {
+                if (position == 0) {
+                    startActivity(Intent.createChooser(new Intent()
+                            .setAction(Intent.ACTION_SEND).setType("text/plain")
+                            .putExtra(Intent.EXTRA_SUBJECT, article.getTitle())
+                            .putExtra(Intent.EXTRA_TEXT, article.getLink()), "分享到"));
+                } else if (position == 1) {
+                    Uri uri = Uri.parse(article.getLink());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            }
+        }, "分享", "用浏览器打开");
     }
 
     @Override

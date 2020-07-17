@@ -2,7 +2,6 @@ package mvp.home.view;
 
 import android.content.Intent;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.zhy.wanandroid.R;
 
@@ -11,21 +10,18 @@ import base.BConfig;
 import base.BPagerFragment;
 import base.BWebFragment;
 import base.Manager;
-import base.Subs;
-import custom.AutoScrollViewPager;
-import mvp.home.model.Banner;
+import mvp.chapter.model.Article;
 import rx.Observable;
-import rx.Subscription;
 import util.GoTo;
 
-public class BannerFragment extends BPagerFragment<Banner> {
+public class BannerFragment extends BPagerFragment<Article> {
     @Override
     public void beforeView() {
         itemLayoutId = R.layout.item_banner;
     }
 
     @Override
-    public void convert(ViewHolder h, Banner data) {
+    public void convert(ViewHolder h, Article data) {
         h.setText(R.id.mTextView, TextUtils.isEmpty(data.getTitle()) ? data.getDesc() : data.getTitle());
         h.setImage(R.id.mImageView, data.getImagePath());
         h.setClick(v -> GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, data.getUrl())));
