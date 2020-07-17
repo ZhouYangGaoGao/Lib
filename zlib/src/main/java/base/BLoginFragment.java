@@ -7,17 +7,14 @@ import android.widget.TextView;
 
 import com.zhy.android.R;
 
-import annotation.Presenter;
 import custom.SmartView;
 import hawk.Hawk;
-import listener.OnSmartClickListener;
+import listener.SmartListener;
 import rx.Subscription;
 import util.GoTo;
 
-public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<M>>> implements View.OnClickListener {
+public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>> implements View.OnClickListener {
 
-    @Presenter
-    public BPresenter<BView<M>> presenter;
     protected SmartView titleView;
     protected SmartView phone;
     protected SmartView captcha;
@@ -95,7 +92,7 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<M>>
         login.setOnClickListener(this);
         next.setOnClickListener(this);
         register.setOnClickListener(this);
-        captcha.setListener(new OnSmartClickListener() {
+        captcha.setListener(new SmartListener() {
             @Override
             public void onClick(SmartView smartView, int textViewIndex, int drawableIndex) {
                 presenter.sub(captcha(phone.getText()));

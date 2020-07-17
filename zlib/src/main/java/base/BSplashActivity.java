@@ -12,8 +12,6 @@ import util.Timer;
 
 public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
 
-    @Presenter
-    public BPresenter<BView<?>> presenter;
     protected int bgId = R.drawable.ic_welcomm;
     protected Class loginCls = BLoginFragment.class, homeCls = BHomeActivity.class;
     protected TextView tvEmpty;

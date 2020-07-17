@@ -2,19 +2,18 @@ package mvp.home.view;
 
 import android.content.Intent;
 
-import com.zhy.android.adapter.CommonAdapter;
 import com.zhy.wanandroid.R;
 
 import java.util.List;
 
+import adapter.ViewHolder;
 import base.BConfig;
 import base.BSmartFragment;
 import base.BWebFragment;
 import base.Manager;
-import base.Subs;
 import custom.TextView;
 import mvp.home.model.Friend;
-import rx.Subscription;
+import rx.Observable;
 import util.GoTo;
 
 public class FriendFragment extends BSmartFragment<Friend> {
@@ -34,27 +33,26 @@ public class FriendFragment extends BSmartFragment<Friend> {
     public void onData(List<Friend> datas) {
         super.onData(datas);
         Friend friend = new Friend();
-        friend.setName("文字超过宽度时,自动缩小文字,时间是检验真理的唯一工具");
+        friend.setName("custom.TextView:文字超过宽度时,自动缩小文字");
         mData.add(0,friend);
         upData();
     }
 
     @Override
-    protected Subscription get() {
-        return Subs.get(this, Manager.getApi().friend());
+    protected Observable<?> get() {
+        return Manager.getApi().friend();
     }
 
     @Override
-    protected void convert(CommonAdapter.ViewHolder h, Friend i) {
+    protected void convert(ViewHolder h, Friend i) {
         TextView textView = h.getView(R.id.title);
         textView.setSingleLine();
         textView.setAutoZoom(true);
         textView.setText(i.getName());
-
     }
 
     @Override
-    protected void onItemClick(CommonAdapter.ViewHolder h, Friend i) {
+    protected void onItemClick(ViewHolder h, Friend i) {
         GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, i.getLink()));
     }
 }

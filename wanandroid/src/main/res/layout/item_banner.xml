@@ -18,5 +18,5 @@
         android:ellipsize="end"
         android:paddingHorizontal="15dp"
         android:layout_alignParentBottom="true"
-        android:background="#33000000" />
+        android:background="#66000000" />
 </RelativeLayout>

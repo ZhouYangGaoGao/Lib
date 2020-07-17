@@ -1,5 +1,6 @@
 package custom;
 
+import android.os.Build;
 import android.view.View;
 import android.widget.PopupWindow;
 
@@ -20,6 +21,10 @@ public class FragmentWindow extends PopupWindow {
         View layout = View.inflate(BApp.app().act(), contentViewId, null);
         setContentView(layout);
         setWidth(-1);
+        setHeight(-1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            setOverlapAnchor(true);
+        }
         setOutsideTouchable(true);
         setBackgroundDrawable(null);
         if (BApp.app().act() instanceof AppCompatActivity)

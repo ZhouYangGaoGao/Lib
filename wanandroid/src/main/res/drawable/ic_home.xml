@@ -2,7 +2,7 @@
     android:width="20dp"
     android:height="20dp"
     android:autoMirrored="true"
-    android:tint="@color/colorUnSelect"
+    android:tint="@color/clo_tab"
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path

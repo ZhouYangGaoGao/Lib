@@ -5,11 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp"
+    android:textColor="@color/clo_description"
+    android:textSize="@dimen/dim_title_size"
     android:drawablePadding="8dp"
     android:gravity="center_vertical"
     android:minHeight="50dp"
-    android:layout_margin="10dp"
-
     tools:text="history" />
-<!--    android:ellipsize="end"-->
-<!--    android:maxLines="2"-->

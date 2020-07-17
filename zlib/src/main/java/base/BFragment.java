@@ -17,13 +17,15 @@ import androidx.fragment.app.Fragment;
 
 import com.zhy.android.R;
 
+import annotation.Presenter;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import eventbus.hermeseventbus.HermesEventBus;
+import rx.Observable;
 import util.LogUtils;
 
-public abstract class BFragment<M, P extends BPresenter> extends Fragment implements BView<M> {
-    protected P presenter;
+public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragment implements BView<M> {
+    public P presenter;
     protected int preData = 0;
     protected View contentView;
     protected int contentViewId = 0;
@@ -40,6 +42,7 @@ public abstract class BFragment<M, P extends BPresenter> extends Fragment implem
             activity.initPresenter(this);
         }
         beforeView();
+
         if (useEventBus) HermesEventBus.getDefault().register(this);
     }
 
@@ -97,7 +100,17 @@ public abstract class BFragment<M, P extends BPresenter> extends Fragment implem
     }
 
     @Override
-    public void getData() {
+    public void getData() {//获取数据
+        Observable observable = get();
+        if (presenter != null && observable != null) {
+            presenter.sub(BSub.get(this, observable));
+        } else {
+            completed();
+        }
+    }
+
+    protected Observable<?> get(){
+        return null;
     }
 
     @Override

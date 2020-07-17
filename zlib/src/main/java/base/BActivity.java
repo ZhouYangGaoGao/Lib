@@ -24,21 +24,23 @@ import util.LogUtils;
 import util.Reflector;
 import util.StatusBarUtil;
 
-public abstract class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActivity implements BView<M> {
+public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActivity implements BView<M> {
 
-    protected P presenter;
+    public P presenter;
     protected int preData = 0;
     protected boolean useEventBus = false;
     protected boolean slidFinish = false;
-    protected boolean isFullScreen = BConfig.getConfig().isFullScreen();
-    protected int statusBarColor ;
+    protected boolean isFullScreen;
+    protected int statusBarColor;
     protected int contentViewId = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        statusBarColor = getResources().getColor(R.color.clo_status_bar);
+        isFullScreen = BConfig.getConfig().isFullScreen();
         super.onCreate(savedInstanceState);
-        statusBarColor = getResources().getColor(R.color.status_bar);
         beforeView();
+        if (useEventBus) HermesEventBus.getDefault().register(this);
         fullScreen();
         initPresenter(this);
         BackgroundLibrary.inject(this);
@@ -47,7 +49,11 @@ public abstract class BActivity<M, P extends BPresenter<BView<?>>> extends AppCo
         ButterKnife.bind(this);
         if (slidFinish) Slidr.attach(this, new SlidrConfig.Builder().edge(true).build());
         initView();
-        if (useEventBus) HermesEventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         afterView();
         if (preData == BConfig.GET_DATA_CREATE) getData();
     }
@@ -90,21 +96,14 @@ public abstract class BActivity<M, P extends BPresenter<BView<?>>> extends AppCo
 
     /**
      * 获取fragment或activity中泛型或注解的presenter
-     * @param view
+     *
+     * @param bView
      */
-    protected void initPresenter(BView<?> view) {
-        List<BPresenter<BView<?>>> injects = Reflector.get(view, Presenter.class);
-        if (injects != null && injects.size() > 0)
-            for (BPresenter<BView<?>> inject : injects)
-                if (inject != null) addPresenter(view, inject);
-
-        BPresenter<BView<?>> bPresenter = Reflector.get(view, 1);
-        if (bPresenter == null) return;
-        addPresenter(view, bPresenter);
-        if (BActivity.class.isAssignableFrom(view.getClass()))
-            presenter = (P) bPresenter;
-        else
-            ((BFragment) view).presenter = bPresenter;
+    protected void initPresenter(Object bView) {
+        List<BPresenter<BView<?>>> presenters = Reflector.get(bView, Presenter.class);
+        if (presenters != null && presenters.size() > 0)
+            for (BPresenter<BView<?>> inject : presenters)
+                if (inject != null) addPresenter((BView<?>) bView, inject);
     }
 
     private void addPresenter(BView<?> view, BPresenter<BView<?>> presenter) {

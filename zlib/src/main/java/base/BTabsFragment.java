@@ -1,5 +1,7 @@
 package base;
 
+import android.view.View;
+
 import androidx.viewpager.widget.ViewPager;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -12,8 +14,6 @@ import custom.SmartView;
 
 public class BTabsFragment<M> extends BFragment<M, BPresenter<BView<?>>> {
 
-    @Presenter
-    public BPresenter<BView<?>> presenter;
     protected ViewPager mViewPager;
     protected SmartTabLayout mTabView;
     protected SmartView mSmartView;
@@ -30,12 +30,12 @@ public class BTabsFragment<M> extends BFragment<M, BPresenter<BView<?>>> {
         mTabView = (SmartTabLayout) findViewById(R.id.mTabView);
         mSmartView = (SmartView) findViewById(R.id.mSmartView);
         mSmartView.centerTextView.setText(title);
+        mSmartView.topContent.setVisibility(View.GONE);
         creator = FragmentPagerItems.with(getContext());
     }
 
     protected void initFragments() {
         mViewPager.setAdapter(new FragmentStatePagerItemAdapter(getChildFragmentManager(), creator.create()));
         mTabView.setViewPager(mViewPager);
-//        mViewPager.setOffscreenPageLimit(3);
     }
 }

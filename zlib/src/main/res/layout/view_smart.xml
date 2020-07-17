@@ -11,10 +11,9 @@
         android:id="@+id/leftTextView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="4dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:gravity="center"
-        android:paddingHorizontal="8dp"
+        android:paddingHorizontal="@dimen/dim_smart_padding"
         android:paddingVertical="5dp"
         android:singleLine="true"
         tools:text="leftTextView" />
@@ -23,17 +22,16 @@
         android:id="@+id/rightTextView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="4dp"
+        android:layout_alignParentEnd="true"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:gravity="center"
         android:layout_centerVertical="true"
-        android:paddingHorizontal="8dp"
+        android:paddingHorizontal="@dimen/dim_smart_padding"
         android:paddingVertical="5dp"
         android:singleLine="true"
         tools:text="rightTextView" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/centerEditText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,7 +49,6 @@
         android:layout_height="match_parent"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:ellipsize="marquee"
-        android:foreground="@drawable/fg_title"
         android:gravity="center"
         android:visibility="gone"
         tools:visibility="visible"
@@ -64,5 +61,5 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorLine" />
+        android:background="@color/clo_line" />
 </RelativeLayout>

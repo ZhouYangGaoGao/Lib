@@ -256,6 +256,7 @@
             <enum name="number_password" value="2" />
         </attr>
         <attr name="gravity" format="enum">
+            <enum name="left" value="10" />
             <enum name="center" value="11" />
             <enum name="right" value="12" />
         </attr>
@@ -368,5 +369,14 @@
         <!-- Selected Paint Color (color). -->
         <attr name="endColor" />
         <attr name="topDelta" />
+    </declare-styleable>
+
+    <declare-styleable name="SubsamplingScaleImageView">
+        <attr name="src" format="reference"/>
+        <attr name="assetName" format="string"/>
+        <attr name="panEnabled" format="boolean"/>
+        <attr name="zoomEnabled" format="boolean"/>
+        <attr name="quickScaleEnabled" format="boolean"/>
+        <attr name="tileBackgroundColor" format="color"/>
     </declare-styleable>
 </resources>

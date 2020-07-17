@@ -1,11 +1,13 @@
 package com.zhy.app.modules.test;
 
-import com.zhy.android.adapter.CommonAdapter;
+import adapter.CommonAdapter;
 import com.zhy.app.R;
 import com.zhy.app.base.Manager;
 import com.zhy.app.base.Subs;
 
+import adapter.ViewHolder;
 import base.BSmartFragment;
+import rx.Observable;
 import rx.Subscription;
 
 public class NewsFragment extends BSmartFragment<NewsModel> {
@@ -16,12 +18,12 @@ public class NewsFragment extends BSmartFragment<NewsModel> {
     }
 
     @Override
-    protected Subscription get() {
-        return Subs.get(this, Manager.get().getNewsList());
+    protected Observable<?> get() {
+        return  Manager.get().getNewsList();
     }
 
     @Override
-    protected void convert(CommonAdapter.ViewHolder h, NewsModel i) {
+    protected void convert(ViewHolder h, NewsModel i) {
         h.setText(R.id.title, i.getIntro());
     }
 }

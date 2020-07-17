@@ -24,8 +24,8 @@
         android:src="@drawable/ic_list_more"
         android:textColor="@color/white"
         app:bl_corners_radius="20dp"
-        app:bl_enabled_solid_color="@color/colorTheme"
-        app:bl_unEnabled_solid_color="@color/colorTheme88"
+        app:bl_enabled_solid_color="@color/clo_theme"
+        app:bl_unEnabled_solid_color="@color/clo_theme_88"
         tools:ignore="MissingPrefix" />
 
 </RelativeLayout>

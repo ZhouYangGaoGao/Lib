@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="clo_theme">#00BCD4</color>
+    <color name="clo_theme_88">#8800BCD4</color>
+
+    <dimen name="dim_big_title_size">16sp</dimen>
+    <dimen name="dim_title_size">14sp</dimen>
+    <dimen name="dim_sub_title_size">13sp</dimen>
+    <dimen name="dim_description_size">12sp</dimen>
+    <dimen name="dim_source_size">10sp</dimen>
+    <dimen name="dim_marks_size">9sp</dimen>
+    <dimen name="dim_tab_size">10sp</dimen>
+    <dimen name="dim_sub_tab_size">13sp</dimen>
+    <dimen name="dim_sub_tab_indicator_height">2dp</dimen>
+    <dimen name="dim_card_diver_height">10dp</dimen>
+    <dimen name="dim_smart_padding">15dp</dimen>
+
+    <color name="clo_big_title">#ffffff</color>
+    <color name="clo_title">#111111</color>
+    <color name="clo_sub_title">#333333</color>
+    <color name="clo_description">#88000000</color>
+    <color name="clo_source">#999999</color>
+    <color name="clo_marks">#ff0000</color>
+    <color name="clo_tab">#aaaaaa</color>
+    <color name="clo_tab_bg">#ffffff</color>
+    <color name="clo_tab_select">@color/clo_theme</color>
+    <color name="clo_sub_tab">#ffffff</color>
+    <color name="clo_sub_tab_select">#ffffff</color>
+    <color name="clo_sub_tab_bg">@color/clo_theme</color>
+    <color name="clo_sub_tab_indicator">#ffffff</color>
+    <color name="clo_card_shadow_end">#00000000</color>
+    <color name="clo_card_shadow_start">#11000000</color>
+    <color name="clo_line">#aaaaaa</color>
+    <color name="clo_status_bar">@color/clo_theme</color>
+    <color name="clo_ripple">#88888888</color>
+    <color name="clo_top_bg">@color/clo_theme</color>
+    <color name="clo_list_bg">#ffffff</color>
+</resources>

@@ -4,7 +4,8 @@
     android:id="@+id/mSmartView"
     android:orientation="vertical"
     app:mode="top"
-    app:measure="max"
+    app:measure="different"
+    app:gravity="left"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 

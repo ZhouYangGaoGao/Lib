@@ -3,6 +3,7 @@ package com.zhy.app.modules.one.presenter;
 import com.zhy.app.modules.one.contract.ICommonViewContract;
 
 import base.BPresenter;
+import base.BView;
 
 /**
  * @author ZhouYang
@@ -11,7 +12,7 @@ import base.BPresenter;
  * - generate by MvpAutoCodePlus plugin.
  */
 
-public class CommonViewPresenter extends BPresenter<ICommonViewContract.View> implements ICommonViewContract.Presenter {
+public class CommonViewPresenter extends BPresenter<BView<?>> implements ICommonViewContract.Presenter {
 
 }
 

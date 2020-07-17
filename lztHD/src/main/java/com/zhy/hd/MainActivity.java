@@ -23,9 +23,12 @@ public class MainActivity extends BActivity {
 
     @Override
     public void beforeView() {
-        LoginModel model=Hawk.get(BConfig.LOGIN);
-        if ( model!= null) {
-            setIntent(new Intent().putExtra(Constant.URL, Constant.url + new Gson().toJson(model)));
+        LoginModel model = Hawk.get(BConfig.LOGIN);
+        if (model != null) {
+            setIntent(new Intent()
+                    .putExtra(BConfig.TOP_SHOW,false)
+//                    .putExtra(Constant.URL, Constant.url + new Gson().toJson(model))
+                    .putExtra(Constant.URL, "http://www.ahdhst.com/forest/ysweb/login"));
         } else {
             GoTo.start(LoginFragment.class);
             finish();

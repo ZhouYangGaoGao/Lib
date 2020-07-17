@@ -52,9 +52,9 @@
             android:text="@string/str_login"
             app:bl_corners_radius="25dp"
             android:layout_marginTop="30dp"
-            app:bl_pressed_solid_color="@color/colorTheme88"
-            app:bl_unEnabled_solid_color="@color/colorTheme88"
-            app:bl_unPressed_solid_color="@color/colorTheme"
+            app:bl_pressed_solid_color="@color/clo_theme_88"
+            app:bl_unEnabled_solid_color="@color/clo_theme_88"
+            app:bl_unPressed_solid_color="@color/clo_theme"
             tools:ignore="MissingPrefix" />
 
         <background.view.BLTextView
@@ -66,9 +66,9 @@
             android:text="@string/str_next"
             android:layout_marginTop="30dp"
             app:bl_corners_radius="25dp"
-            app:bl_pressed_solid_color="@color/colorTheme88"
-            app:bl_unEnabled_solid_color="@color/colorTheme88"
-            app:bl_unPressed_solid_color="@color/colorTheme"
+            app:bl_pressed_solid_color="@color/clo_theme_88"
+            app:bl_unEnabled_solid_color="@color/clo_theme_88"
+            app:bl_unPressed_solid_color="@color/clo_theme"
             tools:ignore="MissingPrefix" />
 
         <background.view.BLTextView
@@ -80,8 +80,8 @@
             android:text="@string/str_register"
             android:layout_marginTop="30dp"
             app:bl_corners_radius="25dp"
-            app:bl_pressed_solid_color="@color/colorTheme88"
-            app:bl_unEnabled_solid_color="@color/colorTheme88"
-            app:bl_unPressed_solid_color="@color/colorTheme" />
+            app:bl_pressed_solid_color="@color/clo_theme_88"
+            app:bl_unEnabled_solid_color="@color/clo_theme_88"
+            app:bl_unPressed_solid_color="@color/clo_theme" />
     </LinearLayout>
 </custom.SmartView>

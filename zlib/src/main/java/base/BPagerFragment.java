@@ -1,5 +1,6 @@
 package base;
 
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.zhy.android.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.ViewHolder;
 import annotation.Presenter;
 import custom.AutoScrollViewPager;
 import rx.Observable;
@@ -20,8 +22,7 @@ import util.ImageUtils;
 
 public abstract class BPagerFragment<M> extends BFragment implements
         AutoScrollViewPager.OnPageClickListener {
-    @Presenter
-    public BPresenter<BView<M>> presenter;
+
     protected AutoScrollViewPager mViewPager;
     private View mRootView;
     protected SmartTabLayout indicator;
@@ -80,8 +81,9 @@ public abstract class BPagerFragment<M> extends BFragment implements
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                View view = View.inflate(getContext(), itemLayoutId, null);
-                convert(new Viewholder(view, position), mData.get(position));
+                final ViewHolder viewHolder = ViewHolder.get(null, itemLayoutId, position);
+                convert(viewHolder, mData.get(position));
+                View view = viewHolder.getConvertView();
                 container.addView(view);
                 return view;
             }
@@ -107,22 +109,7 @@ public abstract class BPagerFragment<M> extends BFragment implements
         } else mRootView.setVisibility(View.GONE);
     }
 
-    public abstract void convert(Viewholder h, M data);
-
-    @Override
-    public void getData() {
-        if (presenter != null) {
-            if (!presenter.sub(get())) {
-                completed();
-            }
-        } else {
-            completed();
-        }
-    }
-
-    protected Subscription get() {
-        return null;
-    }
+    public abstract void convert(ViewHolder h, M i);
 
     @Override
     public void onResume() {
@@ -134,40 +121,6 @@ public abstract class BPagerFragment<M> extends BFragment implements
     public void onPause() {
         super.onPause();
         if (isAutoScroll) mViewPager.stopAutoScroll();
-    }
-
-    public class Viewholder {
-        private View itemView;
-        private int position;
-
-        public Viewholder(View itemView, int position) {
-            this.itemView = itemView;
-            this.position = position;
-        }
-
-        public BPagerFragment.Viewholder setImage(int viewId, Object url) {
-            ImageUtils.loadImage(getContext(), url, itemView.findViewById(viewId));
-            return this;
-        }
-
-        public BPagerFragment.Viewholder setClick(View.OnClickListener listener) {
-            itemView.setOnClickListener(listener);
-            return this;
-        }
-
-        public BPagerFragment.Viewholder setText(int viewId, String text) {
-            TextView view = itemView.findViewById(viewId);
-            view.setText(text);
-            return this;
-        }
-
-        public <T extends View> T getView(int viewId) {
-            return (T) itemView.findViewById(viewId);
-        }
-
-        public int getPosition() {
-            return position;
-        }
     }
 
     public void total(int total) {

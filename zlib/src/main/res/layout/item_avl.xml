@@ -12,5 +12,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="12dp"
-        app:indicatorColor="@color/colorTheme88" />
+        app:indicatorColor="@color/clo_theme_88" />
 </LinearLayout>

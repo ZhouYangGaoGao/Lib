@@ -1,12 +1,22 @@
 package mvp.home.view;
 
+import android.content.Intent;
+import android.text.TextUtils;
+import android.view.View;
+
 import com.zhy.wanandroid.R;
 
+import adapter.ViewHolder;
+import base.BConfig;
 import base.BPagerFragment;
+import base.BWebFragment;
 import base.Manager;
 import base.Subs;
+import custom.AutoScrollViewPager;
 import mvp.home.model.Banner;
+import rx.Observable;
 import rx.Subscription;
+import util.GoTo;
 
 public class BannerFragment extends BPagerFragment<Banner> {
     @Override
@@ -15,13 +25,14 @@ public class BannerFragment extends BPagerFragment<Banner> {
     }
 
     @Override
-    public void convert(Viewholder h, Banner data) {
-        h.setText(R.id.mTextView, data.getDesc());
-        h.setImage(R.id.mImageView,data.getImagePath());
+    public void convert(ViewHolder h, Banner data) {
+        h.setText(R.id.mTextView, TextUtils.isEmpty(data.getTitle()) ? data.getDesc() : data.getTitle());
+        h.setImage(R.id.mImageView, data.getImagePath());
+        h.setClick(v -> GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, data.getUrl())));
     }
 
     @Override
-    protected Subscription get() {
-        return Subs.get(this,Manager.getApi().banner());
+    protected Observable<?> get() {
+        return Manager.getApi().banner();
     }
 }

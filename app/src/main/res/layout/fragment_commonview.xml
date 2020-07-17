@@ -33,7 +33,7 @@
         android:id="@+id/clickView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTheme"
+        android:background="@color/clo_theme"
         app:centerHMargin="130"
         app:measure="custom"
         app:textColor="@color/white"

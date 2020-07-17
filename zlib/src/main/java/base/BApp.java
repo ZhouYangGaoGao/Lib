@@ -2,7 +2,11 @@ package base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Bundle;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tencent.bugly.Bugly;
 import com.zhy.android.BuildConfig;
@@ -39,7 +43,7 @@ public abstract class BApp extends Application implements Runnable {
         Hawk.init(app).build();
         registerActivityLifecycleCallbacks(new ActCallback() {
             @Override
-            public void onActivityResumed(Activity activity) {
+            protected void onCurrentActivity(Activity activity) {
                 act = new WeakReference<>(activity);
             }
         });

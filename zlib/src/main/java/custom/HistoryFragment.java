@@ -4,9 +4,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.zhy.android.R;
-import com.zhy.android.adapter.CommonAdapter;
 
-import background.drawable.DrawableCreator;
+import adapter.ViewHolder;
 import base.BSmartFragment;
 
 public class HistoryFragment extends BSmartFragment<String> {
@@ -29,13 +28,12 @@ public class HistoryFragment extends BSmartFragment<String> {
     }
 
     @Override
-    public void convert(CommonAdapter.ViewHolder h, String i) {
+    public void convert(ViewHolder h, String i) {
         h.setText(R.id.title, i);
-        setBackground(h.getConvertView(),cardPressedColor,0xffffffff);
     }
 
     @Override
-    protected void onItemClick(CommonAdapter.ViewHolder h, String i) {
+    protected void onItemClick(ViewHolder h, String i) {
         if (editText != null) {
             editText.setText(i);
             editText.setSelection(i.length());

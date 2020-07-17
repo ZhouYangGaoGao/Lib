@@ -72,11 +72,6 @@ public class BSub<M extends BResponse<T>, T> extends Subscriber<M> {
         } else {
             LogUtils.e(tag, new Gson().toJson(m));
             m.setOnNext(this);
-//            if (!) {
-//                if (m.getData() == null)
-//                    onFail(BApp.app().getString(R.string.str_no_data));
-//                else onSuccess(m.getData());
-//            }
         }
         onCompleted();
     }

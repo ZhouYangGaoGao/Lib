@@ -1,8 +1,6 @@
 package com.zhy.app.modules.one.view;
 
 import android.content.Intent;
-import android.view.View;
-import android.widget.Switch;
 
 import com.zhy.app.R;
 import com.zhy.app.modules.login.view.LoginFragment;
@@ -10,15 +8,13 @@ import com.zhy.app.modules.one.contract.ICommonViewContract;
 import com.zhy.app.modules.one.model.CommonViewModel;
 import com.zhy.app.modules.one.presenter.CommonViewPresenter;
 
-import background.drawable.DrawableCreator;
 import base.BApp;
 import base.BConfig;
 import base.BFragment;
 import butterknife.BindView;
 import custom.SmartView;
-import listener.OnSmartClickListener;
+import listener.SmartListener;
 import util.GoTo;
-import util.ScreenUtils;
 
 /**
  * @author ZhouYang
@@ -27,7 +23,7 @@ import util.ScreenUtils;
  * - generate by MvpAutoCodePlus plugin.
  */
 
-public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPresenter> implements ICommonViewContract.View, OnSmartClickListener {
+public class SmartViewFragment extends BFragment<CommonViewModel, CommonViewPresenter> implements ICommonViewContract.View, SmartListener {
     @BindView(R.id.searchView)
     SmartView searchView;
     @BindView(R.id.phone)

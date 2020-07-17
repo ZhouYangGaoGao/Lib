@@ -7,7 +7,7 @@ import base.BLoginFragment;
 import base.Manager;
 import base.Subs;
 import mvp.login.model.LoginModel;
-import mvp.main.HomeActivity;
+import mvp.main.view.HomeActivity;
 import rx.Subscription;
 
 public class LoginFragment extends BLoginFragment<LoginModel> {

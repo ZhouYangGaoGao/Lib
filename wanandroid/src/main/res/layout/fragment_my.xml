@@ -1,38 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<custom.SmartView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mTopView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    app:back="false"
-    app:centerText="个人中心"
-    app:mode="top"
-    app:rightText="注销">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/mBg"
+            android:layout_width="match_parent"
+            android:src="@mipmap/bg_code"
+            android:scaleType="centerCrop"
+            android:layout_height="200dp"/>
+
+        <background.view.BLImageView
+            android:id="@+id/mIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="50dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher" />
+
+        <custom.TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/phone"
+            android:text="17600117227"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/dim_big_title_size"
+            android:textColor="@color/clo_big_title"
+            android:layout_below="@id/mIcon"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
 
     <custom.SmartView
         android:id="@+id/mName"
         android:layout_width="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginHorizontal="60dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="50dp"
         app:leftText="昵称" />
 
     <custom.SmartView
         android:id="@+id/mPhone"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="60dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
         app:leftText="手机" />
 
     <custom.SmartView
-        android:id="@+id/mEmail"
+        android:id="@+id/mUpDate"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="60dp"
         android:layout_height="wrap_content"
-        app:leftText="邮箱" />
+        android:layout_marginHorizontal="15dp"
+        app:leftText="更新" />
+
+    <custom.SmartView
+        android:id="@+id/mLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        app:leftText="退出登录" />
 
 
-</custom.SmartView>
+</LinearLayout>
 

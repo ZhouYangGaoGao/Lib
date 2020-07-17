@@ -46,16 +46,16 @@ public class Reflector {
     public static <T> List<T> get(Object o, Class annotationCls) {
         List<T> instances = null;
         for (Field field : o.getClass().getFields()) {
-            if (field.getAnnotation(annotationCls) != null) {
-                try {
+            try {
+                if (field.getAnnotation(annotationCls) != null || field.getName().equals("presenter")) {
                     Object instance = field.getType().newInstance();
                     field.setAccessible(true);
                     field.set(o, instance);
                     if (instances == null) instances = new ArrayList<>();
                     instances.add((T) instance);
-                } catch (IllegalAccessException | InstantiationException e) {
-                    e.printStackTrace();
                 }
+            } catch (IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
             }
         }
         return instances;

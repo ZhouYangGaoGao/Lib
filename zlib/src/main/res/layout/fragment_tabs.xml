@@ -9,6 +9,15 @@
 
     <com.ogaclejapan.smarttablayout.SmartTabLayout
         android:id="@+id/mTabView"
+        android:background="@color/clo_sub_tab_bg"
+        app:stl_defaultTabTextColor="@color/sub_tab_colors"
+        app:stl_defaultTabTextSize="@dimen/dim_sub_tab_size"
+        app:stl_indicatorThickness="@dimen/dim_sub_tab_indicator_height"
+        app:stl_indicatorColor="@color/clo_sub_tab_indicator"
+        app:stl_indicatorCornerRadius="2dp"
+        app:stl_underlineThickness="0dp"
+        app:stl_dividerThickness="0dp"
+        app:stl_defaultTabTextAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 

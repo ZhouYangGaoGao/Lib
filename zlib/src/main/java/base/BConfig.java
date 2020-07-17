@@ -35,6 +35,8 @@ public class BConfig {
     public static final String USER_NAME = "username";
     public static final String PAGE = "page";
     public static final String ID = "id";
+    public static final String SMART_LISTENER = "smartListener";
+    public static final String TABS = "tabs";
     private static BConfig config;
     private Interceptor interceptor;
     private String baseUrl;

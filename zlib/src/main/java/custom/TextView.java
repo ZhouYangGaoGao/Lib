@@ -60,44 +60,78 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
         return super.onTouchEvent(event);
     }
 
-    public TextView setLeftRes(int resId) {
-        setLeftDrawable(getResources().getDrawable(resId));
+    public TextView setLeftRes(int... resId) {
+        setLeftDrawable(getDrawables(resId));
         return this;
     }
 
-    public TextView setTopRes(int resId) {
-        setTopDrawable(getResources().getDrawable(resId));
+    private Drawable[] getDrawables(int[] resId) {
+        Drawable[] drawable = new Drawable[resId.length];
+        for (int i = 0; i < resId.length; i++) {
+            drawable[i] = getResources().getDrawable(resId[i]);
+        }
+        return drawable;
+    }
+
+    private Drawable getDrawable(Drawable... drawable) {
+        if (drawable.length == 9) return null;
+        if (drawable.length > 1) {
+            return new DrawableCreator.Builder()
+                    .setPressedDrawable(drawable[0])
+                    .setUnPressedDrawable(drawable[1]).build();
+        } else return drawable[0];
+    }
+
+    public TextView setTopRes(int... resId) {
+        setTopDrawable(getDrawables(resId));
         return this;
     }
 
-    public TextView setRightRes(int resId) {
-        setRightDrawable(getResources().getDrawable(resId));
+    public TextView setRightRes(int... resId) {
+        setRightDrawable(getDrawables(resId));
         return this;
     }
 
-    public TextView setBottomRes(int resId) {
-        setBottomDrawable(getResources().getDrawable(resId));
+    public TextView setBottomRes(int... resId) {
+        setBottomDrawable(getDrawables(resId));
         return this;
     }
 
-    public TextView setLeftDrawable(Drawable drawable) {
-        setCompoundDrawablesWithIntrinsicBounds(drawable, getCompoundDrawables()[1], getCompoundDrawables()[2], getCompoundDrawables()[3]);
+    public TextView setLeftDrawable(Drawable... drawable) {
+        setCompoundDrawablesWithIntrinsicBounds(getDrawable(drawable), getCompoundDrawables()[1], getCompoundDrawables()[2], getCompoundDrawables()[3]);
         return this;
     }
 
-    public TextView setTopDrawable(Drawable drawable) {
-        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], drawable, getCompoundDrawables()[2], getCompoundDrawables()[3]);
+    public TextView setTopDrawable(Drawable... drawable) {
+        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getDrawable(drawable), getCompoundDrawables()[2], getCompoundDrawables()[3]);
         return this;
     }
 
-    public TextView setRightDrawable(Drawable drawable) {
-        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], drawable, getCompoundDrawables()[3]);
+    public TextView setRightDrawable(Drawable... drawable) {
+        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], getDrawable(drawable), getCompoundDrawables()[3]);
         return this;
     }
 
-    public TextView setBottomDrawable(Drawable drawable) {
-        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], getCompoundDrawables()[2], drawable);
+    public TextView setBottomDrawable(Drawable... drawable) {
+        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], getCompoundDrawables()[2], getDrawable(drawable));
         return this;
+    }
+
+    public void setRes(int drawableIndex, int resId) {
+        switch (drawableIndex) {
+            case 0:
+                setLeftRes(resId);
+                break;
+            case 1:
+                setTopRes(resId);
+                break;
+            case 2:
+                setRightRes(resId);
+                break;
+            case 3:
+                setBottomRes(resId);
+                break;
+        }
     }
 
     public void setAutoZoom(boolean autoZoom) {
@@ -107,7 +141,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     public void setRipple(int rippleColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setForeground(new DrawableCreator.Builder()
-                    .setPressedSolidColor(0x11ffffff,0x00ffffff)
+                    .setPressedSolidColor(0x11ffffff, 0x00ffffff)
                     .setRipple(true, rippleColor).build());
         }
     }
@@ -170,9 +204,8 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
         }
         super.onDraw(canvas);
     }
-    //drawable.setBounds(0,0,30,35);//第一0是距左边距离，第二0是距上边距离，30、35分别是长宽
 
-    public void setDrawablePadding(int dp){
+    public void setDrawablePadding(int dp) {
         setCompoundDrawablePadding(ScreenUtils.dip2px(dp));
     }
 }

@@ -1,9 +1,7 @@
 package mvp.main.view;
 
 import base.BSplashActivity;
-import base.TestSub;
 import mvp.login.view.LoginFragment;
-import mvp.main.HomeActivity;
 
 public class SplashActivity extends BSplashActivity {
 

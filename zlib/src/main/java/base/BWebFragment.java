@@ -3,9 +3,10 @@ package base;
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -17,9 +18,15 @@ import com.just.agentweb.WebChromeClient;
 import com.zhy.android.BuildConfig;
 import com.zhy.android.R;
 
-import java.util.Objects;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.io.InputStream;
 
 import custom.SmartView;
+import listener.SmartModel;
+import okhttp3.ResponseBody;
+import util.RexUtils;
 
 /**
  * 通用网页
@@ -30,9 +37,11 @@ public class BWebFragment extends BFragment {
     private TextView titleView;
     public WebView mWebView;
     private AgentWeb mAgentWeb;
+    private SmartModel listener;
 
     @Override
     public void beforeView() {
+        useEventBus = true;
         contentViewId = R.layout.fragment_web;
     }
 
@@ -42,16 +51,16 @@ public class BWebFragment extends BFragment {
         mSmartView = (SmartView) findViewById(R.id.mSmartView);
         mSmartView.centerTextView.setText(title);
         boolean back = getIntent().getBooleanExtra(BConfig.BACK, false);
-        if (!back) back = getArguments().getBoolean(BConfig.BACK, false);
+        if (getArguments() != null && !back) back = getArguments().getBoolean(BConfig.BACK, false);
         mSmartView.setBack(back);
-
         if (!getIntent().getBooleanExtra(BConfig.TOP_SHOW, true))
             mSmartView.topContent.setVisibility(View.GONE);
+        if (listener != null) mSmartView.setListener(listener);
         String tmpUrl = "";
         if (getArguments() != null) {
             tmpUrl = getArguments().getString(BConfig.URL);
         } else {
-            tmpUrl = getActivity().getIntent().getStringExtra(BConfig.URL);
+            tmpUrl = getIntent().getStringExtra(BConfig.URL);
         }
         if (TextUtils.isEmpty(tmpUrl)) {
             tmpUrl = BuildConfig.DEBUG ? "https://www.baidu.com/" : "url为空";
@@ -67,6 +76,7 @@ public class BWebFragment extends BFragment {
                 else if (TextUtils.isEmpty(finalTitle)) mSmartView.centerTextView.setText(s);
             }
         };
+
         CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(-1, -1);
         layoutParams.setBehavior(new AppBarLayout.ScrollingViewBehavior());
         mWebView = new WebView(getActivity());
@@ -86,6 +96,20 @@ public class BWebFragment extends BFragment {
                 .setAgentWebParent(mSmartView, layoutParams)
                 .useDefaultIndicator()
                 .setWebView(mWebView)
+                .setWebViewClient(new com.just.agentweb.WebViewClient() {//拦截错误链接
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                        if (!RexUtils.checkURL(request.getUrl().toString())) return true;
+                        return super.shouldOverrideUrlLoading(view, request);
+                    }
+
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        if (!RexUtils.checkURL(url)) return true;
+                        return super.shouldOverrideUrlLoading(view, url);
+                    }
+
+                })
                 .setWebChromeClient(webChromeClient)
                 .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
                 .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
@@ -125,4 +149,12 @@ public class BWebFragment extends BFragment {
         this.titleView = titleView;
     }
 
+    @Subscribe(sticky = true)
+    public void setSmartListener(SmartModel listener) {
+        if (BApp.app().act().equals(getActivity())) {
+            this.listener = listener;
+            EventBus.getDefault().removeStickyEvent(listener);
+        }
+
+    }
 }

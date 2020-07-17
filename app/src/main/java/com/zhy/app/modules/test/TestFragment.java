@@ -3,12 +3,13 @@ package com.zhy.app.modules.test;
 import android.location.Location;
 import android.view.View;
 
-import com.zhy.android.adapter.CommonAdapter;
+import adapter.CommonAdapter;
 import com.zhy.app.R;
 import com.zhy.app.modules.one.view.SmartViewFragment;
 
 import java.util.Arrays;
 
+import adapter.ViewHolder;
 import base.BPermissionFragment;
 import base.BSmartFragment;
 import base.BWebFragment;
@@ -36,12 +37,12 @@ public class TestFragment extends BSmartFragment<Class> {
     }
 
     @Override
-    public void convert(CommonAdapter.ViewHolder h, Class i) {
+    public void convert(ViewHolder h, Class i) {
         h.setText(R.id.title, i.getSimpleName());
     }
 
     @Override
-    protected void onItemClick(CommonAdapter.ViewHolder h, Class i) {
+    protected void onItemClick(ViewHolder h, Class i) {
         GoTo.start(i);
     }
 

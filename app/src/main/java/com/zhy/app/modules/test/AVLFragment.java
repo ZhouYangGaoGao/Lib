@@ -3,12 +3,13 @@ package com.zhy.app.modules.test;
 import android.view.View;
 
 import com.wang.avi.AVLoadingIndicatorView;
-import com.zhy.android.adapter.CommonAdapter;
+import adapter.CommonAdapter;
 import com.zhy.app.R;
 
 
 import java.util.Collections;
 
+import adapter.ViewHolder;
 import base.BSmartFragment;
 
 public class AVLFragment extends BSmartFragment<String> {
@@ -26,7 +27,7 @@ public class AVLFragment extends BSmartFragment<String> {
     }
 
     @Override
-    public void convert(CommonAdapter.ViewHolder h, String i) {
+    public void convert(ViewHolder h, String i) {
         AVLoadingIndicatorView avl = h.getView(R.id.avl);
         avl.setIndicator(i);
     }

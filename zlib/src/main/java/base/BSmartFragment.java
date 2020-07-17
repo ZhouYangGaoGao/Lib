@@ -1,42 +1,38 @@
 package base;
 
-import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 import com.google.gson.Gson;
-import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhy.android.R;
-import com.zhy.android.adapter.CommonAdapter;
+
+import adapter.CommonAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import annotation.Presenter;
+import adapter.ViewHolder;
 import background.drawable.DrawableCreator;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
 import custom.SmartView;
-import rx.Subscription;
 import util.CardUtils;
 import util.LayoutUtil;
 import util.ScreenUtils;
 
-public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLoadMoreListener {
+public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BView<?>>> implements OnRefreshLoadMoreListener {
 
-    @Presenter
-    public BPresenter<BView<M>> presenter;
-    private HeaderGridView gridView;
+
     private boolean isRefresh = true;//是否是刷新
     private CommonAdapter<M> adapter;//GridView 的适配器
+    protected HeaderGridView gridView;
     protected SmartRefreshLayout refreshLayout;
     protected SmartView mSmartView;
     protected int horizontalSpacing = 1, verticalSpacing = 1;
@@ -45,16 +41,17 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
     protected boolean showTopBar = true;
     protected int isCard = 0;//是否卡片模式 0:否  >0:间距
     protected int cardRadius = 10;//卡片圆角
-    protected int cardColor = 0x00ffffff;//卡片背景色 正常
+    protected int cardColor = 0xffffffff;//卡片背景色 正常
+    protected int cardColorPress = 0x11000000;//卡片背景色 按压
     protected int bgColor = 0xffffffff;//列表背景色
-    protected int cardPressedColor = 0x11000000;//卡片背景色 按压
+    protected int startPage = 1;//起始页码
     protected int page = 1;//页码
     protected List<M> mData = new ArrayList<>();//主列表数据
     protected int numColumns = 1;//列数
     protected String type = "";//预留参数 类型
     protected int index = 0;//预留参数 下标
     protected int itemLayoutId = R.layout.item_text;//item布局
-    protected int rippleColor = 0x33000000;//item水波纹颜色 card模式有效
+    protected int rippleColor = 0x33000000;//item水波纹颜色
 
     @Override
     public void initView() {
@@ -81,6 +78,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
         gridView.setHorizontalSpacing(ScreenUtils.dip2px(horizontalSpacing));
         gridView.setVerticalSpacing(ScreenUtils.dip2px(verticalSpacing));
         mSmartView.centerTextView.setText(title);
+        page = startPage;
     }
 
     private void initCard() {
@@ -88,21 +86,6 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
         gridView.addFooterView(new EmptySizeView(isCard / 5));
         verticalSpacing = isCard - 10;
         horizontalSpacing = verticalSpacing - (isCard / 5);
-    }
-
-    @Override
-    public void getData() {//获取数据
-        if (presenter != null) {
-            if (!presenter.sub(get())) {
-                completed();
-            }
-        } else {
-            completed();
-        }
-    }
-
-    protected Subscription get() {//数据来源
-        return null;
     }
 
     private CommonAdapter<M> initAdapter() {//初始化主列表适配器
@@ -120,7 +103,11 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
             @Override
             public void convert(ViewHolder h, M i) {//列表item的初始化 回调
                 if (isCard > 0) initCardItem(h);
-                else setBackground(h.getConvertView(),cardPressedColor,cardColor);
+                else {
+                    h.getConvertView().setBackground(background(new DrawableCreator.Builder()
+                            .setRipple(true, rippleColor))
+                            .build());
+                }
                 h.setClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -132,41 +119,31 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
         };
     }
 
-    protected void onItemClick(CommonAdapter.ViewHolder h, M i) {//列表点击监听
+    protected void onItemClick(ViewHolder h, M i) {//列表点击监听
     }
 
-    private void initCardItem(CommonAdapter.ViewHolder h) {//初始化卡片
+    private void initCardItem(ViewHolder h) {//初始化卡片
+        View contentView = getView(itemLayoutId);
         CardView cardView = h.getView(R.id.cardView);
-        cardView.addView(setForeground(getView(itemLayoutId)));
+        contentView.setBackground(background(new DrawableCreator.Builder()
+                .setRipple(true, rippleColor)
+                .setCornersRadius(ScreenUtils.dip2px(cardRadius)))
+                .build());
+        cardView.addView(contentView);
         cardView.setRadius(ScreenUtils.dip2px(cardRadius));
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) cardView.getLayoutParams();
         params.width = -1;
         params.height = -2;
-        params.setMargins(ScreenUtils.dip2px(isCard), 0, (h.getmPosition() + 1) % numColumns == 0 ? ScreenUtils.dip2px(isCard) : 0, 0);
+        params.setMargins(ScreenUtils.dip2px(isCard), 0, (h.getPosition() + 1) % numColumns == 0 ? ScreenUtils.dip2px(isCard) : 0, 0);
         cardView.setLayoutParams(params);
-        CardUtils.setCardShadowColor(cardView, getResources().getColor(R.color.start_color), getResources().getColor(R.color.end_color));
+        CardUtils.setCardShadowColor(cardView, getResources().getColor(R.color.clo_card_shadow_start), getResources().getColor(R.color.clo_card_shadow_end));
     }
 
-    @SuppressLint("NewApi")
-    protected View setForeground(View view) {//设置item的前景
-        view.setForeground(new DrawableCreator.Builder()
-                .setRipple(true, rippleColor)
-                .setCornersRadius(ScreenUtils.dip2px(isCard > 0 ? cardRadius : 0))
-                .setPressedSolidColor(cardPressedColor, cardColor)
-                .build());
-        return view;
+    protected DrawableCreator.Builder background(DrawableCreator.Builder drawableBuilder) {//设置item 的背景
+        return drawableBuilder.setPressedSolidColor(cardColorPress, cardColor);
     }
 
-    protected View setBackground(View view,int pressedSolidColor, int unPressedSolidColor) {//设置item 的背景
-        view.setBackground(new DrawableCreator.Builder()
-                .setRipple(true, rippleColor)
-                .setCornersRadius(ScreenUtils.dip2px(isCard > 0 ? cardRadius : 0))
-                .setPressedSolidColor(pressedSolidColor, unPressedSolidColor)
-                .build());
-        return view;
-    }
-
-    protected void convert(CommonAdapter.ViewHolder h, M i) {//item回调
+    protected void convert(ViewHolder h, M i) {//item回调
         if (h.getView(R.id.title) != null)
             h.setText(R.id.title, new Gson().toJson(i));
     }
@@ -181,7 +158,7 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {//刷新列表 重新获取数据
         isRefresh = true;
-        page = 1;
+        page = startPage;
         getData();
     }
 
@@ -220,5 +197,9 @@ public abstract class BSmartFragment<M> extends BFragment implements OnRefreshLo
     public void completed() {//数据加载完成 结束loading
         refreshLayout.finishLoadMore();
         refreshLayout.finishRefresh();
+    }
+
+    public HeaderGridView getGridView() {
+        return gridView;
     }
 }

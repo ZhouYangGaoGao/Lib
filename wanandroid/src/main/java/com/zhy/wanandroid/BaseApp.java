@@ -11,6 +11,7 @@ public class BaseApp extends BApp {
     protected void initApp() {
         BConfig.getConfig()
                 .setBaseUrl("https://www.wanandroid.com/")
+                .setBugLy("a0cb67e1d4")
                 .initCardView();
     }
 
