@@ -10,7 +10,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class CardUtils {
-    private static boolean inited=false;
+    private static boolean inited = false;
+
     //设置obj的成员变量
     private static void setMember(Object obj, String memberName, Object value) {
         try {
@@ -30,8 +31,8 @@ public class CardUtils {
     }
 
     public static void init() {
-        if (Build.VERSION.SDK_INT >= 21&&!inited) {
-            inited=true;
+        if (Build.VERSION.SDK_INT >= 21 && !inited) {
+            inited = true;
             try {
                 //new 一个CardViewApi17Impl
                 Constructor<?> constructor = Class.forName("androidx.cardview.widget.CardViewApi17Impl").getDeclaredConstructor();

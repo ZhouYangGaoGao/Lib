@@ -237,7 +237,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
             paint.setTextSize(textSize);
             if (maxWidth == 0)
                 maxWidth = getWidth();
-            float textViewWidth = maxWidth - getPaddingLeft() - getPaddingRight();//不包含左右padding的空间宽度
+            float textViewWidth = maxWidth - getTotalPaddingRight() - getTotalPaddingLeft();//不包含左右padding的空间宽度
             String text = getText().toString();
             float textWidth = paint.measureText(text);
             while (textWidth > textViewWidth) {

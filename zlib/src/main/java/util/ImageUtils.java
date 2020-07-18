@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory;
+import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
+import com.bumptech.glide.load.engine.cache.LruResourceCache;
 import com.bumptech.glide.module.AppGlideModule;
 
 import java.io.BufferedInputStream;
@@ -17,13 +20,20 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import base.BApp;
+
 @GlideModule
 public class ImageUtils extends AppGlideModule {
 
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
-        super.applyOptions(context, builder);
-
+        //        设置缓存大小为50mb
+        int memoryCacheSizeBytes = 1024 * 1024 * 50; // 50mb
+        //        设置内存缓存大小
+        builder.setMemoryCache(new LruResourceCache(memoryCacheSizeBytes));
+        //        根据SD卡是否可用选择是在内部缓存还是SD卡缓存
+        builder.setDiskCache(new InternalCacheDiskCacheFactory(context, BApp.app().getPackageName(), memoryCacheSizeBytes));
     }
 
     @Override
@@ -42,7 +52,6 @@ public class ImageUtils extends AppGlideModule {
     public static void loadImage(Context context, @NonNull Object model, int resourceId, ImageView imageView) {
         GlideApp.with(context).load(model).placeholder(resourceId).error(resourceId)
                 .into(imageView);
-
     }
 
 
@@ -56,9 +65,7 @@ public class ImageUtils extends AppGlideModule {
     public static void loadImage(Context context, @NonNull Object model, ImageView imageView) {
         GlideApp.with(context).load(model).thumbnail(0.5f)
                 .into(imageView);
-
     }
-
 
     public static float fold = 1;
 

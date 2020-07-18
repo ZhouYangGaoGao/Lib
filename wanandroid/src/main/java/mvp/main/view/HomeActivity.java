@@ -26,8 +26,8 @@ public class HomeActivity extends BHomeActivity implements SmartListener {
     public void beforeView() {
         drawerContentView = getView(R.layout.layout_fragment_my);
         icons = new int[]{R.drawable.ic_tab_home, R.drawable.ic_tab_square,
-                R.drawable.ic_tab_navigation, R.drawable.ic_tab_qa, R.drawable.ic_tab_tree,
-                R.drawable.ic_tab_project, R.drawable.ic_tab_public};
+                R.drawable.ic_tab_navigation, R.drawable.ic_tab_tree,
+                R.drawable.ic_tab_project,R.drawable.ic_tab_public};
     }
 
     @Override
@@ -35,6 +35,7 @@ public class HomeActivity extends BHomeActivity implements SmartListener {
         mSmartView.setBack(false);
         mSmartView.rightTextView.setRightRes(R.drawable.ic_commonly);
         mSmartView.leftTextView.setLeftRes(R.drawable.ic_list_more);
+        mSmartView.leftTextView.setRightRes(R.drawable.ic_qa);
         mSmartView.rightTextView.setLeftRes(R.drawable.ic_search);
         mSmartView.setListener(this, 0, 2);
     }
@@ -44,7 +45,6 @@ public class HomeActivity extends BHomeActivity implements SmartListener {
         return creator.add("主页", HomeFragment.class)
                 .add("广场", SquareFragment.class)
                 .add("导航", NavigationFragment.class)
-                .add("问答", QaFragment.class)
                 .add("体系", TreeFragment.class)
                 .add("项目", ProjectTabFragment.class)
                 .add("公众号", ChapterFragment.class);
@@ -54,7 +54,9 @@ public class HomeActivity extends BHomeActivity implements SmartListener {
     public void onClick(SmartView smartView, int textViewIndex, int drawableIndex) {
         switch (textViewIndex) {
             case 0:
-                EventBus.getDefault().post(new HomeActivity.DrawerEvent(true));
+                if (drawableIndex == 0)
+                    EventBus.getDefault().post(new HomeActivity.DrawerEvent(true));
+                else GoTo.start(QaFragment.class, new Intent().putExtra(BConfig.TITLE, "问答"));
                 break;
             case 2:
                 if (drawableIndex == 0)

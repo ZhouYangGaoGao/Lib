@@ -8,6 +8,7 @@ public class QaFragment extends ArticleFragment {
     @Override
     public void beforeView() {
         startPage=1;
+        showTopBar=true;
     }
 
     @Override

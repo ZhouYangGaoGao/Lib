@@ -15,6 +15,7 @@ public class FriendFragment extends ArticleFragment {
     public void beforeView() {
         numColumns = 2;
         showTopBar = true;
+        itemLayoutId = R.layout.item_text;
     }
 
     @Override

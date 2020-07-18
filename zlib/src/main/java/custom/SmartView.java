@@ -153,7 +153,7 @@ public class SmartView extends LinearLayout {
             case 2://login
                 centerEditText.setVisibility(VISIBLE);
                 if (TextUtils.isEmpty(leftText)) leftText = "手机号";
-                if (TextUtils.isEmpty(centerText)) centerText = "17600117227";
+                if (TextUtils.isEmpty(centerText)&&BuildConfig.DEBUG) centerText = "17600117227";
                 if (leftText.contains("手机")) inputType = 0;
                 if (delete) {
                     if (rrIcon == null)
@@ -169,7 +169,7 @@ public class SmartView extends LinearLayout {
             case 3://password
                 centerEditText.setVisibility(VISIBLE);
                 if (TextUtils.isEmpty(leftText)) leftText = "密码";
-                if (TextUtils.isEmpty(centerText)) centerText = "321654";
+                if (TextUtils.isEmpty(centerText)&&BuildConfig.DEBUG) centerText = "321654";
                 rrIcon = getResources().getDrawable(R.drawable.ic_eye);
                 inputType = 1;
                 rightTextView.setOnClickListener(new OnClickListener() {

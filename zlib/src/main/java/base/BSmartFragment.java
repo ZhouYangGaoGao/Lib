@@ -23,6 +23,7 @@ import background.drawable.DrawableCreator;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
 import custom.SmartView;
+import hawk.Hawk;
 import util.CardUtils;
 import util.LayoutUtil;
 import util.ScreenUtils;
@@ -39,6 +40,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     protected View heardView, footView, emptyView, topView, bottomView;
     protected boolean scrollAble = false;//* 可滑动
     protected boolean showTopBar = true;
+    protected boolean useCache = false;
     protected int isCard = 0;//是否卡片模式 0:否  >0:间距
     protected int cardRadius = 10;//卡片圆角
     protected int cardColor = 0xffffffff;//卡片背景色 正常
@@ -79,6 +81,10 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
         gridView.setVerticalSpacing(ScreenUtils.dip2px(verticalSpacing));
         mSmartView.centerTextView.setText(title);
         page = startPage;
+        if (useCache && Hawk.contains(this.getClass().getSimpleName())) {
+            mData.addAll(Hawk.get(this.getClass().getSimpleName()));
+            upData();
+        }
     }
 
     private void initCard() {
@@ -118,6 +124,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
             }
         };
     }
+
 
     protected void onItemClick(ViewHolder h, M i) {//列表点击监听
     }
@@ -182,6 +189,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     protected void upData() {//通知适配器更新数据
         if (adapter != null)
             adapter.notifyDataSetChanged();
+        if (useCache) Hawk.put(this.getClass().getSimpleName(), mData);
     }
 
     public void total(int total) {//列表总数量

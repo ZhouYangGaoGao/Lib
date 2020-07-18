@@ -55,7 +55,7 @@ public interface Api {
 
     //取消收藏 ->我的收藏  originId:列表页下发，无则为-1
     @POST("lg/uncollect/{id}/json?originId=-1")
-    Observable<BaseBean<Object>> unMyCollect(@Path(BConfig.ID) int id);
+    Observable<BaseBean<Object>> unMyCollect(@Path(BConfig.ID) int id,@Query("originId")int originId);
 
     //收藏文章列表
     @GET("lg/collect/list/{page}/json")

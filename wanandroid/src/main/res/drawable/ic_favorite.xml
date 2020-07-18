@@ -2,7 +2,7 @@
     android:width="20dp"
     android:height="20dp"
     android:autoMirrored="true"
-    android:tint="#00BCD4"
+    android:tint="@color/clo_theme"
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path

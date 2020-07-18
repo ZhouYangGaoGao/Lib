@@ -43,6 +43,7 @@
         android:textSize="@dimen/dim_source_size"
         android:layout_marginTop="5dp"
         android:drawablePadding="5dp"
+        android:tag="favorite"
         android:gravity="center_vertical"
         android:drawableLeft="@drawable/ic_favorite_border"
         android:layout_width="match_parent"

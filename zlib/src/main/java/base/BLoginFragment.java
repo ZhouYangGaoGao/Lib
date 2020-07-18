@@ -77,6 +77,7 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
         password.setVisibility(View.VISIBLE);
         login.setVisibility(View.VISIBLE);
         register.setVisibility(View.VISIBLE);
+        register.setAlpha(0.5f);
     }
 
     @Override

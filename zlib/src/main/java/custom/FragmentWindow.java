@@ -21,7 +21,7 @@ public class FragmentWindow extends PopupWindow {
         View layout = View.inflate(BApp.app().act(), contentViewId, null);
         setContentView(layout);
         setWidth(-1);
-        setHeight(-1);
+        setHeight(-2);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setOverlapAnchor(true);
         }

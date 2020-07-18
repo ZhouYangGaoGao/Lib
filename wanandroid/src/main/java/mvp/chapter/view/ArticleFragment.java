@@ -11,8 +11,10 @@ import com.zhy.wanandroid.R;
 
 import adapter.ViewHolder;
 import base.BConfig;
+import base.BResponse;
 import base.BSmartFragment;
 import base.BWebFragment;
+import base.BaseBean;
 import base.Manager;
 import base.Subs;
 import custom.SmartView;
@@ -42,24 +44,24 @@ public class ArticleFragment extends BSmartFragment<Article> {
         if (!TextUtils.isEmpty(i.getNiceShareDate()))
             tagLayout.addView(new TextView(getActivity()).setText(i.getNiceShareDate())
                     .setLayout(MLayoutParams.marginLLP(0, 0))
-                    .tagStyle(0x00000000,getResources().getColor(R.color.clo_source), 10));
+                    .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10));
 
         if (!TextUtils.isEmpty(i.getSuperChapterName()) && !TextUtils.isEmpty(i.getChapterName()))
             tagLayout.addView(new TextView(getActivity()).setText(i.getSuperChapterName() + "/" + i.getChapterName())
                     .setLayout(MLayoutParams.marginLLP(0, 0))
-                    .tagStyle(0x00000000,getResources().getColor(R.color.clo_source), 10), 0);
+                    .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10), 0);
 
         if (!TextUtils.isEmpty(i.getShareUser()))
             tagLayout.addView(new TextView(getActivity()).setText("分享人:" + i.getShareUser())
                     .setLayout(MLayoutParams.marginLLP(0, 8))
-                    .tagStyle(0x00000000,getResources().getColor(R.color.clo_source), 10), 0);
+                    .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10), 0);
 
         if (!TextUtils.isEmpty(i.getAuthor()))
             tagLayout.addView(new TextView(getActivity()).setText("作者:" + i.getAuthor())
                     .setLayout(MLayoutParams.marginLLP(0, 8))
-                    .tagStyle(0x00000000,getResources().getColor(R.color.clo_source), 10), 0);
+                    .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10), 0);
 
-        if (i.getTags().size() > 0) {
+        if (i.getTags() != null && i.getTags().size() > 0) {
             for (Article.Tag tag : i.getTags()) {
                 tagLayout.addView(new TextView(getContext())
                         .setText(tag.getName())
@@ -79,6 +81,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
         initClick(h, i, title);
     }
 
+    protected TextView tagTextView;
 
     @Override
     protected void onItemClick(ViewHolder h, Article i) {
@@ -108,15 +111,21 @@ public class ArticleFragment extends BSmartFragment<Article> {
         });
     }
 
+    protected Observable<BaseBean<Object>> unCollect(Article i){
+        return Manager.getApi().unCollect(i.getId());
+    }
+
     private void actionFavorite(Article i, ViewHolder h, TextView tv, int trueRes, int falseRes) {
-        presenter.sub(new Subs<Object>(i.isCollect() ? Manager.getApi().unCollect(i.getId())
+        presenter.sub(new Subs<Object>(i.isCollect() ? unCollect(i)
                 : Manager.getApi().collect(i.getId())) {
             @Override
             public void onSuccess(Object o) {
                 mData.get(h.getPosition()).setCollect(!i.isCollect());
                 if (tv != null)
                     tv.setLeftRes(mData.get(h.getPosition()).isCollect() ? trueRes : falseRes);
-                upData();
+                TextView listFavoriteView = h.getTagView("favorite");
+                if (listFavoriteView != null)
+                    listFavoriteView.setLeftRes(mData.get(h.getPosition()).isCollect() ? R.drawable.ic_favorite:R.drawable.ic_favorite_border);
             }
         });
     }

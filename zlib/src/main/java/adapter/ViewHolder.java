@@ -80,6 +80,12 @@ public class ViewHolder {
         return (T) view;
     }
 
+    public <T extends View> T getTagView(String tag) {
+        View view = mConvertView.findViewWithTag(tag);
+        if (view == null) return null;
+        return (T) view;
+    }
+
     public custom.TextView getTextView(int id) {
         return getView(id);
     }

@@ -43,6 +43,7 @@ public class Article {
     private boolean fresh;
     private boolean top;
     private int id;
+    private int originId;
     private String chapterName;
     private String superChapterName;
     private String title;
@@ -53,6 +54,10 @@ public class Article {
     private String shareUser;
     private String niceShareDate;
     private List<Tag> tags;
+
+    public int getOriginId() {
+        return originId;
+    }
 
     public String getShareUser() {
         return shareUser;

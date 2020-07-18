@@ -2,6 +2,7 @@ package mvp.navigation.view;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ListView;
@@ -59,8 +60,9 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
 
             @Override
             public void convert(ViewHolder h, Navigation i) {
-                h.getTextView(R.id.title).setAutoZoom(true)
-                        .setText(i.getName()).setGravity(Gravity.CENTER);
+                h.getTextView(R.id.title)
+                        .setAutoZoom(true)
+                        .setText(i.getName());
                 h.getConvertView().setBackground(MDrawable.select(0x33000000, 0xffeeeeee));
                 h.setClick(new View.OnClickListener() {
                     @Override
@@ -86,13 +88,13 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
             @Override
             public void onBindHeaderViewHolder(BaseViewHolder holder, Navigation navigation) {
                 holder.setText(R.id.title, navigation.getName());
-                holder.setBackgroundColor(R.id.title, 0x33000000);
+                holder.setBackgroundColor(R.id.title, 0xff999999);
             }
 
             @Override
             public void onBindChildViewHolder(BaseViewHolder holder, Navigation navigation, int childPosition) {
                 Article article = navigation.getArticles().get(childPosition);
-                holder.getTextView(R.id.title).setAutoZoom(true)
+                holder.getTextView(R.id.title).setEllipsize(TextUtils.TruncateAt.START,1)
                         .setMBackground(MDrawable.press(0x11000000, 0x33000000))
                         .setText(article.getTitle())
                         .setOnClickListener(new View.OnClickListener() {
