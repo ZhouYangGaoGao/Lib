@@ -38,29 +38,68 @@ public class ArticleFragment extends BSmartFragment<Article> {
     protected void convert(ViewHolder h, Article i) {
         TextView title = h.getView(R.id.title);
         title.setText(i.getTitle());
+        title.setTextClickable(false);
         title.setLeftRes(i.isCollect() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
         LinearLayout tagLayout = h.getView(R.id.tagLayout);
 
+        initDate(i, tagLayout);
+
+        initChapter(i, tagLayout);
+
+        initShare(i, tagLayout);
+
+        initAuthor(i, tagLayout);
+
+        initTags(i, tagLayout);
+
+        initFresh(i, tagLayout);
+
+        initTop(i, tagLayout);
+
+        initClick(h, i, title);
+    }
+
+    private void initDate(Article i, LinearLayout tagLayout) {
         if (!TextUtils.isEmpty(i.getNiceShareDate()))
             tagLayout.addView(new TextView(getActivity()).setText(i.getNiceShareDate())
                     .setLayout(MLayoutParams.marginLLP(0, 0))
                     .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10));
+    }
 
+    protected void initChapter(Article i, LinearLayout tagLayout) {
         if (!TextUtils.isEmpty(i.getSuperChapterName()) && !TextUtils.isEmpty(i.getChapterName()))
             tagLayout.addView(new TextView(getActivity()).setText(i.getSuperChapterName() + "/" + i.getChapterName())
                     .setLayout(MLayoutParams.marginLLP(0, 0))
                     .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10), 0);
+    }
 
+    private void initShare(Article i, LinearLayout tagLayout) {
         if (!TextUtils.isEmpty(i.getShareUser()))
             tagLayout.addView(new TextView(getActivity()).setText("分享人:" + i.getShareUser())
                     .setLayout(MLayoutParams.marginLLP(0, 8))
                     .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10), 0);
+    }
 
+    private void initAuthor(Article i, LinearLayout tagLayout) {
         if (!TextUtils.isEmpty(i.getAuthor()))
             tagLayout.addView(new TextView(getActivity()).setText("作者:" + i.getAuthor())
                     .setLayout(MLayoutParams.marginLLP(0, 8))
                     .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10), 0);
+    }
 
+    private void initTop(Article i, LinearLayout tagLayout) {
+        if (i.isTop()) tagLayout.addView(new TextView(getActivity()).setText("置顶")
+                .setLayout(MLayoutParams.marginLLP(0, 5))
+                .tagStyle(0xffff0000, 8), 0);
+    }
+
+    private void initFresh(Article i, LinearLayout tagLayout) {
+        if (i.isFresh()) tagLayout.addView(new TextView(getActivity()).setText("新")
+                .setLayout(MLayoutParams.marginLLP(0, 5))
+                .tagStyle(0xffff0000, 8), 0);
+    }
+
+    protected void initTags(Article i, LinearLayout tagLayout) {
         if (i.getTags() != null && i.getTags().size() > 0) {
             for (Article.Tag tag : i.getTags()) {
                 tagLayout.addView(new TextView(getContext())
@@ -69,24 +108,12 @@ public class ArticleFragment extends BSmartFragment<Article> {
                         .tagStyle(BConfig.get().getColorTheme(), 8), 0);
             }
         }
-
-        if (i.isFresh()) tagLayout.addView(new TextView(getActivity()).setText("新")
-                .setLayout(MLayoutParams.marginLLP(0, 5))
-                .tagStyle(0xffff0000, 8), 0);
-
-        if (i.isTop()) tagLayout.addView(new TextView(getActivity()).setText("置顶")
-                .setLayout(MLayoutParams.marginLLP(0, 5))
-                .tagStyle(0xffff0000, 8), 0);
-
-        initClick(h, i, title);
     }
-
-    protected TextView tagTextView;
 
     @Override
     protected void onItemClick(ViewHolder h, Article i) {
         GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, i.getLink()));
-        new SmartModel(R.drawable.ic_list_more, i.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
+        new SmartModel(R.drawable.ic_more_vert, i.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
             @Override
             public void onClick(SmartView sv, int viewIndex, int resIndex) {
                 if (viewIndex == 2 && resIndex == 2) {

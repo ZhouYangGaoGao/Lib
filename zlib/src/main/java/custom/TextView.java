@@ -26,6 +26,7 @@ import util.ScreenUtils;
 public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     public int drawableIndex = -1;
     private boolean isAutoZoom;
+    private boolean textClickable = true;
 
 
     public TextView(Context context) {
@@ -63,7 +64,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
                 drawableIndex = 3;
             }
         }
-        return super.onTouchEvent(event);
+        return !textClickable && drawableIndex == -1 ? false:super.onTouchEvent(event);
     }
 
     public TextView setLeftRes(int... resId) {
@@ -168,26 +169,21 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     }
 
     public TextView setRipple(int drawableIndex, int rippleColor) {
+        Drawable drawable = new DrawableCreator.Builder()
+                .setUnPressedDrawable(getCompoundDrawables()[drawableIndex])
+                .setRipple(true, rippleColor).build();
         switch (drawableIndex) {
             case 0:
-                setLeftDrawable(new DrawableCreator.Builder()
-                        .setUnPressedDrawable(getCompoundDrawables()[0])
-                        .setRipple(true, rippleColor).build());
+                setLeftDrawable(drawable);
                 break;
             case 1:
-                setTopDrawable(new DrawableCreator.Builder()
-                        .setUnPressedDrawable(getCompoundDrawables()[1])
-                        .setRipple(true, rippleColor).build());
+                setTopDrawable(drawable);
                 break;
             case 2:
-                setRightDrawable(new DrawableCreator.Builder()
-                        .setUnPressedDrawable(getCompoundDrawables()[2])
-                        .setRipple(true, rippleColor).build());
+                setRightDrawable(drawable);
                 break;
             case 3:
-                setBottomDrawable(new DrawableCreator.Builder()
-                        .setUnPressedDrawable(getCompoundDrawables()[3])
-                        .setRipple(true, rippleColor).build());
+                setBottomDrawable(drawable);
                 break;
             default:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -210,11 +206,11 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
         return this;
     }
 
-    public TextView setMarquee() {
+    public TextView setMarquee(int repeat) {
         setSingleLine();
         setHorizontalFadingEdgeEnabled(true);
         setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        setMarqueeRepeatLimit(-1);
+        setMarqueeRepeatLimit(repeat);
         return this;
     }
 
@@ -284,9 +280,9 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
         setBackground(MDrawable.tag(clo, 1));
         setTextSize(sizeSp);
         if (clo == 0)
-                setPadding(0, ScreenUtils.dip2px(1), 0, ScreenUtils.dip2px(1));
-            else
-                setPadding(ScreenUtils.dip2px(4), ScreenUtils.dip2px(1), ScreenUtils.dip2px(4), ScreenUtils.dip2px(1));
+            setPadding(0, ScreenUtils.dip2px(1), 0, ScreenUtils.dip2px(1));
+        else
+            setPadding(ScreenUtils.dip2px(4), ScreenUtils.dip2px(1), ScreenUtils.dip2px(4), ScreenUtils.dip2px(1));
         setTextColor(clo);
         return this;
     }
@@ -294,5 +290,9 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     public TextView setLayout(ViewGroup.LayoutParams layout) {
         setLayoutParams(layout);
         return this;
+    }
+
+    public void setTextClickable(boolean textClickable) {
+        this.textClickable = textClickable;
     }
 }

@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         app:leftText="姓名"
-        app:lrIcon="@drawable/ic_person"
+        app:lrIcon="@drawable/ic_menu"
         app:mode="login"
         app:onlyIcon="true" />
 

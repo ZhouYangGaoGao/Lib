@@ -1,5 +1,6 @@
 package base;
 
+import android.annotation.SuppressLint;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -36,6 +37,7 @@ public class BHomeActivity extends BActivity<Object,BPresenter<BView<?>>> implem
         useEventBus = true;
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void initView() {
         mDrawerLayout = findViewById(R.id.mDrawerLayout);
@@ -50,6 +52,7 @@ public class BHomeActivity extends BActivity<Object,BPresenter<BView<?>>> implem
         mTabLayout.setOnPageChangeListener(this);
         mViewPager.setOffscreenPageLimit(mViewPager.getAdapter().getCount());
         mSmartView.centerTextView.setText(mViewPager.getAdapter().getPageTitle(0));
+        StatusBarUtil.setTranslucentForImageViewInFragment(this,0,mSmartView);
         for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
             TextView textView = (TextView) mTabLayout.getTabAt(i);
             textView.setCompoundDrawablesWithIntrinsicBounds(0, icons[i], 0, 0);

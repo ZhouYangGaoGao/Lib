@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mDrawerLayout"
     android:layout_width="match_parent"
+    android:background="@color/clo_theme"
     android:layout_height="match_parent">
 
     <custom.SmartView
@@ -17,16 +18,17 @@
             android:id="@+id/mViewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/white"
             android:layout_weight="1" />
 
         <com.ogaclejapan.smarttablayout.SmartTabLayout
             android:id="@+id/mTabLayout"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:elevation="3dp"
             android:layout_marginTop="-3dp"
-            app:stl_defaultTabTextAllCaps="false"
             android:background="@color/clo_tab_bg"
+            android:elevation="3dp"
+            app:stl_defaultTabTextAllCaps="false"
             app:stl_defaultTabTextColor="@color/tab_colors"
             app:stl_defaultTabTextSize="@dimen/dim_tab_size"
             app:stl_distributeEvenly="true"

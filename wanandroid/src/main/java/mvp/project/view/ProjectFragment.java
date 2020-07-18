@@ -1,5 +1,8 @@
 package mvp.project.view;
 
+import android.view.View;
+import android.widget.LinearLayout;
+
 import com.zhy.wanandroid.R;
 
 import adapter.ViewHolder;
@@ -20,13 +23,18 @@ public class ProjectFragment extends ArticleFragment {
     @Override
     protected void convert(ViewHolder h, Article i) {
         h.setImage(R.id.iv_cover, i.getEnvelopePic());
-        h.setText(R.id.tv_title, i.getTitle());
         h.setText(R.id.tv_description, i.getDesc());
-        TextView time=h.getTextView(R.id.tv_time);
-        time.setText(i.getNiceShareDate() + "            " + i.getAuthor());
-        time.setLeftRes(i.isCollect() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
-        initClick(h,i,h.getTextView(R.id.tv_time));
+        h.setVisibility(R.id.tv_description, View.VISIBLE);
+        super.convert(h,i);
     }
+
+    @Override
+    protected void initChapter(Article i, LinearLayout tagLayout) {
+    }
+
+//    @Override
+//    protected void initTags(Article i, LinearLayout tagLayout) {
+//    }
 
     @Override
     protected Observable<?> get() {

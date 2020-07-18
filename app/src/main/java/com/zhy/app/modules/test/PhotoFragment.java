@@ -461,7 +461,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,
         // 相册文件夹列表选中圆点
         mPictureParameterStyle.pictureFolderCheckedDotStyle = R.drawable.picture_orange_oval;
         // 相册返回箭头
-        mPictureParameterStyle.pictureLeftBackIcon = R.drawable.picture_icon_back;
+        mPictureParameterStyle.pictureLeftBackIcon = R.drawable.ic_arrow_back;
         // 标题栏字体颜色
         mPictureParameterStyle.pictureTitleTextColor = ContextCompat.getColor(getContext(), R.color.app_color_white);
         // 相册右侧取消按钮字体颜色

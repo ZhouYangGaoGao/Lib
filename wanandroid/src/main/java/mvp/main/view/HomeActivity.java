@@ -34,7 +34,7 @@ public class HomeActivity extends BHomeActivity implements SmartListener {
     public void afterView() {
         mSmartView.setBack(false);
         mSmartView.rightTextView.setRightRes(R.drawable.ic_commonly);
-        mSmartView.leftTextView.setLeftRes(R.drawable.ic_list_more);
+        mSmartView.leftTextView.setLeftRes(R.drawable.ic_menu);
         mSmartView.leftTextView.setRightRes(R.drawable.ic_qa);
         mSmartView.rightTextView.setLeftRes(R.drawable.ic_search);
         mSmartView.setListener(this, 0, 2);

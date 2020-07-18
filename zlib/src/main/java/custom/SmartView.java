@@ -141,7 +141,7 @@ public class SmartView extends LinearLayout {
                 if (measure == 0) measure = MEASURE_MAX;
                 centerEditText.setVisibility(GONE);
                 centerTextView.setVisibility(VISIBLE);
-                centerTextView.setMarquee();
+                centerTextView.setMarquee(1);
                 hideLine = true;
                 break;
             case 1://search
