@@ -343,9 +343,9 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,
         // 是否开启类似QQ相册带数字选择风格
         mPictureParameterStyle.isOpenCheckNumStyle = false;
         // 相册状态栏背景色
-        mPictureParameterStyle.pictureStatusBarColor = BConfig.getConfig().getColorTheme();
+        mPictureParameterStyle.pictureStatusBarColor = BConfig.get().getColorTheme();
         // 相册列表标题栏背景色
-        mPictureParameterStyle.pictureTitleBarBackgroundColor = BConfig.getConfig().getColorTheme();
+        mPictureParameterStyle.pictureTitleBarBackgroundColor = BConfig.get().getColorTheme();
         // 相册列表标题栏右侧上拉箭头
         mPictureParameterStyle.pictureTitleUpResId = R.drawable.picture_icon_arrow_up;
         // 相册列表标题栏右侧下拉箭头
@@ -381,8 +381,8 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,
 
         // 裁剪主题
         mCropParameterStyle = new PictureCropParameterStyle(
-                BConfig.getConfig().getColorTheme(),
-                BConfig.getConfig().getColorTheme(),
+                BConfig.get().getColorTheme(),
+                BConfig.get().getColorTheme(),
                 ContextCompat.getColor(getContext(), R.color.app_color_white),
                 mPictureParameterStyle.isChangeStatusBarFontColor);
     }

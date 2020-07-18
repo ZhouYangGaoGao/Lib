@@ -101,12 +101,12 @@ public class RetrofitHelper {
                 .writeTimeout(55, TimeUnit.SECONDS)
                 .sslSocketFactory(SSLSocketClient.getSSLSocketFactory())
                 .hostnameVerifier(SSLSocketClient.getHostnameVerifier())
-                .cookieJar(BConfig.getConfig().getCookieJar())
-                .addInterceptor(interceptor == null ? BConfig.getConfig().getInterceptor() : interceptor)
+                .cookieJar(BConfig.get().getCookieJar())
+                .addInterceptor(interceptor == null ? BConfig.get().getInterceptor() : interceptor)
                 .build();
 
         return new Retrofit.Builder()
-                .baseUrl(TextUtils.isEmpty(baseUrl) ? BConfig.getConfig().getBaseUrl() : baseUrl)
+                .baseUrl(TextUtils.isEmpty(baseUrl) ? BConfig.get().getBaseUrl() : baseUrl)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

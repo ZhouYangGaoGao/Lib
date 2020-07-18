@@ -6,32 +6,28 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import com.zhy.wanandroid.R;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import base.BConfig;
 import base.BHomeActivity;
-import base.BWebFragment;
 import custom.SmartView;
 import listener.SmartListener;
 import mvp.chapter.view.ChapterFragment;
-import mvp.home.view.BannerFragment;
 import mvp.home.view.FriendFragment;
 import mvp.home.view.HomeFragment;
-import mvp.main.view.MyFragment;
 import mvp.navigation.view.NavigationFragment;
-import mvp.project.view.ProjectFragment;
 import mvp.project.view.ProjectTabFragment;
+import mvp.qa.view.QaFragment;
+import mvp.square.view.SquareFragment;
 import mvp.tree.view.TreeFragment;
-import util.BundleCreator;
 import util.GoTo;
 
 public class HomeActivity extends BHomeActivity implements SmartListener {
     @Override
     public void beforeView() {
         drawerContentView = getView(R.layout.layout_fragment_my);
-        icons = new int[]{R.drawable.ic_tab_home,
-                R.drawable.ic_tab_tree, R.drawable.ic_tab_navigation,
-                R.drawable.ic_tab_public, R.drawable.ic_tab_project};
+        icons = new int[]{R.drawable.ic_tab_home, R.drawable.ic_tab_square,
+                R.drawable.ic_tab_navigation, R.drawable.ic_tab_qa, R.drawable.ic_tab_tree,
+                R.drawable.ic_tab_project, R.drawable.ic_tab_public};
     }
 
     @Override
@@ -40,17 +36,18 @@ public class HomeActivity extends BHomeActivity implements SmartListener {
         mSmartView.rightTextView.setRightRes(R.drawable.ic_commonly);
         mSmartView.leftTextView.setLeftRes(R.drawable.ic_list_more);
         mSmartView.rightTextView.setLeftRes(R.drawable.ic_search);
-        mSmartView.rightTextView.setDrawablePadding(8);
-        mSmartView.setListener(this,0,2);
+        mSmartView.setListener(this, 0, 2);
     }
 
     @Override
     protected FragmentPagerItems.Creator initFragments(FragmentPagerItems.Creator creator) {
         return creator.add("主页", HomeFragment.class)
-                .add("体系", TreeFragment.class)
+                .add("广场", SquareFragment.class)
                 .add("导航", NavigationFragment.class)
-                .add("公号", ChapterFragment.class)
-                .add("项目", ProjectTabFragment.class);
+                .add("问答", QaFragment.class)
+                .add("体系", TreeFragment.class)
+                .add("项目", ProjectTabFragment.class)
+                .add("公众号", ChapterFragment.class);
     }
 
     @Override

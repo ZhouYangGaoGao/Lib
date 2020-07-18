@@ -1,6 +1,9 @@
 package base;
 
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
+
+import com.zhy.android.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,10 +54,10 @@ public class BConfig {
     private String bugLy;
     private Object webInterface;
     private boolean fullScreen = false;
-    private int colorTheme = 0xff36C177;
+    private int colorTheme;
     private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 
-    public static BConfig getConfig() {
+    public static BConfig get() {
         if (config == null)
             config = new BConfig();
         return config;
@@ -91,8 +94,9 @@ public class BConfig {
     }
 
 
+    @SuppressLint("NewApi")
     public int getColorTheme() {
-        return colorTheme;
+        return colorTheme == 0 ? BApp.app().getColor(R.color.clo_theme) : colorTheme;
     }
 
     public boolean isFullScreen() {
@@ -196,5 +200,14 @@ public class BConfig {
     public BConfig setOrientation(int orientation) {
         this.orientation = orientation;
         return config;
+    }
+
+    public boolean isNoColor() {
+        return Hawk.get("noColor",false);
+    }
+
+    public BConfig setNoColor(boolean noColor) {
+        Hawk.put("noColor",noColor);
+        return this;
     }
 }

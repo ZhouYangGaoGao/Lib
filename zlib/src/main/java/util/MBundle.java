@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
-public class BundleCreator {
+public class MBundle {
 
     public static Bundle create(Object... keyValues) {
         if (keyValues.length % 2 == 1) {

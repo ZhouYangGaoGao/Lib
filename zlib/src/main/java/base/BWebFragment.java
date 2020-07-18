@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -21,12 +20,8 @@ import com.zhy.android.R;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.InputStream;
-
 import custom.SmartView;
 import listener.SmartModel;
-import okhttp3.ResponseBody;
-import util.RexUtils;
 
 /**
  * 通用网页
@@ -65,7 +60,7 @@ public class BWebFragment extends BFragment {
         if (TextUtils.isEmpty(tmpUrl)) {
             tmpUrl = BuildConfig.DEBUG ? "https://www.baidu.com/" : "url为空";
         }
-        log(tmpUrl = tmpUrl + (tmpUrl.contains("?") ? "&" : "?") + "token=" + BConfig.getConfig().getToken() + "&time=" + System.currentTimeMillis());
+        log(tmpUrl);
         String finalTitle = title;
         WebChromeClient webChromeClient = new WebChromeClient() {
             @Override
@@ -100,14 +95,12 @@ public class BWebFragment extends BFragment {
 
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                        log(BConfig.URL, request.getUrl().toString());
                         if (!request.getUrl().toString().contains("http")) return true;
                         return super.shouldOverrideUrlLoading(view, request);
                     }
 
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        log("0" + BConfig.URL, url);
                         if (!url.contains("http")) return true;
                         return super.shouldOverrideUrlLoading(view, url);
                     }
@@ -115,7 +108,7 @@ public class BWebFragment extends BFragment {
                 .setWebChromeClient(webChromeClient)
                 .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
                 .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-                .addJavascriptInterface(BConfig.ANDROID, BConfig.getConfig().getWebInterface())
+                .addJavascriptInterface(BConfig.ANDROID, BConfig.get().getWebInterface())
                 .createAgentWeb()
                 .ready()
                 .go(tmpUrl);

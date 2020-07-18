@@ -372,11 +372,15 @@
     </declare-styleable>
 
     <declare-styleable name="SubsamplingScaleImageView">
-        <attr name="src" format="reference"/>
+        <attr name="android:src"/>
         <attr name="assetName" format="string"/>
         <attr name="panEnabled" format="boolean"/>
         <attr name="zoomEnabled" format="boolean"/>
         <attr name="quickScaleEnabled" format="boolean"/>
         <attr name="tileBackgroundColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="ImageViewCard">
+        <attr name="android:src"/>
     </declare-styleable>
 </resources>

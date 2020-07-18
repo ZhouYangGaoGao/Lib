@@ -130,6 +130,10 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public custom.TextView getTextView(int id) {
+        return get(id);
+    }
+
     public View getConvertView() {
         return mViews.get(position);
     }

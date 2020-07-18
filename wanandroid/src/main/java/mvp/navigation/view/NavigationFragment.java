@@ -2,6 +2,7 @@ package mvp.navigation.view;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ListView;
 
@@ -24,6 +25,7 @@ import base.BPresenter;
 import base.BView;
 import base.BWebFragment;
 import base.Manager;
+import base.Subs;
 import butterknife.BindView;
 import custom.SmartView;
 import custom.TextView;
@@ -34,6 +36,7 @@ import photopicker.lib.decoration.GridSpacingItemDecoration;
 import rx.Observable;
 import util.Dialogs;
 import util.GoTo;
+import util.MDrawable;
 import util.ScreenUtils;
 
 public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<BView<?>>> {
@@ -56,12 +59,9 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
 
             @Override
             public void convert(ViewHolder h, Navigation i) {
-                TextView title = h.getView(R.id.title);
-                title.setText(i.getName());
-                title.setAutoZoom(true);
-                title.setSingleLine();
-                h.getConvertView().setBackground(new DrawableCreator.Builder().setSelectedSolidColor(
-                        0xffeeeeee, 0x33000000).build());
+                h.getTextView(R.id.title).setAutoZoom(true)
+                        .setText(i.getName()).setGravity(Gravity.CENTER);
+                h.getConvertView().setBackground(MDrawable.select(0x33000000, 0xffeeeeee));
                 h.setClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -92,33 +92,36 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
             @Override
             public void onBindChildViewHolder(BaseViewHolder holder, Navigation navigation, int childPosition) {
                 Article article = navigation.getArticles().get(childPosition);
-                TextView textView = holder.get(R.id.title);
-                textView.setAutoZoom(true);
-                textView.setSingleLine();
-                textView.setBackground(new DrawableCreator.Builder().setPressedSolidColor(
-                        0x33000000, 0x11000000).build());
-                textView.setText(article.getTitle());
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, article.getLink()));
-                        new SmartModel(R.drawable.ic_list_more, R.drawable.ic_favorite_white_border) {
+                holder.getTextView(R.id.title).setAutoZoom(true)
+                        .setMBackground(MDrawable.press(0x11000000, 0x33000000))
+                        .setText(article.getTitle())
+                        .setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(SmartView sv, int viewIndex, int resIndex) {
-                                if (viewIndex == 2 && resIndex == 2) {
-                                    showDialog(article);
-                                } else if (viewIndex == 2 && resIndex == 0) {
-                                    toast("请先登录");
-                                }
+                            public void onClick(View v) {
+                                GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, article.getLink()));
+                                new SmartModel(R.drawable.ic_list_more, article.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
+                                    @Override
+                                    public void onClick(SmartView sv, int viewIndex, int resIndex) {
+                                        if (viewIndex == 2 && resIndex == 2) {
+                                            showDialog(article);
+                                        } else if (viewIndex == 2 && resIndex == 0) {
+                                            presenter.sub(new Subs<Object>(article.isCollect() ? Manager.getApi().unCollect(article.getId())
+                                                    : Manager.getApi().collect(article.getId())) {
+                                                @Override
+                                                public void onSuccess(Object o) {
+                                                    navigation.getArticles().get(childPosition).setCollect(!article.isCollect());
+                                                    sv.getTVs()[2].setLeftRes(navigation.getArticles().get(childPosition).isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border);
+                                                }
+                                            });
+                                        }
+                                    }
+                                };
                             }
-                        };
-                    }
-                });
+                        });
             }
         });
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, ScreenUtils.dip2px(1), false));
         mRecyclerView.setLayoutManager(layoutManager = new GridLayoutManager(getContext(), 2, adapter));
-
     }
 
     private void showDialog(Article article) {

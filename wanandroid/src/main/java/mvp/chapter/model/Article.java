@@ -2,6 +2,8 @@ package mvp.chapter.model;
 
 import android.text.TextUtils;
 
+import java.util.List;
+
 public class Article {
     /**
      * apkLink :
@@ -38,13 +40,31 @@ public class Article {
      * zan : 0
      */
     private boolean collect;
+    private boolean fresh;
+    private boolean top;
     private int id;
+    private String chapterName;
+    private String superChapterName;
     private String title;
     private String link;
     private String envelopePic;
     private String desc;
     private String author;
+    private String shareUser;
     private String niceShareDate;
+    private List<Tag> tags;
+
+    public String getShareUser() {
+        return shareUser;
+    }
+
+    public String getChapterName() {
+        return chapterName;
+    }
+
+    public String getSuperChapterName() {
+        return superChapterName;
+    }
 
     public String getNiceShareDate() {
         return niceShareDate;
@@ -58,8 +78,16 @@ public class Article {
         return link;
     }
 
+    public boolean isTop() {
+        return top;
+    }
+
+    public void setTop(boolean top) {
+        this.top = top;
+    }
+
     public String getTitle() {
-        return TextUtils.isEmpty(title) ? name : title;
+        return TextUtils.isEmpty(title) ? getName() : title;
     }
 
     public boolean isCollect() {
@@ -82,6 +110,13 @@ public class Article {
         return author;
     }
 
+    public boolean isFresh() {
+        return fresh;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
 
     /**
      * 常用网站
@@ -117,6 +152,25 @@ public class Article {
     }
     public String getUrl() {
         return url;
+    }
+
+    public static class Tag {
+
+        /**
+         * name : 问答
+         * url : /wenda
+         */
+
+        private String name;
+        private String url;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getUrl() {
+            return url;
+        }
     }
 
 

@@ -30,8 +30,8 @@ import util.ScreenUtils;
 public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BView<?>>> implements OnRefreshLoadMoreListener {
 
 
-    private boolean isRefresh = true;//是否是刷新
     private CommonAdapter<M> adapter;//GridView 的适配器
+    protected boolean isRefresh = true;//是否是刷新
     protected HeaderGridView gridView;
     protected SmartRefreshLayout refreshLayout;
     protected SmartView mSmartView;

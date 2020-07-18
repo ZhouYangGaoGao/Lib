@@ -7,7 +7,7 @@ import base.BTabsFragment;
 import base.Manager;
 import mvp.tree.model.Tree;
 import rx.Observable;
-import util.BundleCreator;
+import util.MBundle;
 
 /**
  * @author ZhouYang
@@ -26,7 +26,7 @@ public class ChapterFragment extends BTabsFragment<List<Tree>> {
     @Override
     public void success(List<Tree> data) {
         for (Tree chapter: data) {
-            creator.add(chapter.getName(), ArticleFragment.class, BundleCreator.create(BConfig.ID,chapter.getId()));
+            creator.add(chapter.getName(), ArticleFragment.class, MBundle.create(BConfig.ID,chapter.getId()));
         }
         initFragments();
     }

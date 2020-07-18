@@ -7,7 +7,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class Timer extends Observable<Long> {
+public class MTimer extends Observable<Long> {
 
     /**
      * Creates an Observable with a Function to execute when it is subscribed to.
@@ -17,7 +17,7 @@ public class Timer extends Observable<Long> {
      *
      * @param f {@link OnSubscribe} to be executed when  is called
      */
-    protected Timer(OnSubscribe<Long> f) {
+    protected MTimer(OnSubscribe<Long> f) {
         super(f);
     }
 

@@ -16,7 +16,7 @@ public class BaseApp extends BApp {
     @Override
     protected void initApp() {
         LoginModel loginModel = Hawk.get(Constant.LOGIN);
-        BConfig.getConfig().setBaseUrl("https://www.ahlzz.com/api/")
+        BConfig.get().setBaseUrl("https://www.ahlzz.com/api/")
                 .setClient("cms")
                 .setFullScreen(true)
                 .setBugLy("5c1d24a237")

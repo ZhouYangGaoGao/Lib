@@ -9,7 +9,7 @@ public class BaseApp extends BApp {
 
     @Override
     protected void initApp() {
-        BConfig.getConfig().setBaseUrl("https://www.ahlzz.com/api/")
+        BConfig.get().setBaseUrl("https://www.ahlzz.com/api/")
                 .setClient("cms")
                 .setBugLy("59f02d25c2")
                 .setOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)

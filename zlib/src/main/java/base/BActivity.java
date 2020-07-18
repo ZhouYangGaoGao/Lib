@@ -1,6 +1,9 @@
 package base;
 
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -37,7 +40,7 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         statusBarColor = getResources().getColor(R.color.clo_status_bar);
-        isFullScreen = BConfig.getConfig().isFullScreen();
+        isFullScreen = BConfig.get().isFullScreen();
         super.onCreate(savedInstanceState);
         beforeView();
         if (useEventBus) HermesEventBus.getDefault().register(this);
@@ -49,6 +52,20 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
         ButterKnife.bind(this);
         if (slidFinish) Slidr.attach(this, new SlidrConfig.Builder().edge(true).build());
         initView();
+        noColor();
+    }
+
+    public void noColor() {
+        Paint paint = getPaint();
+        getWindow().getDecorView().setLayerType(View.LAYER_TYPE_HARDWARE, BConfig.get().isNoColor() ? paint : null);
+    }
+
+    private Paint getPaint() {
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        return paint;
     }
 
     @Override

@@ -19,18 +19,20 @@
             android:scaleType="centerCrop"
             android:layout_height="200dp"/>
 
-        <background.view.BLImageView
+        <custom.ImageViewCard
             android:id="@+id/mIcon"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerInParent="true"
             android:layout_marginTop="50dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher" />
+            app:cardPreventCornerOverlap="false"
+            app:cardBackgroundColor="@color/picture_color_transparent"
+            app:cardCornerRadius="50dp"
+            android:src="@drawable/ic_launcher"/>
 
         <custom.TextView
             android:layout_width="wrap_content"
-            android:id="@+id/mPhone"
+            android:id="@+id/mName"
             android:text="17600117227"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"

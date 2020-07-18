@@ -15,6 +15,7 @@ import android.text.style.ImageSpan;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -79,9 +80,14 @@ public class ViewHolder {
         return (T) view;
     }
 
-    public custom.TextView getTextView(int id){
+    public custom.TextView getTextView(int id) {
         return getView(id);
     }
+
+    public LinearLayout getLinearLayout(int id) {
+        return getView(id);
+    }
+
     /**
      * 为TextView设置字符串
      *
@@ -98,6 +104,7 @@ public class ViewHolder {
 
     /**
      * 设置HTML格式text
+     *
      * @param viewId
      * @param text
      * @return

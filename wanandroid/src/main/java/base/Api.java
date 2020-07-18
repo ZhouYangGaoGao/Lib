@@ -29,6 +29,9 @@ public interface Api {
     @GET("user/logout/json")
     Observable<BaseBean<Object>> logout();
 
+    @GET("article/top/json")
+    Observable<BaseBean<List<Article>>> top();
+
     @GET("article/list/{page}/json")
     Observable<BaseBean<MList<Article>>> list(@Path(BConfig.PAGE) int page);
 
@@ -66,6 +69,12 @@ public interface Api {
 
     @GET("project/list/{page}/json")
     Observable<BaseBean<MList<Article>>> projects(@Path(BConfig.PAGE) int page, @Query("cid") int cid);
+
+    @GET("wenda/list/{page}/json")
+    Observable<BaseBean<MList<Article>>> qa(@Path(BConfig.PAGE) int page);
+
+    @GET("user_article/list/{page}/json")
+    Observable<BaseBean<MList<Article>>> square(@Path(BConfig.PAGE) int page);
 
     @GET("wxarticle/chapters/json")
     Observable<BaseBean<List<Tree>>> chapters();

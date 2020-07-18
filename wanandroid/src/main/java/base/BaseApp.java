@@ -21,7 +21,7 @@ public class BaseApp extends BApp {
     @Override
     protected void initApp() {
         setUser(Hawk.get(BConfig.LOGIN));
-        BConfig.getConfig()
+        BConfig.get()
                 .setBaseUrl("https://www.wanandroid.com/")
                 .setBugLy("a0cb67e1d4")
                 .setInterceptor(new Interceptor())

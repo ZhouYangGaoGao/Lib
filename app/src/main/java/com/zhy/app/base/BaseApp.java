@@ -19,7 +19,7 @@ public class BaseApp extends BApp {
     @Override
     protected void initApp() {
         LoginModel user = Hawk.get(BConfig.LOGIN);
-        BConfig.getConfig().setBaseUrl("https://www.ahlzz.com/api/")
+        BConfig.get().setBaseUrl("https://www.ahlzz.com/api/")
                 .setClient("cms")
                 .initCardView()
                 .setToken(user==null?"0":(user.getToken()+""));

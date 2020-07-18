@@ -16,7 +16,7 @@ public class LoginFragment extends BLoginFragment<LoginModel> {
         return new Subs<LoginModel>(this, Manager.get().login(phone, password)){
             @Override
             public void onSuccess(LoginModel loginModel) {
-                BConfig.getConfig().setToken(loginModel.getToken());
+                BConfig.get().setToken(loginModel.getToken());
                 success(loginModel);
             }
         };

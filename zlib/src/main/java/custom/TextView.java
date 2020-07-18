@@ -10,13 +10,17 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.textservice.TextInfo;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import background.drawable.DrawableCreator;
 import background.drawable.DrawableFactory;
+import util.MDrawable;
 import util.ScreenUtils;
 
 public class TextView extends androidx.appcompat.widget.AppCompatTextView {
@@ -76,7 +80,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     }
 
     private Drawable getDrawable(Drawable... drawable) {
-        if (drawable.length == 9) return null;
+        if (drawable.length == 0) return null;
         if (drawable.length > 1) {
             return new DrawableCreator.Builder()
                     .setPressedDrawable(drawable[0])
@@ -119,7 +123,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
         return this;
     }
 
-    public void setRes(int drawableIndex, int resId) {
+    public TextView setRes(int drawableIndex, int resId) {
         switch (drawableIndex) {
             case 0:
                 setLeftRes(resId);
@@ -134,21 +138,36 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
                 setBottomRes(resId);
                 break;
         }
+        return this;
     }
 
-    public void setAutoZoom(boolean autoZoom) {
+    public TextView setTextRes(int res) {
+        super.setText(res);
+        return this;
+    }
+
+    public TextView setText(String text) {
+        super.setText(text);
+        return this;
+    }
+
+    public TextView setAutoZoom(boolean autoZoom, int... lines) {
         isAutoZoom = autoZoom;
+        if (lines.length > 0) setMaxLines(lines[0]);
+        else if (autoZoom) setSingleLine();
+        return this;
     }
 
-    public void setRipple(int rippleColor) {
+    public TextView setRipple(int rippleColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setForeground(new DrawableCreator.Builder()
                     .setPressedSolidColor(0x11ffffff, 0x00ffffff)
                     .setRipple(true, rippleColor).build());
         }
+        return this;
     }
 
-    public void setRipple(int drawableIndex, int rippleColor) {
+    public TextView setRipple(int drawableIndex, int rippleColor) {
         switch (drawableIndex) {
             case 0:
                 setLeftDrawable(new DrawableCreator.Builder()
@@ -175,14 +194,33 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
                     setRipple(rippleColor);
                 }
         }
+        return this;
     }
 
+    public TextView setEllipsize(TextUtils.TruncateAt where, int... lines) {
+        if (lines.length > 0) {
+            setMaxLines(lines[0]);
+        }
+        if (where.equals(TextUtils.TruncateAt.MARQUEE)) {
+            setSingleLine();
+            setHorizontalFadingEdgeEnabled(true);
+            setMarqueeRepeatLimit(-1);
+        }
+        super.setEllipsize(where);
+        return this;
+    }
 
-    public void setMarquee() {
+    public TextView setMarquee() {
         setSingleLine();
         setHorizontalFadingEdgeEnabled(true);
         setEllipsize(TextUtils.TruncateAt.MARQUEE);
         setMarqueeRepeatLimit(-1);
+        return this;
+    }
+
+    public TextView setMBackground(Drawable background) {
+        super.setBackground(background);
+        return this;
     }
 
     @Override
@@ -215,7 +253,46 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
         super.onDraw(canvas);
     }
 
-    public void setDrawablePadding(int dp) {
+    public TextView setDrawablePadding(int dp) {
         setCompoundDrawablePadding(ScreenUtils.dip2px(dp));
+        return this;
+    }
+
+    public TextView tagStyle(int cloStroke, int cloText, int sizeSp) {
+        setBackground(MDrawable.tag(cloStroke, 2));
+        setTextSize(sizeSp);
+        if (cloStroke == 0)
+            setPadding(0, ScreenUtils.dip2px(1), 0, ScreenUtils.dip2px(1));
+        else
+            setPadding(ScreenUtils.dip2px(4), ScreenUtils.dip2px(1), ScreenUtils.dip2px(4), ScreenUtils.dip2px(1));
+        setTextColor(cloText);
+        return this;
+    }
+
+    public TextView tagStyle(int cloStroke, int cloText, int radius, int sizeSp) {
+        setBackground(MDrawable.tag(cloStroke, radius));
+        setTextSize(sizeSp);
+        if (cloStroke == 0)
+            setPadding(0, ScreenUtils.dip2px(1), 0, ScreenUtils.dip2px(1));
+        else
+            setPadding(ScreenUtils.dip2px(4), ScreenUtils.dip2px(1), ScreenUtils.dip2px(4), ScreenUtils.dip2px(1));
+        setTextColor(cloText);
+        return this;
+    }
+
+    public TextView tagStyle(int clo, int sizeSp) {
+        setBackground(MDrawable.tag(clo, 1));
+        setTextSize(sizeSp);
+        if (clo == 0)
+                setPadding(0, ScreenUtils.dip2px(1), 0, ScreenUtils.dip2px(1));
+            else
+                setPadding(ScreenUtils.dip2px(4), ScreenUtils.dip2px(1), ScreenUtils.dip2px(4), ScreenUtils.dip2px(1));
+        setTextColor(clo);
+        return this;
+    }
+
+    public TextView setLayout(ViewGroup.LayoutParams layout) {
+        setLayoutParams(layout);
+        return this;
     }
 }

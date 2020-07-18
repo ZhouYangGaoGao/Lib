@@ -10,7 +10,7 @@ import base.Manager;
 import mvp.chapter.view.ArticleFragment;
 import mvp.tree.model.Tree;
 import rx.Observable;
-import util.BundleCreator;
+import util.MBundle;
 
 public class TreeTabFragment extends BTabsFragment<Tree> {
 
@@ -21,7 +21,7 @@ public class TreeTabFragment extends BTabsFragment<Tree> {
         List<Tree> trees = getIntent().getParcelableArrayListExtra(BConfig.TABS);
         if (trees == null || trees.size() == 0) return;
         for (Tree tree : trees) {
-            creator.add(tree.getName(), TreeArticleFragment.class, BundleCreator.create(BConfig.ID, tree.getId()));
+            creator.add(tree.getName(), TreeArticleFragment.class, MBundle.create(BConfig.ID, tree.getId()));
         }
         initFragments();
     }

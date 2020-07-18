@@ -19,10 +19,9 @@ public class FriendFragment extends ArticleFragment {
 
     @Override
     protected void convert(ViewHolder h, Article i) {
-        TextView title = h.getView(R.id.title);
-        title.setSingleLine();
-        title.setAutoZoom(true);
-        title.setText(i.getTitle());
+        h.getTextView(R.id.title)
+                .setAutoZoom(true)
+                .setText(i.getTitle());
     }
 
     @Override

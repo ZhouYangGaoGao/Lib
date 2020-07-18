@@ -35,7 +35,7 @@ import listener.SmartListener;
 import listener.SmartModel;
 import rx.Subscription;
 import util.RexUtils;
-import util.Timer;
+import util.MTimer;
 
 public class SmartView extends LinearLayout {
     public TextView leftTextView, centerTextView, rightTextView;
@@ -73,7 +73,7 @@ public class SmartView extends LinearLayout {
         TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.SmartView);
         int orientation = t.getInt(R.styleable.SmartView_android_orientation, 0);
         float height = t.getFloat(R.styleable.SmartView_defHeight, -2);
-        float iconPadding = t.getFloat(R.styleable.SmartView_icoPadding, 10);
+        float iconPadding = t.getFloat(R.styleable.SmartView_icoPadding, 8);
         float bigTextSize = t.getFloat(R.styleable.SmartView_bigTextSize, 16);
         float smallTextSize = t.getFloat(R.styleable.SmartView_smallTextSize, bigTextSize - 5);
         centerVMargin = t.getFloat(R.styleable.SmartView_centerVMargin, 5);
@@ -195,7 +195,7 @@ public class SmartView extends LinearLayout {
                 if (TextUtils.isEmpty(rightText))
                     rightText = getContext().getString(R.string.str_get_captcha);
                 inputType = 0;
-                textRColor = BConfig.getConfig().getColorTheme();
+                textRColor = BConfig.get().getColorTheme();
                 rightTextView.setPadding(dip2px(8), dip2px(3), dip2px(8), dip2px(3));
                 RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) rightTextView.getLayoutParams();
                 rlp.height = -2;
@@ -514,7 +514,7 @@ public class SmartView extends LinearLayout {
         SmartView captchaCheckView = ((ViewGroup) getParent()).findViewById(checkId);
         if (captchaCheckView != null && captchaCheckView.phoneErrorTest()) return;
         rightTextView.setClickable(false);
-        subscribe = Timer.interval(1000).subscribe(aLong -> {
+        subscribe = MTimer.interval(1000).subscribe(aLong -> {
             if (((Activity) getContext()).isFinishing() && !subscribe.isUnsubscribed()) {
                 subscribe.unsubscribe();
                 return;
@@ -523,7 +523,7 @@ public class SmartView extends LinearLayout {
                 subscribe.unsubscribe();
                 rightTextView.setClickable(true);
                 rightTextView.setText(R.string.str_get_agin);
-                rightTextView.setTextColor(BConfig.getConfig().getColorTheme());
+                rightTextView.setTextColor(BConfig.get().getColorTheme());
             } else {
                 rightTextView.setTextColor(0xffbbbbbb);
                 rightTextView.setText("  " + (captchaSecond - aLong) + "s  ");

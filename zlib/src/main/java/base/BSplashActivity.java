@@ -3,12 +3,11 @@ package base;
 
 import com.zhy.android.R;
 
-import annotation.Presenter;
 import custom.TextView;
 import hawk.Hawk;
 import util.GoTo;
 import util.StatusBarUtil;
-import util.Timer;
+import util.MTimer;
 
 public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
 
@@ -27,7 +26,7 @@ public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
         tvEmpty.setTopRes(bgId);
         tvEmpty.setText("欢迎");
         StatusBarUtil.setTransparentForImageView(this, null);
-        Timer.timer(delay).subscribe(aLong -> {
+        MTimer.timer(delay).subscribe(aLong -> {
             if (Hawk.get(BConfig.LOGIN) == null)
                 GoTo.start(loginCls);
             else
