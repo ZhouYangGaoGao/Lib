@@ -7,6 +7,6 @@ import rx.Observable;
 public class SquareFragment extends ArticleFragment {
     @Override
     protected Observable<?> get() {
-        return Manager.getApi().qa(page);
+        return Manager.getApi().square(page);
     }
 }

@@ -5,6 +5,7 @@ import android.view.View;
 
 import adapter.CommonAdapter;
 import com.zhy.app.R;
+import com.zhy.app.modules.flow.CategoryActivity;
 import com.zhy.app.modules.one.view.SmartViewFragment;
 
 import java.util.Arrays;
@@ -50,8 +51,11 @@ public class TestFragment extends BSmartFragment<Class> {
     public void afterView() {
         mSmartView.rightTextView.setText("权限");
         mSmartView.rightTextView.setOnClickListener(
-                view -> BPermissionFragment.request(()
-                        -> mSmartView.centerTextView.setText("权限都有了")));
+                view ->
+                        GoTo.start(CategoryActivity.class)
+//                        BPermissionFragment.request(()
+//                        -> mSmartView.centerTextView.setText("权限都有了"))
+        );
 
         mSmartView.setBack(false);
         mSmartView.leftTextView.setText("定位");

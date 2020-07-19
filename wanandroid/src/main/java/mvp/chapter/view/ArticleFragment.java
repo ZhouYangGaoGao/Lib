@@ -11,7 +11,6 @@ import com.zhy.wanandroid.R;
 
 import adapter.ViewHolder;
 import base.BConfig;
-import base.BResponse;
 import base.BSmartFragment;
 import base.BWebFragment;
 import base.BaseBean;
@@ -27,6 +26,8 @@ import util.GoTo;
 import util.MLayoutParams;
 
 public class ArticleFragment extends BSmartFragment<Article> {
+    protected int cid = 0;
+
     {
         showTopBar = false;
         isCard = 7;
@@ -35,11 +36,14 @@ public class ArticleFragment extends BSmartFragment<Article> {
     }
 
     @Override
+    public void beforeView() {
+        cid = getArguments() != null ? getArguments().getInt(BConfig.ID) : 0;
+        cacheKey = TAG + cid;
+    }
+
+    @Override
     protected void convert(ViewHolder h, Article i) {
-        TextView title = h.getView(R.id.title);
-        title.setText(i.getTitle());
-        title.setTextClickable(false);
-        title.setLeftRes(i.isCollect() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
+
         LinearLayout tagLayout = h.getView(R.id.tagLayout);
 
         initDate(i, tagLayout);
@@ -56,7 +60,15 @@ public class ArticleFragment extends BSmartFragment<Article> {
 
         initTop(i, tagLayout);
 
-        initClick(h, i, title);
+        initClick(h, i, initTitle(h, i));
+    }
+
+    private TextView initTitle(ViewHolder h, Article i) {
+        TextView title = h.getView(R.id.title);
+        title.setText(i.getTitle());
+        title.setTextClickable(false);
+        title.setLeftRes(i.isCollect() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
+        return title;
     }
 
     private void initDate(Article i, LinearLayout tagLayout) {
@@ -179,6 +191,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
 
     @Override
     protected Observable<?> get() {
-        return getArguments() != null ? Manager.getApi().article(getArguments().getInt(BConfig.ID), page) : null;
+        return Manager.getApi().article(cid, page);
     }
 }
+

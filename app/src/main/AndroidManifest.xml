@@ -17,6 +17,8 @@
             android:windowSoftInputMode="adjustPan"
             tools:ignore="LockedOrientationActivity">
         </activity>
+        <activity android:name=".modules.flow.CategoryActivity"/>
+
         <activity android:name=".modules.test.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

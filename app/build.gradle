@@ -27,4 +27,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation project(path: ':zlib')
+    implementation 'com.zhy:base-adapter:2.0.1'
 }

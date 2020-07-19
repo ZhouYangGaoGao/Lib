@@ -1,9 +1,12 @@
 package base;
 
 import android.annotation.SuppressLint;
+import android.net.http.SslError;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;

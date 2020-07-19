@@ -1,5 +1,6 @@
 package base;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -13,11 +14,12 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhy.android.R;
 
-import adapter.CommonAdapter;
-
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.CommonAdapter;
 import adapter.ViewHolder;
 import background.drawable.DrawableCreator;
 import custom.EmptySizeView;
@@ -30,17 +32,16 @@ import util.ScreenUtils;
 
 public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BView<?>>> implements OnRefreshLoadMoreListener {
 
-
-    private CommonAdapter<M> adapter;//GridView 的适配器
-    protected boolean isRefresh = true;//是否是刷新
+    private CommonAdapter<M> adapter;
     protected HeaderGridView gridView;
     protected SmartRefreshLayout refreshLayout;
     protected SmartView mSmartView;
-    protected int horizontalSpacing = 1, verticalSpacing = 1;
+    protected String type = "";//预留参数 类型
+    protected List<M> mData = new ArrayList<>();//主列表数据
     protected View heardView, footView, emptyView, topView, bottomView;
-    protected boolean scrollAble = false;//* 可滑动
-    protected boolean showTopBar = true;
-    protected boolean useCache = false;
+    protected int index = 0;//预留参数 下标
+    protected int horizontalSpacing = 1, verticalSpacing = 1;
+    protected int numColumns = 1;//列数
     protected int isCard = 0;//是否卡片模式 0:否  >0:间距
     protected int cardRadius = 10;//卡片圆角
     protected int cardColor = 0xffffffff;//卡片背景色 正常
@@ -48,12 +49,11 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     protected int bgColor = 0xffffffff;//列表背景色
     protected int startPage = 1;//起始页码
     protected int page = 1;//页码
-    protected List<M> mData = new ArrayList<>();//主列表数据
-    protected int numColumns = 1;//列数
-    protected String type = "";//预留参数 类型
-    protected int index = 0;//预留参数 下标
     protected int itemLayoutId = R.layout.item_text;//item布局
     protected int rippleColor = 0x33000000;//item水波纹颜色
+    protected boolean isRefresh = false;//是否是刷新
+    protected boolean scrollAble = false;//* 可滑动
+    protected boolean showTopBar = true;
 
     @Override
     public void initView() {
@@ -81,10 +81,6 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
         gridView.setVerticalSpacing(ScreenUtils.dip2px(verticalSpacing));
         mSmartView.centerTextView.setText(title);
         page = startPage;
-        if (useCache && Hawk.contains(this.getClass().getSimpleName())) {
-            mData.addAll(Hawk.get(this.getClass().getSimpleName()));
-            upData();
-        }
     }
 
     private void initCard() {
@@ -105,7 +101,6 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
                 return super.isEmpty();
             }
 
-
             @Override
             public void convert(ViewHolder h, M i) {//列表item的初始化 回调
                 if (isCard > 0) initCardItem(h);
@@ -123,6 +118,11 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
                 BSmartFragment.this.convert(h, i);
             }
         };
+    }
+
+    public Object getCache() {
+
+        return null;
     }
 
 
@@ -159,14 +159,14 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {//加载更多
         isRefresh = false;
         page++;
-        getData();
+        super.getData();
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {//刷新列表 重新获取数据
         isRefresh = true;
         page = startPage;
-        getData();
+        super.getData();
     }
 
     public void onData(List<M> datas) {//数据处理完成 更新页面
@@ -186,10 +186,18 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
         } else fail(new Gson().toJson(data));
     }
 
+    @Override
+    public void getData() {
+        if (useCache && !TextUtils.isEmpty(cacheKey) && Hawk.contains(cacheKey)) {
+            onData(Hawk.get(cacheKey, new ArrayList<M>()));
+        } else
+            super.getData();
+    }
+
     protected void upData() {//通知适配器更新数据
         if (adapter != null)
             adapter.notifyDataSetChanged();
-        if (useCache) Hawk.put(this.getClass().getSimpleName(), mData);
+        if (mData != null && useCache && !TextUtils.isEmpty(cacheKey)) Hawk.put(cacheKey, mData);
     }
 
     public void total(int total) {//列表总数量

@@ -14,10 +14,13 @@ import mvp.chapter.view.ArticleFragment;
 import rx.Observable;
 
 public class ProjectFragment extends ArticleFragment {
+
+
     @Override
     public void beforeView() {
         itemLayoutId = R.layout.item_project;
         startPage = 1;
+        super.beforeView();
     }
 
     @Override
@@ -25,19 +28,15 @@ public class ProjectFragment extends ArticleFragment {
         h.setImage(R.id.iv_cover, i.getEnvelopePic());
         h.setText(R.id.tv_description, i.getDesc());
         h.setVisibility(R.id.tv_description, View.VISIBLE);
-        super.convert(h,i);
+        super.convert(h, i);
     }
 
     @Override
     protected void initChapter(Article i, LinearLayout tagLayout) {
     }
 
-//    @Override
-//    protected void initTags(Article i, LinearLayout tagLayout) {
-//    }
-
     @Override
     protected Observable<?> get() {
-        return getArguments() != null ? Manager.getApi().projects(page, getArguments().getInt(BConfig.ID)) : null;
+        return Manager.getApi().projects(page, cid);
     }
 }

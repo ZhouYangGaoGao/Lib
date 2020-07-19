@@ -76,7 +76,6 @@ public class BSub<M extends BResponse<T>, T> extends Subscriber<M> {
         onCompleted();
     }
 
-
     public boolean onCode(String code) {
         return true;
     }
@@ -89,7 +88,9 @@ public class BSub<M extends BResponse<T>, T> extends Subscriber<M> {
     }
 
     public void onSuccess(T t) {
-        if (mView != null) mView.success(t);
+        if (mView != null) {
+            mView.success(t);
+        }
     }
 
     @Override

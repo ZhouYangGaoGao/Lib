@@ -20,7 +20,6 @@ public class HomeFragment extends ArticleFragment {
     @Override
     public void beforeView() {
         heardView = getView(R.layout.fragment_banner);
-        useCache=true;
     }
 
     @Override

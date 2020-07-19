@@ -55,5 +55,8 @@
     <color name="bga_pp_loading_progress_startColor">@android:color/white</color>
     <color name="bga_pp_loading_progress_centerColor">@color/colorPrimaryDark</color>
     <color name="bga_pp_loading_progress_endColor">@color/colorPrimaryDarkTrans</color>
+
+    <color name="tag_select_textcolor">#FFffffff</color>
+    <color name="black">#FF000000</color>
     <!-- ========================== 自定义 PhotoPicker 颜色 END ========================== -->
 </resources>

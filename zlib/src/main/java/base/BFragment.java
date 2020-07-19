@@ -1,7 +1,6 @@
 package base;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,17 +11,22 @@ import android.widget.Toast;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhy.android.R;
 
-import annotation.Presenter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import eventbus.hermeseventbus.HermesEventBus;
+import hawk.Hawk;
 import rx.Observable;
 import util.LogUtils;
+import util.Reflector;
 
 public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragment implements BView<M> {
     public P presenter;
@@ -33,6 +37,10 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
     private Unbinder unbinder;
     private BActivity activity;
     protected String title;
+    protected String cacheKey;
+    protected boolean useCache = true;
+    protected String TAG;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,8 +49,8 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
             activity = (BActivity) getActivity();
             activity.initPresenter(this);
         }
+        cacheKey = TAG = this.getClass().getSimpleName();
         beforeView();
-
         if (useEventBus) HermesEventBus.getDefault().register(this);
     }
 
@@ -63,7 +71,9 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         afterView();
-        if (preData == BConfig.GET_DATA_CREATE) getData();
+        if (preData == BConfig.GET_DATA_CREATE) {
+            getData();
+        }
     }
 
     @Override
@@ -109,7 +119,7 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
         }
     }
 
-    protected Observable<?> get(){
+    protected Observable<?> get() {
         return null;
     }
 
@@ -127,7 +137,6 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
     public void dialog(String... message) {
         if (activity != null) activity.dialog(message);
     }
-
 
     @Override
     public void success(M data) {

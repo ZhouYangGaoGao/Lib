@@ -10,6 +10,7 @@ import rx.Observable;
 import util.MBundle;
 
 public class ProjectTabFragment extends BTabsFragment<List<Tree>> {
+
     @Override
     protected Observable<?> get() {
         return Manager.getApi().projectTree();
