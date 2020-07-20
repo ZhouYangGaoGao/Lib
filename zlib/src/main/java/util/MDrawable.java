@@ -32,4 +32,12 @@ public class MDrawable {
                 .setStrokeColor(clo).build();
 
     }
+
+    public static Drawable solid(int clo,int radius){
+        return new DrawableCreator.Builder()
+                .setSolidColor(clo)
+                .setCornersRadius(ScreenUtils.dip2px(radius))
+                .build();
+
+    }
 }

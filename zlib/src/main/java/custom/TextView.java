@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi;
 
 import background.drawable.DrawableCreator;
 import background.drawable.DrawableFactory;
+import base.BApp;
 import util.MDrawable;
 import util.ScreenUtils;
 
@@ -28,6 +29,9 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     private boolean isAutoZoom;
     private boolean textClickable = true;
 
+    public TextView(String text) {
+        this(BApp.app().act());
+    }
 
     public TextView(Context context) {
         this(context, null);

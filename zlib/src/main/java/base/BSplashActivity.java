@@ -14,7 +14,8 @@ public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
     protected int bgId = R.drawable.ic_welcomm;
     protected Class loginCls = BLoginFragment.class, homeCls = BHomeActivity.class;
     protected TextView tvEmpty;
-    protected int delay =17;
+    protected int delay = 17;
+
     {
         contentViewId = R.layout.layout_empty;
         statusBarColor = 0xffffffff;

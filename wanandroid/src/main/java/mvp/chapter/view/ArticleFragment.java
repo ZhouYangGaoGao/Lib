@@ -20,6 +20,7 @@ import custom.SmartView;
 import custom.TextView;
 import listener.SmartModel;
 import mvp.chapter.model.Article;
+import per.goweii.anylayer.AnyLayer;
 import rx.Observable;
 import util.Dialogs;
 import util.GoTo;
@@ -129,7 +130,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
             @Override
             public void onClick(SmartView sv, int viewIndex, int resIndex) {
                 if (viewIndex == 2 && resIndex == 2) {
-                    showDialog(i);
+                    showPop(i,sv.getTVs()[viewIndex]);
                 } else if (viewIndex == 2 && resIndex == 0) {
                     actionFavorite(i, h, sv.getTVs()[2], R.drawable.ic_favorite_white, R.drawable.ic_favorite_white_border);
                 }
@@ -169,17 +170,22 @@ public class ArticleFragment extends BSmartFragment<Article> {
         });
     }
 
-    private void showDialog(Article article) {
-        Dialogs.show(new ChoiceDialog.OnItemClickListener() {
-            @Override
-            public void onItemClick(android.widget.TextView onClickView, int position) {
-                if (position == 0) {
-                    share(article);
-                } else if (position == 1) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(article.getLink())));
-                }
-            }
-        }, "分享", "用浏览器打开");
+    private void showPop(Article article ,TextView tv) {
+        AnyLayer.popup(tv)
+                .contentView(R.layout.layout_more_pop)
+                .show();
+
+
+//        Dialogs.show(new ChoiceDialog.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(android.widget.TextView onClickView, int position) {
+//                if (position == 0) {
+//                    share(article);
+//                } else if (position == 1) {
+//                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(article.getLink())));
+//                }
+//            }
+//        }, "分享", "用浏览器打开");
     }
 
     private void share(Article article) {
