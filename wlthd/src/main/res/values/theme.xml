@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dim_button_h_margin">30dp</dimen>
+    <dimen name="dim_login_h_margin">30dp</dimen>
+    <dimen name="dim_button_v_margin">20dp</dimen>
+    <dimen name="dim_login_v_margin">10dp</dimen>
+
+    <color name="clo_theme">#36c177</color>
+    <color name="clo_theme_88">#8836c177</color>
+</resources>

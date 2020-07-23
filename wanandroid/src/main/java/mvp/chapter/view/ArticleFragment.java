@@ -10,19 +10,21 @@ import com.necer.ndialog.ChoiceDialog;
 import com.zhy.wanandroid.R;
 
 import adapter.ViewHolder;
+import anylayer.AnyLayer;
+import anylayer.Layer;
 import base.BConfig;
 import base.BSmartFragment;
 import base.BWebFragment;
 import base.BaseBean;
 import base.Manager;
 import base.Subs;
+import custom.PopView;
 import custom.SmartView;
 import custom.TextView;
 import listener.SmartModel;
+import listener.WebEvent;
 import mvp.chapter.model.Article;
-import per.goweii.anylayer.AnyLayer;
 import rx.Observable;
-import util.Dialogs;
 import util.GoTo;
 import util.MLayoutParams;
 
@@ -130,7 +132,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
             @Override
             public void onClick(SmartView sv, int viewIndex, int resIndex) {
                 if (viewIndex == 2 && resIndex == 2) {
-                    showPop(i,sv.getTVs()[viewIndex]);
+                    showPop(i, sv.getTVs()[viewIndex]);
                 } else if (viewIndex == 2 && resIndex == 0) {
                     actionFavorite(i, h, sv.getTVs()[2], R.drawable.ic_favorite_white, R.drawable.ic_favorite_white_border);
                 }
@@ -151,7 +153,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
         });
     }
 
-    protected Observable<BaseBean<Object>> unCollect(Article i){
+    protected Observable<BaseBean<Object>> unCollect(Article i) {
         return Manager.getApi().unCollect(i.getId());
     }
 
@@ -165,27 +167,31 @@ public class ArticleFragment extends BSmartFragment<Article> {
                     tv.setLeftRes(mData.get(h.getPosition()).isCollect() ? trueRes : falseRes);
                 TextView listFavoriteView = h.getTagView("favorite");
                 if (listFavoriteView != null)
-                    listFavoriteView.setLeftRes(mData.get(h.getPosition()).isCollect() ? R.drawable.ic_favorite:R.drawable.ic_favorite_border);
+                    listFavoriteView.setLeftRes(mData.get(h.getPosition()).isCollect() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
             }
         });
     }
 
-    private void showPop(Article article ,TextView tv) {
+    private void showPop(Article article, TextView tv) {
         AnyLayer.popup(tv)
-                .contentView(R.layout.layout_more_pop)
+                .contentView(new PopView("分享", "浏览器打开", "刷新"))
+                .onClickToDismiss(new Layer.OnClickListener() {
+                    @Override
+                    public void onClick(Layer layer, View v) {
+                        switch (v.getId()) {
+                            case 0:
+                                share(article);
+                                break;
+                            case 1:
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(article.getLink())));
+                                break;
+                            case 2:
+                                new WebEvent(WebEvent.REFRESH);
+                                break;
+                        }
+                    }
+                }, 0, 1, 2)
                 .show();
-
-
-//        Dialogs.show(new ChoiceDialog.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(android.widget.TextView onClickView, int position) {
-//                if (position == 0) {
-//                    share(article);
-//                } else if (position == 1) {
-//                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(article.getLink())));
-//                }
-//            }
-//        }, "分享", "用浏览器打开");
     }
 
     private void share(Article article) {

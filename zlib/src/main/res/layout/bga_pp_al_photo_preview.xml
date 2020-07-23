@@ -12,7 +12,7 @@
         android:layout_alignParentRight="true"
         android:paddingLeft="@dimen/bga_pp_size_level3"
         android:paddingRight="@dimen/bga_pp_size_level3"
-        android:src="@mipmap/bga_pp_ic_download" />
+        android:src="@drawable/ic_download" />
 
     <TextView
         android:id="@+id/tv_photo_preview_title"

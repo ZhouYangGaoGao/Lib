@@ -31,6 +31,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public TextView(String text) {
         this(BApp.app().act());
+        setText(text);
     }
 
     public TextView(Context context) {

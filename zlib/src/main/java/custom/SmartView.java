@@ -34,6 +34,7 @@ import hawk.Hawk;
 import listener.SmartListener;
 import listener.SmartModel;
 import rx.Subscription;
+import util.LogUtils;
 import util.RexUtils;
 import util.MTimer;
 
@@ -136,6 +137,7 @@ public class SmartView extends LinearLayout {
         }
         switch (mode) {
             case 10://common
+                centerTextView.setVisibility(VISIBLE);
                 break;
             case 0://top
                 if (measure == 0) measure = MEASURE_MAX;
@@ -153,7 +155,7 @@ public class SmartView extends LinearLayout {
             case 2://login
                 centerEditText.setVisibility(VISIBLE);
                 if (TextUtils.isEmpty(leftText)) leftText = "手机号";
-                if (TextUtils.isEmpty(centerText)&&BuildConfig.DEBUG) centerText = "17600117227";
+                if (TextUtils.isEmpty(centerText) && BuildConfig.DEBUG) centerText = "17600117227";
                 if (leftText.contains("手机")) inputType = 0;
                 if (delete) {
                     if (rrIcon == null)
@@ -169,7 +171,7 @@ public class SmartView extends LinearLayout {
             case 3://password
                 centerEditText.setVisibility(VISIBLE);
                 if (TextUtils.isEmpty(leftText)) leftText = "密码";
-                if (TextUtils.isEmpty(centerText)&&BuildConfig.DEBUG) centerText = "321654";
+                if (TextUtils.isEmpty(centerText) && BuildConfig.DEBUG) centerText = "321654";
                 rrIcon = getResources().getDrawable(R.drawable.ic_eye);
                 inputType = 1;
                 rightTextView.setOnClickListener(new OnClickListener() {
@@ -254,9 +256,10 @@ public class SmartView extends LinearLayout {
         centerEditText.setText(centerText);
     }
 
-    private void initTextColor(int textColor, int textRColor) {
+    public void initTextColor(int textColor, int textRColor) {
         centerTextView.setTextColor(textColor);
         leftTextView.setTextColor(textColor);
+        centerEditText.setTextColor(textColor);
         rightTextView.setTextColor(textRColor);
     }
 

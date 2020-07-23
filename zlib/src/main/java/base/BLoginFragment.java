@@ -3,6 +3,7 @@ package base;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhy.android.R;
@@ -23,6 +24,7 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
     protected TextView login;
     protected TextView next;
     protected TextView register;
+    protected LinearLayout actionLayout;
 
     protected String mode;
     protected String toast;
@@ -82,6 +84,7 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
 
     @Override
     public void initView() {
+        actionLayout = (LinearLayout) findViewById(R.id.actionLayout);
         titleView = (SmartView) findViewById(R.id.titleView);
         phone = (SmartView) findViewById(R.id.phone);
         captcha = (SmartView) findViewById(R.id.captcha);

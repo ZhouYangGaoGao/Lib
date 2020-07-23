@@ -41,18 +41,18 @@
         app:leftText="0"
         app:centerText="1"
         app:rightText="2"
-        app:llIcon="@drawable/ic_delete_photo"
-        app:ltIcon="@drawable/ic_delete_photo"
-        app:lrIcon="@drawable/ic_delete_photo"
-        app:lbIcon="@drawable/ic_delete_photo"
-        app:clIcon="@drawable/ic_delete_photo"
-        app:ctIcon="@drawable/ic_delete_photo"
-        app:crIcon="@drawable/ic_delete_photo"
-        app:cbIcon="@drawable/ic_delete_photo"
-        app:rlIcon="@drawable/ic_delete_photo"
-        app:rtIcon="@drawable/ic_delete_photo"
-        app:rrIcon="@drawable/ic_delete_photo"
-        app:rbIcon="@drawable/ic_delete_photo"/>
+        app:llIcon="@drawable/ic_delete"
+        app:ltIcon="@drawable/ic_delete"
+        app:lrIcon="@drawable/ic_delete"
+        app:lbIcon="@drawable/ic_delete"
+        app:clIcon="@drawable/ic_delete"
+        app:ctIcon="@drawable/ic_delete"
+        app:crIcon="@drawable/ic_delete"
+        app:cbIcon="@drawable/ic_delete"
+        app:rlIcon="@drawable/ic_delete"
+        app:rtIcon="@drawable/ic_delete"
+        app:rrIcon="@drawable/ic_delete"
+        app:rbIcon="@drawable/ic_delete"/>
 
     <custom.SmartView
         android:id="@+id/nameView"
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         app:leftText="姓名"
-        app:lrIcon="@drawable/ic_menu"
+        app:lrIcon="@drawable/ic_off_dark"
         app:mode="login"
         app:onlyIcon="true" />
 

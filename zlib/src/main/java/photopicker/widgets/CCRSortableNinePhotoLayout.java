@@ -94,13 +94,13 @@ public class CCRSortableNinePhotoLayout extends RecyclerView implements CCROnIte
         mPlusEnable = true;
         mSortable = true;
         mEditable = true;
-        mDeleteDrawableResId = R.mipmap.bga_pp_ic_delete;
+        mDeleteDrawableResId = R.drawable.ic_delete;
         mDeleteDrawableOverlapQuarter = false;
         mMaxItemCount = 9;
         mItemSpanCount = 3;
         mItemWidth = 0;
         mItemCornerRadius = 0;
-        mPlusDrawableResId = R.mipmap.bga_pp_ic_plus;
+        mPlusDrawableResId = R.drawable.ic_add_img;
         mItemWhiteSpacing = CCRBaseAdapterUtil.dp2px(4);
         mPlaceholderDrawableResId = R.mipmap.bga_pp_ic_holder_light;
         mOtherWhiteSpacing = CCRBaseAdapterUtil.dp2px(100);

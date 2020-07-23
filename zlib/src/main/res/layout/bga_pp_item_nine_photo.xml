@@ -27,12 +27,11 @@
 
     <ImageView
         android:id="@+id/iv_item_nine_photo_flag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:clickable="true"
-        android:padding="@dimen/bga_pp_size_delete_padding"
-        android:src="@mipmap/bga_pp_ic_delete"
+        android:src="@drawable/ic_delete"
         android:visibility="gone"
         tools:visibility="visible" />
 

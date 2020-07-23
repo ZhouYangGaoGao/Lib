@@ -1,6 +1,7 @@
 package mvp.login.view;
 
 import android.view.View;
+import android.widget.LinearLayout;
 
 import base.BConfig;
 import base.BLoginFragment;

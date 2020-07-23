@@ -138,7 +138,7 @@ public class GridImageAdapter extends
         if (height != 0)
             viewHolder.itemView.setLayoutParams(new ViewGroup.LayoutParams(height, height));
         if (getItemViewType(position) == TYPE_CAMERA) {
-            viewHolder.mImg.setImageResource(R.mipmap.ic_add_image);
+            viewHolder.mImg.setImageResource(R.drawable.ic_add_img);
             viewHolder.mImg.setOnClickListener(onClickListener);
             viewHolder.llDel.setVisibility(View.INVISIBLE);
         } else {
@@ -186,7 +186,7 @@ public class GridImageAdapter extends
 
             } else {
                 viewHolder.tvDuration.setCompoundDrawablesRelativeWithIntrinsicBounds
-                        (R.drawable.picture_icon_video, 0, 0, 0);
+                        (R.drawable.ic_video, 0, 0, 0);
             }
             viewHolder.tvDuration.setText(DateUtils.formatDurationTime(duration));
             if (chooseModel == PictureMimeType.ofAudio()) {

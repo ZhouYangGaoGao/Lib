@@ -171,7 +171,7 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     contentHolder.tvDuration.setCompoundDrawablesRelativeWithIntrinsicBounds
-                            (R.drawable.picture_icon_video, 0, 0, 0);
+                            (R.drawable.ic_video, 0, 0, 0);
                 }
                 contentHolder.tvDuration.setVisibility(PictureMimeType.eqVideo(mimeType)
                         ? View.VISIBLE : View.GONE);

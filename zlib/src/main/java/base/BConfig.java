@@ -54,7 +54,7 @@ public class BConfig {
     private String bugLy;
     private Object webInterface;
     private boolean fullScreen = false;
-    private int colorTheme;
+    private int colorTheme, colorTheme88;
     private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 
     public static BConfig get() {
@@ -99,6 +99,11 @@ public class BConfig {
         return colorTheme == 0 ? BApp.app().getColor(R.color.clo_theme) : colorTheme;
     }
 
+    @SuppressLint("NewApi")
+    public int getColorTheme88() {
+        return colorTheme == 0 ? BApp.app().getColor(R.color.clo_theme_88) : colorTheme88;
+    }
+
     public boolean isFullScreen() {
         return fullScreen;
     }
@@ -119,6 +124,11 @@ public class BConfig {
 
     public BConfig setColorTheme(int colorTheme) {
         this.colorTheme = colorTheme;
+        return config;
+    }
+
+    public BConfig setColorTheme88(int colorTheme88) {
+        this.colorTheme88 = colorTheme88;
         return config;
     }
 
@@ -203,11 +213,11 @@ public class BConfig {
     }
 
     public boolean isNoColor() {
-        return Hawk.get("noColor",false);
+        return Hawk.get("noColor", false);
     }
 
     public BConfig setNoColor(boolean noColor) {
-        Hawk.put("noColor",noColor);
+        Hawk.put("noColor", noColor);
         return this;
     }
 }

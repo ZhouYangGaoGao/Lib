@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import custom.SmartView;
 import listener.SmartModel;
+import listener.WebEvent;
 
 /**
  * 通用网页
@@ -155,4 +156,27 @@ public class BWebFragment extends BFragment {
         }
 
     }
+
+    @Subscribe()
+    public void setWebEvent(WebEvent event) {
+        if (BApp.app().act().equals(getActivity())) {
+            switch (event.getType()) {
+                case WebEvent.REFRESH:
+                    mWebView.reload();
+                    break;
+                case WebEvent.LOAD_URL:
+                    mWebView.loadUrl(event.getValue());
+                    break;
+                case WebEvent.BACK:
+                    mWebView.goBack();
+                    break;
+                case WebEvent.FORWARD:
+                    mWebView.goForward();
+                    break;
+            }
+
+        }
+    }
+
+
 }

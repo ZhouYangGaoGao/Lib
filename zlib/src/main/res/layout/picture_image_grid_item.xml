@@ -57,7 +57,7 @@
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/picture_icon_shadow_bg"
-        android:drawableLeft="@drawable/picture_icon_video"
+        android:drawableLeft="@drawable/ic_video"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
         android:paddingLeft="5dp"

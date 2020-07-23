@@ -14,6 +14,13 @@
     <dimen name="dim_sub_tab_indicator_height">2dp</dimen>
     <dimen name="dim_card_diver_height">10dp</dimen>
     <dimen name="dim_smart_padding">15dp</dimen>
+    <dimen name="dim_button_radius">5dp</dimen>
+    <dimen name="dim_button_h_padding">15dp</dimen>
+    <dimen name="dim_button_v_padding">10dp</dimen>
+    <dimen name="dim_button_h_margin">100dp</dimen>
+    <dimen name="dim_button_v_margin">30dp</dimen>
+    <dimen name="dim_login_v_margin">0dp</dimen>
+    <dimen name="dim_login_h_margin">55dp</dimen>
 
     <color name="clo_big_title">#ffffff</color>
     <color name="clo_title">#111111</color>

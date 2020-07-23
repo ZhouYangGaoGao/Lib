@@ -1,6 +1,9 @@
 package base;
 
 
+import android.view.View;
+import android.widget.RelativeLayout;
+
 import com.zhy.android.R;
 
 import custom.TextView;
@@ -11,9 +14,12 @@ import util.MTimer;
 
 public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
 
-    protected int bgId = R.drawable.ic_welcomm;
+    protected int centerIconRes = R.drawable.ic_welcomm;
+    protected int bgRes;
     protected Class loginCls = BLoginFragment.class, homeCls = BHomeActivity.class;
-    protected TextView tvEmpty;
+    protected View otherView;
+    protected TextView centerTv;
+    protected RelativeLayout mRootView;
     protected int delay = 17;
 
     {
@@ -23,17 +29,28 @@ public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
 
     @Override
     public void initView() {
-        tvEmpty = findViewById(R.id.tv_empty);
-        tvEmpty.setTopRes(bgId);
-        tvEmpty.setText("欢迎");
+        centerTv = findViewById(R.id.tv_empty);
+        mRootView = findViewById(R.id.mRootView);
+        if (bgRes != 0) mRootView.setBackgroundResource(bgRes);
+        if (otherView != null) mRootView.addView(otherView);
+        centerTv.setTopRes(centerIconRes);
+        centerTv.setText("欢迎页");
         StatusBarUtil.setTransparentForImageView(this, null);
         MTimer.timer(delay).subscribe(aLong -> {
             if (Hawk.get(BConfig.LOGIN) == null)
-                GoTo.start(loginCls);
+                startLogin();
             else
-                GoTo.start(homeCls);
-            finish();
+                startHome();
         });
     }
 
+    private void startHome() {
+        GoTo.start(homeCls);
+        finish();
+    }
+
+    protected void startLogin() {
+        GoTo.start(loginCls);
+        finish();
+    }
 }

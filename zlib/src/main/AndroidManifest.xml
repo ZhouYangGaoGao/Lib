@@ -25,7 +25,9 @@
 
         <activity android:name="base.BSplashActivity"/>
         <activity android:name="base.BHomeActivity"/>
-        <activity android:name="base.BFragmentActivity"/>
+        <activity android:name="base.BFragmentActivity"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize"/>
 
         <!--图片预览界面-->
         <activity

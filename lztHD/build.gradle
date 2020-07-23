@@ -26,7 +26,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(path: ':zlib')
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
-
+    implementation project(path: ':zlib')
 }

@@ -18,67 +18,78 @@
         <custom.SmartView
             android:id="@+id/phone"
             style="@style/login"
-            android:layout_marginHorizontal="55dp"
+            android:layout_marginHorizontal="@dimen/dim_login_h_margin"
+            android:layout_marginTop="0dp"
             app:mode="login" />
 
         <custom.SmartView
             android:id="@+id/captcha"
             style="@style/login"
-            android:layout_marginHorizontal="55dp"
+            android:layout_marginHorizontal="@dimen/dim_login_h_margin"
             app:checkId="@id/phone"
             app:mode="captcha" />
 
         <custom.SmartView
             android:id="@+id/password"
             style="@style/login"
-            android:layout_marginHorizontal="55dp"
+            android:layout_marginHorizontal="@dimen/dim_login_h_margin"
             app:checkId="@id/phone"
             app:mode="password" />
 
         <custom.SmartView
             android:id="@+id/checkPassword"
             style="@style/login"
-            android:layout_marginHorizontal="55dp"
+            android:layout_marginHorizontal="@dimen/dim_login_h_margin"
             app:checkId="@id/password"
             app:leftText="确认密码"
             app:mode="password" />
 
-        <background.view.BLTextView
-            android:id="@+id/login"
-            style="@style/login"
-            android:layout_width="160dp"
-            android:layout_marginHorizontal="55dp"
-            android:paddingVertical="10dp"
-            android:text="@string/str_login"
-            app:bl_corners_radius="25dp"
-            android:layout_marginTop="30dp"
-            app:bl_unEnabled_solid_color="@color/clo_theme_88"
-            app:bl_enabled_solid_color="@color/clo_theme"
-            tools:ignore="MissingPrefix" />
+        <LinearLayout
+            android:id="@+id/actionLayout"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dim_button_v_margin"
+            android:layout_height="wrap_content">
 
-        <background.view.BLTextView
-            android:id="@+id/next"
-            style="@style/login"
-            android:layout_width="160dp"
-            android:layout_marginHorizontal="55dp"
-            android:paddingVertical="10dp"
-            android:text="@string/str_next"
-            android:layout_marginTop="30dp"
-            app:bl_corners_radius="25dp"
-            app:bl_unEnabled_solid_color="@color/clo_theme_88"
-            app:bl_enabled_solid_color="@color/clo_theme"
-            tools:ignore="MissingPrefix" />
+            <background.view.BLTextView
+                android:id="@+id/login"
+                style="@style/login"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dim_button_v_margin"
+                android:paddingVertical="@dimen/dim_button_v_padding"
+                android:text="@string/str_login"
+                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
+                app:bl_corners_radius="@dimen/dim_button_radius"
+                app:bl_enabled_solid_color="@color/clo_theme"
+                app:bl_unEnabled_solid_color="@color/clo_theme_88"
+                tools:ignore="MissingPrefix" />
 
-        <background.view.BLTextView
-            android:id="@+id/register"
-            style="@style/login"
-            android:layout_width="160dp"
-            android:layout_marginHorizontal="55dp"
-            android:paddingVertical="10dp"
-            android:text="@string/str_register"
-            android:layout_marginTop="30dp"
-            app:bl_corners_radius="25dp"
-            app:bl_unEnabled_solid_color="@color/clo_theme_88"
-            app:bl_enabled_solid_color="@color/clo_theme" />
+            <background.view.BLTextView
+                android:id="@+id/next"
+                style="@style/login"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dim_button_v_margin"
+                android:paddingVertical="@dimen/dim_button_v_padding"
+                android:text="@string/str_next"
+                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
+                app:bl_corners_radius="@dimen/dim_button_radius"
+                app:bl_enabled_solid_color="@color/clo_theme"
+                app:bl_unEnabled_solid_color="@color/clo_theme_88"
+                tools:ignore="MissingPrefix" />
+
+            <background.view.BLTextView
+                android:id="@+id/register"
+                style="@style/login"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dim_button_v_margin"
+                android:paddingVertical="@dimen/dim_button_v_padding"
+                android:text="@string/str_register"
+                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
+                app:bl_corners_radius="@dimen/dim_button_radius"
+                app:bl_enabled_solid_color="@color/clo_theme"
+                app:bl_unEnabled_solid_color="@color/clo_theme_88" />
+
+        </LinearLayout>
     </LinearLayout>
 </custom.SmartView>
