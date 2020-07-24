@@ -54,16 +54,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <provider
-            android:name="photopicker.utils.CCRPhotoFileProvider"
-            android:authorities="${applicationId}.bga_photo_picker.file_provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/bga_photo_picker_file_paths" />
-        </provider>
-        <provider
-            android:name="photopicker.utils.CCRPhotoFileProvider"
+            android:name="photopicker.lib.PictureFileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">

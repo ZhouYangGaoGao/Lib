@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import photopicker.baseadapterlib.CCRBaseAdapterUtil;
+import photopicker.lib.PictureFileProvider;
 
 
 /**
@@ -190,8 +191,8 @@ public class CCRPhotoHelper {
      */
     public static Uri createFileUri(File file) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            String authority = CCRBaseAdapterUtil.getApp().getApplicationInfo().packageName + ".bga_photo_picker.file_provider";
-            return CCRPhotoFileProvider.getUriForFile(CCRBaseAdapterUtil.getApp(), authority, file);
+            String authority = CCRBaseAdapterUtil.getApp().getApplicationInfo().packageName + ".provider";
+            return PictureFileProvider.getUriForFile(CCRBaseAdapterUtil.getApp(), authority, file);
         } else {
             return Uri.fromFile(file);
         }

@@ -27,7 +27,8 @@ public class WLTMainActivity extends BActivity {
         if (model != null) {
             setIntent(new Intent()
                     .putExtra(BConfig.TOP_SHOW,false)
-                    .putExtra(WLTConstant.URL, WLTConstant.url + new Gson().toJson(model)));
+//                    .putExtra(WLTConstant.URL, WLTConstant.url + new Gson().toJson(model))
+                    .putExtra(BConfig.URL, "http://www.ahdhst.com/forest/ysweb/login"));
         } else {
             GoTo.start(WLTLoginFragment.class);
             finish();

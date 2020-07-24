@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
-import per.goweii.burred.Blurred;
 
 
 /**
@@ -14,14 +13,6 @@ import per.goweii.burred.Blurred;
  * GitHub: https://github.com/goweii
  */
 public final class AnyLayer {
-
-    public static void initBlurred(Context context) {
-        Blurred.init(context);
-    }
-
-    public static void recycleBlurred() {
-        Blurred.recycle();
-    }
 
     public static void dialog(LayerActivity.OnLayerCreatedCallback callback) {
         LayerActivity.start(  ActivityHolder.getApplication(), callback);

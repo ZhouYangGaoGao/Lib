@@ -27,7 +27,7 @@ public class LZTLoginFragment extends BLoginFragment<LZTLoginModel> {
 
     @Override
     protected Subscription login(String phone, String password) {
-        return new LZTSub<LZTLoginModel>(LZTManager.get().login(phone, password)) {
+        return new LZTSub<LZTLoginModel>(this,LZTManager.get().login(phone, password)) {
             @Override
             public void onSuccess(LZTLoginModel o) {
                 BConfig.get().setToken(o.getToken());

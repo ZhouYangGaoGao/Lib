@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.tencent.bugly.beta.Beta;
 
 import base.BActivity;
@@ -26,8 +27,7 @@ public class LZTMainActivity extends BActivity {
         if (model != null) {
             setIntent(new Intent()
                     .putExtra(BConfig.TOP_SHOW,false)
-//                    .putExtra(Constant.URL, Constant.url + new Gson().toJson(model))
-                    .putExtra(LZTConstant.URL, "http://www.ahdhst.com/forest/ysweb/login"));
+                    .putExtra(LZTConstant.URL, LZTConstant.url + new Gson().toJson(model)));
         } else {
             GoTo.start(LZTLoginFragment.class);
             finish();

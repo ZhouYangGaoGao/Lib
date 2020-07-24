@@ -112,17 +112,18 @@ public class BWebFragment extends BFragment {
                 .setWebChromeClient(webChromeClient)
                 .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
                 .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-                .addJavascriptInterface(BConfig.ANDROID, BConfig.get().getWebInterface())
+                .addJavascriptInterface(BConfig.ANDROID, BConfig.get().getWebInterface()
+                        .setActivity(getActivity()))
                 .createAgentWeb()
                 .ready()
                 .go(tmpUrl);
+        BConfig.get().getWebInterface().setAgentWeb(mAgentWeb);
     }
 
     @Override
     public void onResume() {
         mAgentWeb.getWebLifeCycle().onResume();
         super.onResume();
-        onBackPressed();
     }
 
     public boolean onBackPressed() {

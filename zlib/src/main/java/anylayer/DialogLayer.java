@@ -20,7 +20,7 @@ import android.widget.ImageView;
 
 import com.zhy.android.R;
 
-import per.goweii.burred.Blurred;
+import util.FastBlur;
 
 /**
  * @author CuiZhen
@@ -428,14 +428,8 @@ public class DialogLayer extends DecorLayer {
                             scale,
                             getViewHolder().getParent(),
                             getViewHolder().getChild());
-                    Blurred.init(getActivity());
-                    Bitmap blurBitmap = Blurred.with(snapshot)
-                            .recycleOriginal(true)
-                            .keepSize(false)
-                            .radius(radius)
-                            .blur();
                     getViewHolder().getBackground().setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    getViewHolder().getBackground().setImageBitmap(blurBitmap);
+                    getViewHolder().getBackground().setImageBitmap(FastBlur.blurBitmap(getActivity(), snapshot, radius));
                     getViewHolder().getBackground().setColorFilter(getConfig().mBackgroundColor);
                 }
             });

@@ -11,6 +11,7 @@ import com.zhy.app.modules.one.view.SmartViewFragment;
 import java.util.Arrays;
 
 import adapter.ViewHolder;
+import anylayer.AnyLayer;
 import base.BPermissionFragment;
 import base.BSmartFragment;
 import base.BWebFragment;
@@ -34,7 +35,7 @@ public class TestFragment extends BSmartFragment<Class> {
         mData.addAll(Arrays.asList(NewsFragment.class
                 , PicSelectViewFragment.class, SLikeFragment.class, AVLFragment.class,
                 BWebFragment.class, BannerFragment.class,
-                PhotoFragment.class, SmartViewFragment.class));
+                PhotoFragment.class, SmartViewFragment.class,CategoryActivity.class));
     }
 
     @Override
@@ -52,7 +53,11 @@ public class TestFragment extends BSmartFragment<Class> {
         mSmartView.rightTextView.setText("权限");
         mSmartView.rightTextView.setOnClickListener(
                 view ->
-                        GoTo.start(CategoryActivity.class)
+                        AnyLayer.dialog(getActivity())
+                                .contentView(R.layout.dialog_icon)
+                                .backgroundBlurPercent(0.05f)
+                                .backgroundColorInt(0x33ffffff)
+                                .show()
 //                        BPermissionFragment.request(()
 //                        -> mSmartView.centerTextView.setText("权限都有了"))
         );

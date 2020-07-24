@@ -41,7 +41,7 @@ public class WLTLoginFragment extends BLoginFragment<WLTLoginModel> {
 
     @Override
     protected Subscription login(String phone, String password) {
-        return new WLTSub<WLTLoginModel>(WLTManager.get().login(phone, password)) {
+        return new WLTSub<WLTLoginModel>(this,WLTManager.get().login(phone, password)) {
             @Override
             public void onSuccess(WLTLoginModel o) {
                 BConfig.get().setToken(o.getToken());

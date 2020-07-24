@@ -52,7 +52,7 @@ public class BConfig {
     private String client = "app";
     private String token = "0";
     private String bugLy;
-    private Object webInterface;
+    private BWebJS webInterface;
     private boolean fullScreen = false;
     private int colorTheme, colorTheme88;
     private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
@@ -159,13 +159,13 @@ public class BConfig {
         return config;
     }
 
-    public Object getWebInterface() {
+    public BWebJS getWebInterface() {
         if (webInterface == null)
-            webInterface = new BWebInterfase();
+            webInterface = new BWebJS();
         return webInterface;
     }
 
-    public BConfig setWebInterface(Object webInterface) {
+    public BConfig setWebInterface(BWebJS webInterface) {
         this.webInterface = webInterface;
         return config;
     }
