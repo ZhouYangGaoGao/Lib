@@ -4,14 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -25,18 +22,13 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.zhy.android.BuildConfig;
 import com.zhy.android.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import background.drawable.DrawableCreator;
 import base.BConfig;
-import hawk.Hawk;
 import listener.SmartListener;
 import listener.SmartModel;
 import rx.Subscription;
-import util.LogUtils;
-import util.RexUtils;
 import util.MTimer;
+import util.RexUtils;
 
 public class SmartView extends LinearLayout {
     public TextView leftTextView, centerTextView, rightTextView;
@@ -45,8 +37,10 @@ public class SmartView extends LinearLayout {
     public View line;
     private float centerVMargin, centerHMargin, centerRMargin, centerLMargin;
     private int checkId, measure, mode = 10, captchaSecond;
+    private Subscription subscribe;
+    private boolean back;
 
-    private static final int MEASURE_MAX = 110;//等于大的那边
+    private static final int MEASURE_MAX = 110;//两边等于大的那边
     private static final int MEASURE_CUSTOM = 111;//使用自定义
     private static final int MEASURE_DIFFERENT = 112;//填充空余
 
@@ -58,8 +52,6 @@ public class SmartView extends LinearLayout {
     public static final int GRAVITY_RIGHT = 12;
     public static final int GRAVITY_LEFT = 10;
 
-    private FragmentWindow historyWindow;
-    private Subscription subscribe;
 
     public SmartView(Context context) {
         this(context, null);
@@ -87,7 +79,6 @@ public class SmartView extends LinearLayout {
         captchaSecond = t.getInt(R.styleable.SmartView_captchaSecond, 20);
         int gravity = t.getInt(R.styleable.SmartView_gravity, mode == 0 ? GRAVITY_CENTER : GRAVITY_LEFT);
         checkId = t.getResourceId(R.styleable.SmartView_checkId, 0);
-        int historyLayout = t.getResourceId(R.styleable.SmartView_historyLayout, R.layout.fragment_pop);
         int textColor = t.getColor(R.styleable.SmartView_textColor, mode < 2 ?
                 getResources().getColor(R.color.clo_big_title) : getResources().getColor(R.color.clo_title));
         int textRColor = textColor;
@@ -150,7 +141,6 @@ public class SmartView extends LinearLayout {
                 hideLine = true;
                 crIcon = getResources().getDrawable(android.R.drawable.ic_menu_search);
                 search();
-                initHistory(historyAble, historyLayout);
                 break;
             case 2://login
                 centerEditText.setVisibility(VISIBLE);
@@ -240,7 +230,10 @@ public class SmartView extends LinearLayout {
 
     }
 
-    private void initIcon(Drawable llIcon, Drawable ltIcon, Drawable lrIcon, Drawable lbIcon, Drawable clIcon, Drawable ctIcon, Drawable crIcon, Drawable cbIcon, Drawable rlIcon, Drawable rtIcon, Drawable rrIcon, Drawable rbIcon) {
+    private void initIcon(Drawable llIcon, Drawable ltIcon, Drawable lrIcon, Drawable lbIcon,
+                          Drawable clIcon, Drawable ctIcon, Drawable crIcon, Drawable cbIcon,
+                          Drawable rlIcon, Drawable rtIcon, Drawable rrIcon, Drawable rbIcon) {
+
         leftTextView.setCompoundDrawablesWithIntrinsicBounds(llIcon, ltIcon, lrIcon, lbIcon);
         centerTextView.setCompoundDrawablesWithIntrinsicBounds(clIcon, ctIcon, crIcon, cbIcon);
         centerEditText.setCompoundDrawablesWithIntrinsicBounds(clIcon, ctIcon, crIcon, cbIcon);
@@ -317,66 +310,15 @@ public class SmartView extends LinearLayout {
                 .setSolidColor(0xffffffff).build());
         centerEditText.setImeOptions(0x00000003);
         centerEditText.setGravity(Gravity.CENTER_VERTICAL);
+        centerEditText.setTextColor(0xff666666);
         centerEditText.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(android.R.drawable.ic_menu_search), null, null, null);
-//        initHistory(true, R.layout.fragment_pop);
-
         return this;
     }
 
-    public void initHistory(boolean historyAble, int historyLayoutId) {
-        if (historyAble) {
-            history = Hawk.get("SmartView_" + getId());
-            centerEditText.addTextChangedListener(new TextWatcher() {
-                HistoryFragment historyFragment;
-
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    if (!isEmpty() || history == null) return;
-                    if (historyWindow == null) {
-                        historyWindow = new FragmentWindow();
-                        historyFragment = (HistoryFragment) historyWindow.setContentView(historyLayoutId);
-                        if (historyFragment == null) return;
-                        historyFragment.setEditText(centerEditText);
-                    }
-                    if (historyFragment != null) {
-                        historyFragment.onData(history);
-                        historyWindow.showAsDropDown(topContent);
-                    }
-                }
-            });
-            centerEditText.setOnEditorActionListener((textView, i, keyEvent) -> {
-                if (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER || keyEvent.getKeyCode() == KeyEvent.KEYCODE_SEARCH)) {
-                    String text = getText();
-                    if (history == null) {
-                        history = new ArrayList<>();
-                    }
-                    if (history.contains(text)) {
-                        history.remove(text);
-                    }
-                    if (!TextUtils.isEmpty(text)) {
-                        if (listener != null) {
-                            listener.onClick(SmartView.this, 3, 0);
-                        }
-                        history.add(0, text);
-                        if (history.size() > 10) history.remove(9);
-                    }
-                }
-                return false;
-            });
-        }
+    public void initHistory(HistoryFragment historyFragment) {
+        historyFragment.setSmartView(this);
     }
 
-    private boolean back;
 
     public void setBack(boolean back) {
         if (this.back = back) {
@@ -434,18 +376,6 @@ public class SmartView extends LinearLayout {
         return isEmpty();
     }
 
-    private List<String> history;
-
-    @Override
-    protected void onDetachedFromWindow() {
-        if (historyWindow != null && historyWindow.isShowing()) {
-            historyWindow.dismiss();
-            historyWindow = null;
-        }
-        if (history != null && history.size() > 0) Hawk.put("SmartView_" + getId(), history);
-        super.onDetachedFromWindow();
-    }
-
     public boolean actionErrorCheck() {
         SmartView captchaCheckView = ((ViewGroup) getParent()).findViewById(checkId);
         if (captchaCheckView != null && (mode == 4 ? captchaCheckView.phoneErrorTest() : captchaCheckView.actionErrorCheck()))
@@ -482,6 +412,10 @@ public class SmartView extends LinearLayout {
         }
     }
 
+    public SmartListener getListener() {
+        return listener;
+    }
+
     private void initClick(int index) {
         TextView textView = getTVs()[index];
         textView.setOnClickListener(new OnClickListener() {
@@ -510,7 +444,6 @@ public class SmartView extends LinearLayout {
                 textView.setDrawablePadding(smartModel.padding[index]);
             initGravity(smartModel.gravity);
         }
-
     }
 
     private void initCaptcha() {

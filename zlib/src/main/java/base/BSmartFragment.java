@@ -14,8 +14,6 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhy.android.R;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +49,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     protected int page = 1;//页码
     protected int itemLayoutId = R.layout.item_text;//item布局
     protected int rippleColor = 0x33000000;//item水波纹颜色
-    protected boolean isRefresh = false;//是否是刷新
+    protected boolean isRefresh = true;//是否是刷新
     protected boolean scrollAble = false;//* 可滑动
     protected boolean showTopBar = true;
 
@@ -119,12 +117,6 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
             }
         };
     }
-
-    public Object getCache() {
-
-        return null;
-    }
-
 
     protected void onItemClick(ViewHolder h, M i) {//列表点击监听
     }

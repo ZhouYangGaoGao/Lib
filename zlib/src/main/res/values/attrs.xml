@@ -214,7 +214,6 @@
         <attr name="icoPadding" format="float" />
         <attr name="captchaSecond" format="integer" />
         <attr name="checkId" format="reference" />
-        <attr name="historyLayout" format="reference" />
         <attr name="textColor" format="reference|color" />
         <attr name="llIcon" format="reference|color" />
         <attr name="ltIcon" format="reference|color" />

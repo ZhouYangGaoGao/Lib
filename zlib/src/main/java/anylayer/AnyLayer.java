@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.View;
 
 
-
 /**
  * @author Cuizhen
  * QQ: 302833254
@@ -15,15 +14,15 @@ import android.view.View;
 public final class AnyLayer {
 
     public static void dialog(LayerActivity.OnLayerCreatedCallback callback) {
-        LayerActivity.start(  ActivityHolder.getApplication(), callback);
+        LayerActivity.start(ActivityHolder.getApplication(), callback);
     }
 
     public static DialogLayer dialog() {
-        return new DialogLayer(  ActivityHolder.getCurrentActivity());
+        return new DialogLayer(ActivityHolder.getCurrentActivity());
     }
 
     public static DialogLayer dialog(Class<Activity> clazz) {
-        return new DialogLayer(  ActivityHolder.getActivity(clazz));
+        return new DialogLayer(ActivityHolder.getActivity(clazz));
     }
 
     public static DialogLayer dialog(Context context) {
@@ -39,7 +38,7 @@ public final class AnyLayer {
     }
 
     public static ToastLayer toast() {
-        return new ToastLayer(  ActivityHolder.getCurrentActivity());
+        return new ToastLayer(ActivityHolder.getCurrentActivity());
     }
 
     public static ToastLayer toast(Context context) {

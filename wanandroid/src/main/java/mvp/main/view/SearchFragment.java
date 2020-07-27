@@ -5,6 +5,7 @@ import com.zhy.wanandroid.R;
 import adapter.ViewHolder;
 import base.BConfig;
 import base.Manager;
+import custom.HistoryFragment;
 import custom.SmartView;
 import listener.SmartListener;
 import mvp.chapter.model.Article;
@@ -15,12 +16,13 @@ public class SearchFragment extends ArticleFragment implements SmartListener {
     @Override
     public void beforeView() {
         showTopBar = true;
+        useCache = false;
         preData = BConfig.GET_DATA_NEVER;
     }
 
     @Override
     public void afterView() {
-        mSmartView.search().initHistory(true, R.layout.fragment_pop);
+        mSmartView.search().initHistory(new MyHistFragment());
         mSmartView.rightTextView.setText("搜索");
         mSmartView.setListener(this, 2);
     }
@@ -33,14 +35,12 @@ public class SearchFragment extends ArticleFragment implements SmartListener {
 
     @Override
     public void onClick(SmartView smartView, int textViewIndex, int drawableIndex) {
-        if (textViewIndex > 1 && !mSmartView.actionErrorCheck()) {
-            type = mSmartView.getText();
-            getData();
-        }
+        if (textViewIndex > 1 && !mSmartView.actionErrorCheck())
+            onRefresh(refreshLayout);
     }
 
     @Override
     protected Observable<?> get() {
-        return Manager.getApi().query(page, type);
+        return Manager.getApi().query(page, mSmartView.getText());
     }
 }
