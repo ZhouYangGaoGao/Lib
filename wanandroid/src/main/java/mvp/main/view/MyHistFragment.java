@@ -7,6 +7,6 @@ import custom.HistoryFragment;
 public class MyHistFragment extends HistoryFragment {
     @Override
     public void beforeView() {
-//        this.heardView = getView(R.layout.layout_fragment_hot);
+       topView = getView(R.layout.layout_fragment_hot);
     }
 }

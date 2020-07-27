@@ -22,7 +22,7 @@ import base.BSmartFragment;
 import util.ScreenUtils;
 
 public class HistoryFragment extends BSmartFragment<String> {
-    private SmartView histSmartView;
+    protected SmartView histSmartView;
     private DialogLayer dialog;
     protected int historyCount = 10;
 
@@ -30,13 +30,13 @@ public class HistoryFragment extends BSmartFragment<String> {
         showTopBar = false;
         isRefresh = false;
         bgColor = 0xffaaaaaa;
-        scrollAble=false;
     }
 
     @Override
     public void initView() {
         super.initView();
-        refreshLayout.setEnablePureScrollMode(true);
+        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setEnableRefresh(false);
     }
 
     public void setSmartView(SmartView smartView) {

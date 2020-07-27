@@ -9,4 +9,9 @@ public class MLayoutParams {
         params.setMarginStart(ScreenUtils.dip2px(startDp));
         return params;
     }
+
+    public static LinearLayout.LayoutParams marginLLP(int height){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, height);
+        return params;
+    }
 }
