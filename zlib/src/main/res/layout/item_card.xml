@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
+    <custom.card.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
+        app:endColor="@color/clo_card_shadow_end"
+        app:startColor="@color/clo_card_shadow_start"
         app:cardUseCompatPadding="false"
         app:cardPreventCornerOverlap="false" />
 

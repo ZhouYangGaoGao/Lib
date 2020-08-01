@@ -19,7 +19,17 @@ import util.ImageUtils;
  */
 
 public class ImageViewCard extends CardView {
-    public ImageView imageView;
+    private ImageView imageView;
+    private static final ImageView.ScaleType[] sScaleTypeArray = {
+            ImageView.ScaleType.MATRIX,
+            ImageView.ScaleType.FIT_XY,
+            ImageView.ScaleType.FIT_START,
+            ImageView.ScaleType.FIT_CENTER,
+            ImageView.ScaleType.FIT_END,
+            ImageView.ScaleType.CENTER,
+            ImageView.ScaleType.CENTER_CROP,
+            ImageView.ScaleType.CENTER_INSIDE
+    };
 
     public ImageViewCard(Context context) {
         this(context, null);
@@ -32,16 +42,16 @@ public class ImageViewCard extends CardView {
     public ImageViewCard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         imageView = new ImageView(context);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         TypedArray t = context.obtainStyledAttributes(attrs,
                 R.styleable.ImageViewCard);
         Drawable drawable = t.getDrawable(R.styleable.ImageViewCard_android_src);
+        int scaleType = t.getInt(R.styleable.ImageViewCard_android_scaleType, 6);
         t.recycle();
         if (drawable != null) {
             imageView.setImageDrawable(drawable);
         }
+        imageView.setScaleType(sScaleTypeArray[scaleType]);
         addView(imageView);
-        setCardElevation(0);
     }
 
     public ImageViewCard loadImage(Object model) {
@@ -49,13 +59,13 @@ public class ImageViewCard extends CardView {
         return this;
     }
 
-    public ImageViewCard loadImage(Object model,int dfSrcId) {
-        ImageUtils.loadImage(imageView.getContext(), model,dfSrcId, imageView);
+    public ImageViewCard loadImage(Object model, int dfSrcId) {
+        ImageUtils.loadImage(imageView.getContext(), model, dfSrcId, imageView);
         return this;
     }
 
     public void loadImageResize(Object model, int w, int h) {
-        ImageUtils.loadImageResize(imageView.getContext(), model, imageView,w,h);
+        ImageUtils.loadImageResize(imageView.getContext(), model, imageView, w, h);
     }
 
     public ImageView getImageView() {

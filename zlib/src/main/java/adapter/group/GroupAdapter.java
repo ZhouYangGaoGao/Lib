@@ -61,7 +61,10 @@ public abstract class GroupAdapter<T>
             this.heardLayout = itemLayout[1];
         if (itemLayout.length > 2)
             this.footLayout = itemLayout[2];
+    }
 
+    public List<T> getGroup() {
+        return group;
     }
 
     public GroupAdapter(Context context) {

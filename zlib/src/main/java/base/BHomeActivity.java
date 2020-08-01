@@ -1,6 +1,5 @@
 package base;
 
-import android.annotation.SuppressLint;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,42 +16,46 @@ import com.zhy.android.R;
 import org.greenrobot.eventbus.Subscribe;
 
 import custom.SmartView;
+import enums.DrawerEvent;
 import util.ScreenUtils;
 import util.StatusBarUtil;
 
-public class BHomeActivity extends BActivity<Object,BPresenter<BView<?>>> implements ViewPager.OnPageChangeListener {
+public class BHomeActivity extends BActivity<Object, BPresenter<BView<?>>> implements ViewPager.OnPageChangeListener {
     protected DrawerLayout mDrawerLayout;
     protected ViewPager mViewPager;
     protected SmartTabLayout mTabLayout;
     protected SmartView mSmartView;
-    protected View drawerContentView;
+    protected View drawerLeftView, drawerRightView;
     protected int textSize = 11;
     protected int tPadding = 4;
     protected int bPadding = 2;
     protected int[] icons = {R.drawable.ic_baidu, R.drawable.ic_baidu};
-    private FrameLayout mDrawerContentLayout;
+    private FrameLayout mDrawerLeft, mDrawerRight;
 
     {
         contentViewId = R.layout.activity_home;
         useEventBus = true;
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void initView() {
         mDrawerLayout = findViewById(R.id.mDrawerLayout);
-        mDrawerContentLayout = findViewById(R.id.drawerContent);
+        mDrawerLeft = findViewById(R.id.mDrawerLeft);
+        mDrawerRight = findViewById(R.id.mDrawerRight);
         mViewPager = findViewById(R.id.mViewPager);
         mTabLayout = findViewById(R.id.mTabLayout);
         mSmartView = findViewById(R.id.mSmartView);
-        if (drawerContentView != null) mDrawerContentLayout.addView(drawerContentView);
+        if (drawerLeftView != null) mDrawerLeft.addView(drawerLeftView);
+        else mDrawerLayout.removeView(mDrawerLeft);
+        if (drawerRightView != null) mDrawerRight.addView(drawerRightView);
+        else mDrawerLayout.removeView(mDrawerRight);
         mViewPager.setAdapter(new FragmentPagerItemAdapter(getSupportFragmentManager(),
                 initFragments(FragmentPagerItems.with(this)).create()));
         mTabLayout.setViewPager(mViewPager);
         mTabLayout.setOnPageChangeListener(this);
         mViewPager.setOffscreenPageLimit(mViewPager.getAdapter().getCount());
         mSmartView.centerTextView.setText(mViewPager.getAdapter().getPageTitle(0));
-        StatusBarUtil.setTranslucentForImageViewInFragment(this,0,mSmartView);
+        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0, mSmartView);
         for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
             TextView textView = (TextView) mTabLayout.getTabAt(i);
             textView.setCompoundDrawablesWithIntrinsicBounds(0, icons[i], 0, 0);
@@ -67,8 +70,20 @@ public class BHomeActivity extends BActivity<Object,BPresenter<BView<?>>> implem
 
     @Subscribe
     public void actionDrawer(DrawerEvent event) {
-        if (event.open) mDrawerLayout.openDrawer(mDrawerContentLayout);
-        else mDrawerLayout.closeDrawer(mDrawerContentLayout);
+        switch (event) {
+            case rightClose:
+                mDrawerLayout.closeDrawer(mDrawerRight);
+                break;
+            case rightOpen:
+                mDrawerLayout.openDrawer(mDrawerRight);
+                break;
+            case leftClose:
+                mDrawerLayout.closeDrawer(mDrawerLeft);
+                break;
+            case leftOpen:
+                mDrawerLayout.openDrawer(mDrawerLeft);
+                break;
+        }
     }
 
     @Override
@@ -84,12 +99,5 @@ public class BHomeActivity extends BActivity<Object,BPresenter<BView<?>>> implem
     @Override
     public void onPageScrollStateChanged(int state) {
 
-    }
-
-    public static class DrawerEvent {
-        public boolean open;
-        public DrawerEvent(boolean open) {
-            this.open = open;
-        }
     }
 }

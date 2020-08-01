@@ -12,6 +12,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.zhy.android.R;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import adapter.ViewHolder;
 import anylayer.Align;
 import anylayer.AnimatorHelper;
@@ -30,13 +32,15 @@ public class HistoryFragment extends BSmartFragment<String> {
         showTopBar = false;
         isRefresh = false;
         bgColor = 0xffaaaaaa;
+        useEventBus = true;
     }
 
     @Override
     public void initView() {
         super.initView();
-        refreshLayout.setEnableLoadMore(false);
-        refreshLayout.setEnableRefresh(false);
+        refreshLayout.setEnablePureScrollMode(true);
+        mStatusView.empty();
+        mStatusView.getTv().setText("无历史记录");
     }
 
     public void setSmartView(SmartView smartView) {
@@ -103,26 +107,33 @@ public class HistoryFragment extends BSmartFragment<String> {
             if (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER
                     || keyEvent.getKeyCode() == KeyEvent.KEYCODE_SEARCH)) {
                 String text = histSmartView.getText();
-                if (mData.contains(text)) {
-                    mData.remove(text);
-                }
-                if (!TextUtils.isEmpty(text)) {
-                    addHistory(text);
-
-                }
+                addHistory(text);
             }
             return false;
         });
     }
 
+    @Subscribe
+    public void addHistory(SearchBean searchBean) {
+        addHistory(searchBean.keyWord);
+    }
+
     private void addHistory(String text) {
-        if (histSmartView.getListener() != null) {
-            histSmartView.getListener().onClick(histSmartView, 3, 0);
+        if (mData.contains(text)) {
+            mData.remove(text);
         }
-        mData.add(0, text);
-        if (mData.size() > historyCount) mData.remove(historyCount - 1);
-        upData();
-        dialog.dismiss();
+        if (!TextUtils.isEmpty(text)) {
+            ScreenUtils.hideKeyBoard(histSmartView.centerEditText);
+            histSmartView.centerEditText.setText(text);
+            histSmartView.centerEditText.setSelection(text.length());
+            if (histSmartView.getListener() != null) {
+                histSmartView.getListener().onClick(histSmartView, 3, 0);
+            }
+            mData.add(0, text);
+            if (mData.size() > historyCount) mData.remove(historyCount - 1);
+            upData();
+            dialog.dismiss();
+        }
     }
 
     private void initTextChange() {
@@ -169,15 +180,29 @@ public class HistoryFragment extends BSmartFragment<String> {
 
     @Override
     protected void onItemClick(ViewHolder h, String i) {
-        ScreenUtils.hideKeyBoard(histSmartView.centerEditText);
-        histSmartView.centerEditText.setText(i);
-        histSmartView.centerEditText.setSelection(i.length());
-        if (histSmartView.getListener() != null) {
-            histSmartView.getListener().onClick(histSmartView, 3, 0);
+        addHistory(i);
+    }
+
+
+    public static class SearchBean {
+        private String keyWord;
+        private String type;
+
+        public SearchBean(String keyWord) {
+            this.keyWord = keyWord;
         }
-        dialog.dismiss();
-        mData.remove(i);
-        mData.add(0, i);
-        upData();
+
+        public SearchBean(String keyWord, String type) {
+            this.keyWord = keyWord;
+            this.type = type;
+        }
+
+        public String getKeyWord() {
+            return keyWord;
+        }
+
+        public String getType() {
+            return type;
+        }
     }
 }

@@ -40,10 +40,16 @@
     </custom.SmartView>
 
     <FrameLayout
-        android:id="@+id/drawerContent"
+        android:id="@+id/mDrawerLeft"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start" />
+
+    <FrameLayout
+        android:id="@+id/mDrawerRight"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end" />
 </androidx.drawerlayout.widget.DrawerLayout>
 
     <!--

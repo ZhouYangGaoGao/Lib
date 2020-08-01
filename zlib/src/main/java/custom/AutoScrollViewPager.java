@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AutoScrollViewPager extends ViewPager {
 
-    private InnerOnPageChangeListener innerOnPageChangeListener = new InnerOnPageChangeListener();;
+    private InnerOnPageChangeListener innerOnPageChangeListener = new InnerOnPageChangeListener();
 
     public interface OnPageClickListener {
         void onPageClick(AutoScrollViewPager pager, int position);
@@ -49,7 +49,7 @@ public class AutoScrollViewPager extends ViewPager {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_AUTO_SCROLL:
-                    setCurrentItem(getCurrentItem() + 1);
+                    setCurrentItem(getCurrentItem() + 1,true);
                     sendEmptyMessageDelayed(MSG_AUTO_SCROLL, intervalInMillis);
                     break;
                 default:

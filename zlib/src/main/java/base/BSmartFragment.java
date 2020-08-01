@@ -1,12 +1,10 @@
 package base;
 
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 
 import com.google.gson.Gson;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -23,8 +21,9 @@ import background.drawable.DrawableCreator;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
 import custom.SmartView;
-import hawk.Hawk;
-import util.CardUtils;
+import custom.StatusView;
+import custom.card.CardView;
+import enums.LevelCache;
 import util.LayoutUtil;
 import util.ScreenUtils;
 
@@ -34,9 +33,10 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     protected HeaderGridView gridView;
     protected SmartRefreshLayout refreshLayout;
     protected SmartView mSmartView;
+    protected StatusView mStatusView;
     protected String type = "";//预留参数 类型
     protected List<M> mData = new ArrayList<>();//主列表数据
-    protected View heardView, footView, emptyView, topView, bottomView;
+    protected View heardView, footView, topView, bottomView;
     protected int index = 0;//预留参数 下标
     protected int horizontalSpacing = 1, verticalSpacing = 1;
     protected int numColumns = 1;//列数
@@ -49,9 +49,13 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     protected int page = 1;//页码
     protected int itemLayoutId = R.layout.item_text;//item布局
     protected int rippleColor = 0x33000000;//item水波纹颜色
-    protected boolean isRefresh = true;//是否是刷新
+    protected boolean isRefresh = false;//是否是刷新
     protected boolean scrollAble = false;//* 可滑动
     protected boolean showTopBar = true;
+
+    {
+        cache = LevelCache.refresh;
+    }
 
     @Override
     public void initView() {
@@ -66,9 +70,16 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
         gridView.setNumColumns(numColumns);
         gridView.setBackgroundColor(bgColor);
         mSmartView.topContent.setVisibility(showTopBar ? View.VISIBLE : View.GONE);
-        if (emptyView == null) emptyView = getView(R.layout.layout_empty);
-        ((LinearLayout) findViewById(R.id.content)).addView(emptyView, LayoutUtil.zoomVLp());
-        gridView.setEmptyView(emptyView);
+        if (mStatusView == null) {
+            mStatusView = new StatusView(getContext());
+            if (preData == BConfig.GET_DATA_NEVER) mStatusView.empty();
+            mStatusView.getTv().setOnClickListener(v -> {
+                mStatusView.loading();
+                onRefresh(refreshLayout);
+            });
+        }
+        ((LinearLayout) findViewById(R.id.content)).addView(mStatusView, LayoutUtil.zoomVLp());
+        gridView.setEmptyView(mStatusView);
         if (heardView != null) gridView.addHeaderView(heardView);
         if (isCard > 0) initCard();
         if (footView != null) gridView.addFooterView(footView);
@@ -135,7 +146,6 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
         params.height = -2;
         params.setMargins(ScreenUtils.dip2px(isCard), 0, (h.getPosition() + 1) % numColumns == 0 ? ScreenUtils.dip2px(isCard) : 0, 0);
         cardView.setLayoutParams(params);
-        CardUtils.setCardShadowColor(cardView, getResources().getColor(R.color.clo_card_shadow_start), getResources().getColor(R.color.clo_card_shadow_end));
     }
 
     protected DrawableCreator.Builder background(DrawableCreator.Builder drawableBuilder) {//设置item 的背景
@@ -180,16 +190,43 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
 
     @Override
     public void getData() {
-        if (useCache && !TextUtils.isEmpty(cacheKey) && Hawk.contains(cacheKey)) {
-            onData(Hawk.get(cacheKey, new ArrayList<M>()));
-        } else
-            super.getData();
+        if (cache != null) {
+            List<M> data = cache.get(TAG);
+            if (data != null)
+                switch (cache) {
+                    case only:
+                        onData(data);
+                        break;
+                    case replace:
+                        onData(data);
+                        getNew();
+                        break;
+                    case refresh:
+                        if (isRefresh) getNew();
+                        else onData(data);
+                        break;
+                }
+            else getNew();
+        } else getNew();
+    }
+
+    /**
+     * 发起网络请求数据
+     */
+    private void getNew() {
+        mStatusView.loading();
+        super.getData();
     }
 
     protected void upData() {//通知适配器更新数据
         if (adapter != null)
             adapter.notifyDataSetChanged();
-        if (mData != null && useCache && !TextUtils.isEmpty(cacheKey)) Hawk.put(cacheKey, mData);
+    }
+
+    @Override
+    public void onStop() {
+        if (mData != null && cache != null) cache.cache(TAG, mData);
+        super.onStop();
     }
 
     public void total(int total) {//列表总数量
@@ -203,6 +240,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
 
     @Override
     public void completed() {//数据加载完成 结束loading
+        mStatusView.empty();
         refreshLayout.finishLoadMore();
         refreshLayout.finishRefresh();
     }

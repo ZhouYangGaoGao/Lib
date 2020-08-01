@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import base.BApp;
+import custom.ImageViewCard;
 import util.ImageUtils;
 
 public class ViewHolder {
@@ -134,11 +135,11 @@ public class ViewHolder {
      * @return
      */
     public ViewHolder setImage(int viewId, Object model) {
-//            if (getView(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
-//                ImageViewCard imageViewCard = getView(viewId);
-//                imageViewCard.loadImage(drawableId);
-//            } else
-        ImageUtils.loadImage(context, model, (ImageView) getView(viewId));
+        if (getView(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
+            ImageViewCard imageViewCard = getView(viewId);
+            imageViewCard.loadImage(model);
+        } else
+            ImageUtils.loadImage(context, model, (ImageView) getView(viewId));
         return this;
     }
 
@@ -203,39 +204,9 @@ public class ViewHolder {
         return this;
     }
 
-    /**
-     * 为ImageView设置图片
-     *
-     * @param viewId
-     * @param bm
-     * @return
-     */
-    public ViewHolder setImageBitmap(int viewId, Bitmap bm) {
-        ImageView view = getView(viewId);
-        view.setImageBitmap(bm);
-        return this;
-    }
-
-    /**
-     * 为ImageView设置图片
-     *
-     * @param viewId
-     * @param url
-     * @return
-     */
-    public ViewHolder setImageByUrl(int viewId, Object url) {
-        if (url != null)
-//                if (getView(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
-//                    ImageViewCard imageViewCard = getView(viewId);
-//                    imageViewCard.loadImage(url);
-//                } else
-            ImageUtils.loadImage(context, url, (ImageView) getView(viewId));
-        return this;
-    }
-
-    public ViewHolder setImageResize(int viewId, Object url, int w, int h) {
-        if (url != null)
-            ImageUtils.loadImageResize(context, url, (ImageView) getView(viewId), w, h);
+    public ViewHolder setImageResize(int viewId, Object model, int w, int h) {
+        if (model != null)
+            ImageUtils.loadImageResize(context, model, (ImageView) getView(viewId), w, h);
         return this;
     }
 
@@ -243,16 +214,16 @@ public class ViewHolder {
      * 设置图片 带默认图
      *
      * @param viewId
-     * @param url
+     * @param model
      * @param difImgRes
      * @return
      */
-    public ViewHolder setImageByUrl(int viewId, String url, int difImgRes) {
-//            if (getView(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
-//                ImageViewCard imageViewCard = getView(viewId);
-//                imageViewCard.loadImage(url, difImgRes);
-//            } else
-        ImageUtils.loadImage(context, url, difImgRes, (ImageView) getView(viewId));
+    public ViewHolder setImageByUrl(int viewId, Object model, int difImgRes) {
+        if (getView(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
+            ImageViewCard imageViewCard = getView(viewId);
+            imageViewCard.loadImage(model, difImgRes);
+        } else
+            ImageUtils.loadImage(context, model, difImgRes, (ImageView) getView(viewId));
         return this;
     }
 

@@ -6,4 +6,6 @@
         <attr name="show_emoji" format="boolean" />
         <attr name="show_text" format="boolean" />
     </declare-styleable>
+
+
 </resources>

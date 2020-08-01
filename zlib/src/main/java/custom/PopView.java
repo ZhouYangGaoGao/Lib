@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.zhy.android.R;
 
+import background.drawable.DrawableCreator;
 import base.BApp;
 import util.MDrawable;
 import util.ScreenUtils;
@@ -26,19 +27,23 @@ public class PopView extends LinearLayout {
         setPadding(ScreenUtils.dip2px(10), 0, ScreenUtils.dip2px(10), 0);
         for (int i = 0; i < items.length; i++) {
             TextView view = new TextView(items[i]);
-            view.setTextColor(0xffffffff);
+            view.setTextColor(new DrawableCreator.Builder()
+                    .setFocusedTextColor(0xffffffff)
+                    .setUnFocusedTextColor(0xffcccccc)
+                    .buildTextColor());
+            view.setFocusable(true);
             view.setId(i);
             view.setLayoutParams(new LayoutParams(dp(100), dp(40)));
             view.setGravity(Gravity.CENTER);
             if (i < items.length - 1)
                 view.setBottomRes(R.drawable.line);
             int finalI = i;
-//            view.setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    onItemClick(finalI);
-//                }
-//            });
+            view.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(finalI);
+                }
+            });
             addView(view);
         }
     }
@@ -64,5 +69,7 @@ public class PopView extends LinearLayout {
         return (int) (dipValue * scale + 0.5f);
     }
 
-//    protected abstract void onItemClick(int index);
+    protected void onItemClick(int index){
+
+    }
 }

@@ -30,6 +30,7 @@ import base.Subs;
 import butterknife.BindView;
 import custom.SmartView;
 import custom.TextView;
+import enums.LevelCache;
 import listener.SmartModel;
 import mvp.chapter.model.Article;
 import mvp.navigation.model.Navigation;
@@ -51,6 +52,7 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
     @Override
     public void beforeView() {
         contentViewId = R.layout.fragment_navigation;
+        cache = LevelCache.refresh;
     }
 
     @Override
@@ -62,8 +64,9 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
             public void convert(ViewHolder h, Navigation i) {
                 h.getTextView(R.id.title)
                         .setAutoZoom(true)
-                        .setText(i.getName());
-                h.getConvertView().setBackground(MDrawable.select(0x33000000, 0xffeeeeee));
+                        .setText(i.getName())
+                        .setTextColor(getResources().getColor(R.color.clo_big_title));
+                h.getConvertView().setBackground(MDrawable.select(getResources().getColor(R.color.clo_theme), getResources().getColor(R.color.clo_theme_88)));
                 h.setClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -77,7 +80,6 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
             }
         });
 
-
         mRecyclerView.setAdapter(adapter = new GroupAdapter<Navigation>(data) {
 
             @Override
@@ -88,42 +90,49 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
             @Override
             public void onBindHeaderViewHolder(BaseViewHolder holder, Navigation navigation) {
                 holder.setText(R.id.title, navigation.getName());
-                holder.setBackgroundColor(R.id.title, 0xff999999);
+                holder.setTextColor(R.id.title, getResources().getColor(R.color.clo_big_title));
+                holder.setBackgroundColor(R.id.title, getResources().getColor(R.color.clo_theme_88));
             }
 
             @Override
             public void onBindChildViewHolder(BaseViewHolder holder, Navigation navigation, int childPosition) {
                 Article article = navigation.getArticles().get(childPosition);
-                holder.getTextView(R.id.title).setEllipsize(TextUtils.TruncateAt.START,1)
+                holder.getTextView(R.id.title).setEllipsize(TextUtils.TruncateAt.START, 1)
                         .setMBackground(MDrawable.press(0x11000000, 0x33000000))
                         .setText(article.getTitle())
                         .setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, article.getLink()));
-                                new SmartModel(R.drawable.ic_list_more, article.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
-                                    @Override
-                                    public void onClick(SmartView sv, int viewIndex, int resIndex) {
-                                        if (viewIndex == 2 && resIndex == 2) {
-                                            showDialog(article);
-                                        } else if (viewIndex == 2 && resIndex == 0) {
-                                            presenter.sub(new Subs<Object>(article.isCollect() ? Manager.getApi().unCollect(article.getId())
-                                                    : Manager.getApi().collect(article.getId())) {
-                                                @Override
-                                                public void onSuccess(Object o) {
-                                                    navigation.getArticles().get(childPosition).setCollect(!article.isCollect());
-                                                    sv.getTVs()[2].setLeftRes(navigation.getArticles().get(childPosition).isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border);
-                                                }
-                                            });
-                                        }
-                                    }
-                                };
+                                jump(article, navigation, childPosition);
                             }
                         });
             }
         });
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, ScreenUtils.dip2px(1), false));
         mRecyclerView.setLayoutManager(layoutManager = new GridLayoutManager(getContext(), 2, adapter));
+    }
+
+    private void jump(Article article, Navigation navigation, int childPosition) {
+        GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, article.getLink()));
+        new SmartModel(R.drawable.ic_more_vert, article.isCollect() ? R.drawable.ic_favorite_white
+                : R.drawable.ic_favorite_white_border) {
+            @Override
+            public void onClick(SmartView sv, int viewIndex, int resIndex) {
+                if (viewIndex == 2 && resIndex == 2) {
+                    showDialog(article);
+                } else if (viewIndex == 2 && resIndex == 0) {
+                    presenter.sub(new Subs<Object>(article.isCollect() ? Manager.getApi().unCollect(article.getId())
+                            : Manager.getApi().collect(article.getId())) {
+                        @Override
+                        public void onSuccess(Object o) {
+                            navigation.getArticles().get(childPosition).setCollect(!article.isCollect());
+                            sv.getTVs()[2].setLeftRes(navigation.getArticles().get(childPosition).isCollect() ?
+                                    R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border);
+                        }
+                    });
+                }
+            }
+        };
     }
 
     private void showDialog(Article article) {
@@ -146,7 +155,16 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
 
     @Override
     protected Observable<?> get() {
+        if (cache.get(TAG) != null) {
+            success(cache.get(TAG));
+            return null;
+        }
         return Manager.getApi().navigation();
     }
 
+    @Override
+    public void onStop() {
+        cache.cache(TAG,adapter.getGroup());
+        super.onStop();
+    }
 }

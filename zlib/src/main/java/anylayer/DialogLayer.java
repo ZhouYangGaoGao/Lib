@@ -429,7 +429,7 @@ public class DialogLayer extends DecorLayer {
                             getViewHolder().getParent(),
                             getViewHolder().getChild());
                     getViewHolder().getBackground().setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    getViewHolder().getBackground().setImageBitmap(FastBlur.blurBitmap(getActivity(), snapshot, radius));
+                    getViewHolder().getBackground().setImageBitmap(FastBlur.blurBitmap(snapshot, radius));
                     getViewHolder().getBackground().setColorFilter(getConfig().mBackgroundColor);
                 }
             });

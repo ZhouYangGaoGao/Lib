@@ -88,7 +88,6 @@ public class ImageUtils extends AppGlideModule {
 
     }
 
-
     /**
      * @param context    当前activity或者fragment
      * @param model      加载的具体数据格式 如 Url,SD卡资源文件,Resource资源文件

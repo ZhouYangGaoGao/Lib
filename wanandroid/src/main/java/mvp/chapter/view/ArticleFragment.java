@@ -41,7 +41,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
     @Override
     public void beforeView() {
         cid = getArguments() != null ? getArguments().getInt(BConfig.ID) : 0;
-        cacheKey = TAG + cid;
+        TAG = TAG + cid;
     }
 
     @Override

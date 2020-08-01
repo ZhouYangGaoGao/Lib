@@ -21,4 +21,5 @@ public class Navigation {
     public List<Article> getArticles() {
         return articles;
     }
+
 }

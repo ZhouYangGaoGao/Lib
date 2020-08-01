@@ -1,9 +1,7 @@
 package base;
 
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
@@ -14,11 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.ViewHolder;
-import annotation.Presenter;
 import custom.AutoScrollViewPager;
-import rx.Observable;
-import rx.Subscription;
-import util.ImageUtils;
+import util.ScreenUtils;
 
 public abstract class BPagerFragment<M> extends BFragment implements
         AutoScrollViewPager.OnPageClickListener {
@@ -30,6 +25,7 @@ public abstract class BPagerFragment<M> extends BFragment implements
     protected List<M> mData = new ArrayList<>();
     protected boolean useIndicate = true, isAutoScroll = true;
     protected int itemLayoutId = R.layout.item_avl;
+    protected int height = 190;
 
     {
         contentViewId = R.layout.fragment_pager;
@@ -53,7 +49,6 @@ public abstract class BPagerFragment<M> extends BFragment implements
 
     @Override
     public void onPageClick(AutoScrollViewPager pager, int position) {
-
     }
 
     @Override
@@ -62,8 +57,9 @@ public abstract class BPagerFragment<M> extends BFragment implements
         mRootView = findViewById(R.id.mRootView);
         mViewPager = (AutoScrollViewPager) findViewById(R.id.mViewPager);
         indicator = (SmartTabLayout) findViewById(R.id.indicator);
-        mViewPager.setScrollFactor(10);
+        mViewPager.setScrollFactor(3);
         mViewPager.setOnPageClickListener(this);
+        ScreenUtils.setHight(mViewPager, height / 360d);
         upDate();
     }
 

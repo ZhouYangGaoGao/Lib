@@ -67,7 +67,7 @@ public class BConfig {
     }
 
     public BConfig initCardView() {
-        CardUtils.init();
+//        CardUtils.init();
         return config;
     }
 

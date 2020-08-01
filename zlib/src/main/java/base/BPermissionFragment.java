@@ -58,8 +58,10 @@ public class BPermissionFragment extends Fragment implements EasyPermissions.Per
             names.put(文件写入, "文件写入");
             if (mPerms.length > 0)
                 fragment.mPerms = mPerms;
+            BApp.app().act().getWindow()
+                    .getDecorView().setId(R.id.mRootView);
             ((AppCompatActivity) BApp.app().act()).getSupportFragmentManager()
-                    .beginTransaction().add(BApp.app().act().getWindow()
+                    .beginTransaction().replace(BApp.app().act().getWindow()
                     .getDecorView().getId(), fragment).commit();
         } else {
             fragment.listener = listener;

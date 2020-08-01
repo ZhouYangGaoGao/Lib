@@ -1,22 +1,23 @@
 package base;
 
 import android.annotation.SuppressLint;
-import android.net.http.SslError;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.DefaultWebClient;
 import com.just.agentweb.WebChromeClient;
+import com.just.agentweb.WebViewClient;
 import com.zhy.android.BuildConfig;
 import com.zhy.android.R;
 
@@ -27,6 +28,8 @@ import custom.SmartView;
 import listener.SmartModel;
 import listener.WebEvent;
 
+import static android.webkit.WebSettings.*;
+
 /**
  * 通用网页
  */
@@ -35,7 +38,7 @@ public class BWebFragment extends BFragment {
     protected SmartView mSmartView;
     private TextView titleView;
     public WebView mWebView;
-    private AgentWeb mAgentWeb;
+    public AgentWeb mAgentWeb;
     private SmartModel listener;
 
     @Override
@@ -44,7 +47,8 @@ public class BWebFragment extends BFragment {
         contentViewId = R.layout.fragment_web;
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     @Override
     public void initView() {
         mSmartView = (SmartView) findViewById(R.id.mSmartView);
@@ -66,7 +70,55 @@ public class BWebFragment extends BFragment {
         }
         log(tmpUrl);
         String finalTitle = title;
-        WebChromeClient webChromeClient = new WebChromeClient() {
+        CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(-1, -1);
+        layoutParams.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+        mWebView = new WebView(getActivity());
+        mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        WebSettings settings = mWebView.getSettings();
+        settings.setLoadsImagesAutomatically(true);
+        settings.setAppCacheEnabled(true);
+        settings.setAllowContentAccess(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        settings.setDisplayZoomControls(false);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setJavaScriptEnabled(true);
+        settings.setUseWideViewPort(true);
+        settings.setDatabaseEnabled(true);
+        settings.setGeolocationEnabled(true);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setCacheMode(LOAD_DEFAULT);
+        settings.setDefaultTextEncodingName("GBK");
+        settings.setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
+        settings.setLoadWithOverviewMode(true);
+        settings.setSupportMultipleWindows(true);// 新加
+        settings.setAllowFileAccess(true); // 允许访问文件
+        settings.setSaveFormData(true);// 保存表单数据
+        settings.setDomStorageEnabled(true);
+        settings.setMixedContentMode(MIXED_CONTENT_ALWAYS_ALLOW);
+
+        if (!settings.getUserAgentString().contains("Mobile") && !settings.getUserAgentString().contains("TV"))
+            settings.setUserAgentString(settings.getUserAgentString().replace("Safari", "Mobile Safari"));
+        mAgentWeb = AgentWeb.with(this)
+                .setAgentWebParent(mSmartView, layoutParams)
+                .useDefaultIndicator()
+                .setWebView(mWebView)
+                .setWebViewClient(getWebClient())
+                .setWebChromeClient(getWebChromeClient(finalTitle))
+                .setMainFrameErrorView(R.layout.layout_web_error, R.id.error)
+                .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
+                .addJavascriptInterface(BConfig.ANDROID, BConfig.get().getWebInterface()
+                        .setActivity(getActivity()))
+                .createAgentWeb()
+                .ready()
+                .go(tmpUrl);
+        BConfig.get().getWebInterface().setAgentWeb(mAgentWeb);
+    }
+
+    @NonNull
+    private WebChromeClient getWebChromeClient(String finalTitle) {
+        return new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView webView, String s) {
                 super.onReceivedTitle(webView, s);
@@ -75,49 +127,28 @@ public class BWebFragment extends BFragment {
                 else if (TextUtils.isEmpty(finalTitle)) mSmartView.centerTextView.setText(s);
             }
         };
+    }
 
-        CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(-1, -1);
-        layoutParams.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-        mWebView = new WebView(getActivity());
-        mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        WebSettings settings = mWebView.getSettings();
-        settings.setDisplayZoomControls(false);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setJavaScriptEnabled(true);
-        settings.setUseWideViewPort(true);
-        settings.setJavaScriptCanOpenWindowsAutomatically(true);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setDefaultTextEncodingName("GBK");
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        settings.setLoadWithOverviewMode(true);
-        mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent(mSmartView, layoutParams)
-                .useDefaultIndicator()
-                .setWebView(mWebView)
-                .setWebViewClient(new com.just.agentweb.WebViewClient() {//拦截错误链接
+    @NonNull
+    private WebViewClient getWebClient() {
+        return new WebViewClient() {//拦截错误链接
 
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                        if (!request.getUrl().toString().contains("http")) return true;
-                        return super.shouldOverrideUrlLoading(view, request);
-                    }
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if (!request.getUrl().toString().contains("http")) return true;
+                return super.shouldOverrideUrlLoading(view, request);
+            }
 
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        if (!url.contains("http")) return true;
-                        return super.shouldOverrideUrlLoading(view, url);
-                    }
-                })
-                .setWebChromeClient(webChromeClient)
-                .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
-                .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-                .addJavascriptInterface(BConfig.ANDROID, BConfig.get().getWebInterface()
-                        .setActivity(getActivity()))
-                .createAgentWeb()
-                .ready()
-                .go(tmpUrl);
-        BConfig.get().getWebInterface().setAgentWeb(mAgentWeb);
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (!url.contains("http")) return true;
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        };
+    }
+
+    public SmartView getSmartView() {
+        return mSmartView;
     }
 
     @Override
@@ -173,6 +204,12 @@ public class BWebFragment extends BFragment {
                     break;
                 case WebEvent.FORWARD:
                     mWebView.goForward();
+                    break;
+                case WebEvent.HIDE_TOP:
+                    mSmartView.topContent.setVisibility(View.GONE);
+                    break;
+                case WebEvent.SHOW_TOP:
+                    mSmartView.topContent.setVisibility(View.VISIBLE);
                     break;
             }
 

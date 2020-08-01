@@ -4,30 +4,36 @@ package util;
  * Created by Lee on 2018/4/26.
  */
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
+import base.BApp;
+
 public class FastBlur {
 
     //图片缩放比例
     private static final float BITMAP_SCALE = 0.1f;
 
+    //图片模糊1f-25f
+    private static final float BITMAP_RADIUS = 2f;
+
     /**
      * 模糊图片的具体方法
      *
-     * @param context 上下文对象
      * @param image   需要模糊的图片
      * @return 模糊处理后的图片
      */
-    public static Bitmap blurBitmap(Context context, Bitmap image, float blurRadius) {
-        return blurBitmap(context, image, blurRadius, BITMAP_SCALE);
+    public static Bitmap blurBitmap( Bitmap image) {
+        return blurBitmap(image,BITMAP_RADIUS);
+    }
+    public static Bitmap blurBitmap( Bitmap image, float blurRadius) {
+        return blurBitmap( image, blurRadius, BITMAP_SCALE);
     }
 
-    public static Bitmap blurBitmap(Context context, Bitmap image, float blurRadius, float scale) {
+    public static Bitmap blurBitmap( Bitmap image, float blurRadius, float scale) {
         // 计算图片缩小后的长宽
         int width = Math.round(image.getWidth() * scale);
         int height = Math.round(image.getHeight() * scale);
@@ -38,7 +44,7 @@ public class FastBlur {
         Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
 
         // 创建RenderScript内核对象
-        RenderScript rs = RenderScript.create(context);
+        RenderScript rs = RenderScript.create(BApp.app().act());
         // 创建一个模糊效果的RenderScript的工具对象
         ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
 

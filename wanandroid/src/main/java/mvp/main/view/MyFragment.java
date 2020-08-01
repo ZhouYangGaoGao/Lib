@@ -2,8 +2,12 @@ package mvp.main.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.FileUtils;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
@@ -29,16 +33,20 @@ import mvp.home.view.CollectFragment;
 import mvp.login.model.LoginModel;
 import photopicker.lib.PictureSelector;
 import photopicker.lib.config.PictureConfig;
+import util.FastBlur;
 import util.GlideApp;
 import util.GoTo;
 import util.ImageUtils;
 import util.MIntent;
+import util.ScreenUtils;
 
 public class MyFragment extends BFragment {
 
 
     @BindView(R.id.mIcon)
     ImageViewCard mIcon;
+    @BindView(R.id.mBg)
+    ImageView mBg;
     @BindView(R.id.mName)
     TextView mPhone;
     @BindView(R.id.mCollect)
@@ -60,6 +68,7 @@ public class MyFragment extends BFragment {
         LoginModel user = Hawk.get(BConfig.LOGIN);
         mPhone.setText(user.getUsername());
         mTheme.setText(BConfig.get().isNoColor() ? "色彩" : "黑白");
+        mBg.setImageBitmap(FastBlur.blurBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.bg_code)));
     }
 
     @OnClick({R.id.mRootView, R.id.mIcon, R.id.mCollect, R.id.mTheme, R.id.mUpDate, R.id.mLogout})
@@ -70,9 +79,6 @@ public class MyFragment extends BFragment {
             case R.id.mIcon:
                 PictureSelector.create(this)
                         .openGallery(PictureConfig.TYPE_IMAGE)
-//                        .compress(true)
-//                        .enableCrop(true)
-//                        .circleDimmedLayer(true)
                         .isCamera(true)
                         .selectionMode(PictureConfig.SINGLE)
                         .forResult(PictureConfig.CHOOSE_REQUEST);
@@ -98,13 +104,7 @@ public class MyFragment extends BFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        log("" + (data == null));
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case PictureConfig.CHOOSE_REQUEST:
-                    mIcon.loadImage(PictureSelector.obtainMultipleResult(data).get(0).getPath());
-                    break;
-            }
-        }
+        if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST)
+            mIcon.loadImage(PictureSelector.obtainMultipleResult(data).get(0).getPath());
     }
 }

@@ -27,6 +27,7 @@
     <color name="clo_sub_title">#333333</color>
     <color name="clo_description">#88000000</color>
     <color name="clo_source">#999999</color>
+    <color name="clo_no_data">#cdcdcd</color>
     <color name="clo_marks">#ff0000</color>
     <color name="clo_tab">#aaaaaa</color>
     <color name="clo_tab_bg">#ffffff</color>

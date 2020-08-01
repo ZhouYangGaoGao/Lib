@@ -16,7 +16,7 @@ public class SearchFragment extends ArticleFragment implements SmartListener {
     @Override
     public void beforeView() {
         showTopBar = true;
-        useCache = false;
+        cache = null;
         preData = BConfig.GET_DATA_NEVER;
     }
 

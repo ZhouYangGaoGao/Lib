@@ -2,8 +2,6 @@ package mvp.tree.view;
 
 import android.content.Intent;
 
-import adapter.CommonAdapter;
-
 import com.zhy.wanandroid.R;
 
 import adapter.ViewHolder;
@@ -24,7 +22,7 @@ public class TreeFragment extends BSmartFragment<Tree> {
 
     @Override
     public void afterView() {
-        refreshLayout.setEnablePureScrollMode(true);
+        refreshLayout.setEnableLoadMore(false);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class TreeFragment extends BSmartFragment<Tree> {
             textView.setRightRes(R.drawable.ic_arrow_forward_black);
         }
         textView.setText(stringBuilder.toString());
-        h.setIncludTextColor(textView, i.getName(), getResources().getColor(R.color.clo_title));
+        h.setIncludTextColor(textView, i.getName(), getResources().getColor(R.color.clo_theme_88));
     }
 
     @Override

@@ -7,8 +7,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         applicationId "com.ahdhst.wall"
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
     }
 
     buildTypes {
@@ -28,4 +28,16 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation project(path: ':zlib')
+
+    // required
+    implementation 'org.salient.artvideoplayer:artplayer-core:1.1.0'
+    implementation "org.salient.artvideoplayer:artplayer-exo:1.1.0"
+    implementation 'org.salient.artvideoplayer:artplayer-ijk:1.1.0'
+
+    implementation "org.salient.artvideoplayer:artplayer-armv7a:1.1.0"
+    implementation "org.salient.artvideoplayer:artplayer-armv5:1.1.0"
+    implementation "org.salient.artvideoplayer:artplayer-x86:1.1.0"
+    //下面两个需要minSdk version >= 21
+    implementation "org.salient.artvideoplayer:artplayer-arm64:1.1.0"
+    implementation "org.salient.artvideoplayer:artplayer-x86_64:1.0.0"
 }

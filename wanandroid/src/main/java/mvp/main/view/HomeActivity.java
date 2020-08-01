@@ -10,6 +10,7 @@ import org.greenrobot.eventbus.EventBus;
 import base.BConfig;
 import base.BHomeActivity;
 import custom.SmartView;
+import enums.DrawerEvent;
 import listener.SmartListener;
 import mvp.chapter.view.ChapterFragment;
 import mvp.home.view.FriendFragment;
@@ -24,7 +25,7 @@ import util.GoTo;
 public class HomeActivity extends BHomeActivity implements SmartListener {
     @Override
     public void beforeView() {
-        drawerContentView = getView(R.layout.layout_fragment_my);
+        drawerLeftView = getView(R.layout.layout_fragment_my);
         icons = new int[]{R.drawable.ic_tab_home, R.drawable.ic_tab_square,
                 R.drawable.ic_tab_navigation, R.drawable.ic_tab_tree,
                 R.drawable.ic_tab_project,R.drawable.ic_tab_public};
@@ -55,7 +56,7 @@ public class HomeActivity extends BHomeActivity implements SmartListener {
         switch (textViewIndex) {
             case 0:
                 if (drawableIndex == 0)
-                    EventBus.getDefault().post(new HomeActivity.DrawerEvent(true));
+                    EventBus.getDefault().post(DrawerEvent.leftOpen);
                 else GoTo.start(QaFragment.class, new Intent().putExtra(BConfig.TITLE, "问答"));
                 break;
             case 2:

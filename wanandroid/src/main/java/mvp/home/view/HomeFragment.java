@@ -1,6 +1,7 @@
 package mvp.home.view;
 
 import android.os.Build;
+import android.widget.GridLayout;
 
 import androidx.annotation.RequiresApi;
 
@@ -20,7 +21,7 @@ public class HomeFragment extends ArticleFragment {
     @Override
     public void beforeView() {
         heardView = getView(R.layout.fragment_banner);
-        isRefresh = false;
+        isRefresh = !Hawk.contains(TAG);
     }
 
     @Override
@@ -46,5 +47,6 @@ public class HomeFragment extends ArticleFragment {
                 upData();
             }
         });
+        else upData();
     }
 }

@@ -8,6 +8,7 @@ import android.os.Build;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -242,6 +243,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
             String text = getText().toString();
             float textWidth = paint.measureText(text);
             while (textWidth > textViewWidth) {
+                setGravity(Gravity.CENTER_VERTICAL);
                 if (textWidth - textViewWidth < 50) {
                     textSize -= 0.01;
                 } else {

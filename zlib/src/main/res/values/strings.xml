@@ -77,6 +77,7 @@
     <string name="str_get_agin">重新获取</string>
     <string name="str_no_captcha_listener">未设置验证码监听</string>
     <string name="str_no_data">无数据</string>
+    <string name="str_empty_data">暂无数据</string>
     <array name="load_name" >
         <item >BallPulseIndicator</item>
         <item >BallGridPulseIndicator</item>

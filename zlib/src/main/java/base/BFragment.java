@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import enums.LevelCache;
 import eventbus.hermeseventbus.HermesEventBus;
 import hawk.Hawk;
 import rx.Observable;
@@ -37,19 +38,18 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
     private Unbinder unbinder;
     private BActivity activity;
     protected String title;
-    protected String cacheKey;
-    protected boolean useCache = true;
+    protected LevelCache cache;
     protected String TAG;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TAG = getClass().getSimpleName();
         if (BActivity.class.isAssignableFrom(getActivity().getClass())) {
             activity = (BActivity) getActivity();
             activity.initPresenter(this);
         }
-        cacheKey = TAG = this.getClass().getSimpleName();
         beforeView();
         if (useEventBus) HermesEventBus.getDefault().register(this);
     }

@@ -26,7 +26,6 @@
         <activity android:name="base.BSplashActivity"/>
         <activity android:name="base.BHomeActivity"/>
         <activity android:name="base.BFragmentActivity"
-            android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize"/>
 
         <!--图片预览界面-->
@@ -84,8 +83,6 @@
         <activity
             android:name="photopicker.ucrop.PictureMultiCuttingActivity"
             android:theme="@style/Base.Theme.NoActionBar" />
-
-<!--        <activity android:name="photopicker.lib.PicturePlayVideoActivity" />-->
 
     </application>
 </manifest>

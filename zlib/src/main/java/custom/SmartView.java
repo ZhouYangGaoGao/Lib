@@ -319,7 +319,6 @@ public class SmartView extends LinearLayout {
         historyFragment.setSmartView(this);
     }
 
-
     public void setBack(boolean back) {
         if (this.back = back) {
             leftTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back, 0, 0, 0);

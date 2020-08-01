@@ -15,9 +15,9 @@
         <ImageView
             android:id="@+id/mBg"
             android:layout_width="match_parent"
-            android:src="@mipmap/bg_code"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:layout_height="200dp"/>
+            android:src="@mipmap/bg_code" />
 
         <custom.ImageViewCard
             android:id="@+id/mIcon"
@@ -25,21 +25,20 @@
             android:layout_height="100dp"
             android:layout_centerInParent="true"
             android:layout_marginTop="50dp"
-            app:cardPreventCornerOverlap="false"
-            app:cardBackgroundColor="@color/picture_color_transparent"
-            app:cardCornerRadius="50dp"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@mipmap/bg_code"
+            app:cardElevation="15dp"
+            app:cardCornerRadius="50dp"/>
 
         <custom.TextView
-            android:layout_width="wrap_content"
             android:id="@+id/mName"
-            android:text="17600117227"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            android:textSize="@dimen/dim_big_title_size"
-            android:textColor="@color/clo_big_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/mIcon"
-            android:layout_height="wrap_content"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="17600117227"
+            android:textColor="@color/clo_big_title"
+            android:textSize="@dimen/dim_big_title_size" />
 
     </RelativeLayout>
 

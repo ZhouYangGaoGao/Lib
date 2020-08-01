@@ -2,9 +2,10 @@
     <style name="my_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginTop">30dp</item>
         <item name="android:textSize">@dimen/dim_big_title_size</item>
         <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/clo_theme_88</item>
         <item name="android:layout_marginHorizontal" tools:ignore="NewApi">15dp</item>
     </style>
 </resources>
