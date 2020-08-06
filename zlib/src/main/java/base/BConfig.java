@@ -1,6 +1,5 @@
 package base;
 
-import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 
 import com.zhy.android.R;
@@ -17,7 +16,6 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import util.CardUtils;
 import util.LogUtils;
 import util.SystemUtil;
 
@@ -52,6 +50,8 @@ public class BConfig {
     private String client = "app";
     private String token = "0";
     private String bugLy;
+    private String testPhone;
+    private String testPassword;
     private BWebJS webInterface;
     private boolean fullScreen = false;
     private int colorTheme, colorTheme88;
@@ -64,11 +64,6 @@ public class BConfig {
     }
 
     private BConfig() {
-    }
-
-    public BConfig initCardView() {
-//        CardUtils.init();
-        return config;
     }
 
     public CookieJar getCookieJar() {
@@ -94,14 +89,12 @@ public class BConfig {
     }
 
 
-    @SuppressLint("NewApi")
     public int getColorTheme() {
-        return colorTheme == 0 ? BApp.app().getColor(R.color.clo_theme) : colorTheme;
+        return colorTheme == 0 ? BApp.app().getResources().getColor(R.color.clo_theme) : colorTheme;
     }
 
-    @SuppressLint("NewApi")
     public int getColorTheme88() {
-        return colorTheme == 0 ? BApp.app().getColor(R.color.clo_theme_88) : colorTheme88;
+        return colorTheme == 0 ? BApp.app().getResources().getColor(R.color.clo_theme_88) : colorTheme88;
     }
 
     public boolean isFullScreen() {
@@ -218,6 +211,24 @@ public class BConfig {
 
     public BConfig setNoColor(boolean noColor) {
         Hawk.put("noColor", noColor);
+        return this;
+    }
+
+    public String getTestPhone() {
+        return testPhone;
+    }
+
+    public BConfig setTestPhone(String testPhone) {
+        this.testPhone = testPhone;
+        return this;
+    }
+
+    public String getTestPassword() {
+        return testPassword;
+    }
+
+    public BConfig setTestPassword(String testPassword) {
+        this.testPassword = testPassword;
         return this;
     }
 }

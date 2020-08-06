@@ -14,20 +14,12 @@ import listener.SmartListener;
 import rx.Subscription;
 import util.GoTo;
 
-public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>> implements View.OnClickListener {
+public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>>> implements View.OnClickListener {
 
-    protected SmartView titleView;
-    protected SmartView phone;
-    protected SmartView captcha;
-    protected SmartView password;
-    protected SmartView checkPassword;
-    protected TextView login;
-    protected TextView next;
-    protected TextView register;
-    protected LinearLayout actionLayout;
-
-    protected String mode;
-    protected String toast;
+    protected SmartView titleView,phone,captcha,password,checkPassword;
+    protected LinearLayout editContent,actionLayout;
+    protected TextView forget,login,next,register;
+    protected String mode,toast;
 
     @Override
     public void beforeView() {
@@ -36,7 +28,8 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
         if (TextUtils.isEmpty(mode)) mode = BConfig.LOGIN_MODE_LOGIN;
     }
 
-    private void resetView() {
+    protected void resetView() {
+        forget.setVisibility(View.GONE);
         phone.setVisibility(View.GONE);
         password.setVisibility(View.GONE);
         login.setVisibility(View.GONE);
@@ -46,7 +39,9 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
         next.setVisibility(View.GONE);
     }
 
-    private void initCaptcha() {
+    protected void initCaptcha() {
+        resetView();
+        mode = BConfig.LOGIN_MODE_CAPTCHA;
         titleView.centerTextView.setText("手机验证");
         toast = getString(R.string.str_captcha_success);
         phone.setVisibility(View.VISIBLE);
@@ -54,7 +49,9 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
         next.setVisibility(View.VISIBLE);
     }
 
-    private void initReset() {
+    protected void initReset() {
+        resetView();
+        mode = BConfig.LOGIN_MODE_RESET;
         titleView.centerTextView.setText("密码重置");
         toast = getString(R.string.str_reset_success);
         password.setCheckId(0);
@@ -63,7 +60,9 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
         next.setVisibility(View.VISIBLE);
     }
 
-    private void initRegister() {
+    protected void initRegister() {
+        resetView();
+        mode = BConfig.LOGIN_MODE_REGISTER;
         titleView.centerTextView.setText("注册");
         toast = getString(R.string.str_register_success);
         phone.setVisibility(View.VISIBLE);
@@ -71,7 +70,9 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
         register.setVisibility(View.VISIBLE);
     }
 
-    private void initLogin() {
+    protected void initLogin() {
+        resetView();
+        mode = BConfig.LOGIN_MODE_LOGIN;
         titleView.centerTextView.setText("登录");
         titleView.setBack(false);
         toast = getString(R.string.str_login_success);
@@ -85,14 +86,17 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
     @Override
     public void initView() {
         actionLayout = (LinearLayout) findViewById(R.id.actionLayout);
+        editContent = (LinearLayout) findViewById(R.id.editContent);
         titleView = (SmartView) findViewById(R.id.titleView);
         phone = (SmartView) findViewById(R.id.phone);
         captcha = (SmartView) findViewById(R.id.captcha);
         password = (SmartView) findViewById(R.id.password);
         checkPassword = (SmartView) findViewById(R.id.checkPassword);
+        forget = (TextView) findViewById(R.id.forget);
         login = (TextView) findViewById(R.id.login);
         next = (TextView) findViewById(R.id.next);
         register = (TextView) findViewById(R.id.register);
+        forget.setOnClickListener(this);
         login.setOnClickListener(this);
         next.setOnClickListener(this);
         register.setOnClickListener(this);
@@ -101,8 +105,7 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
             public void onClick(SmartView smartView, int textViewIndex, int drawableIndex) {
                 presenter.sub(captcha(phone.getText()));
             }
-        },2);
-        resetView();
+        }, 2);
         switch (mode) {
             case BConfig.LOGIN_MODE_LOGIN:
                 initLogin();
@@ -136,41 +139,65 @@ public abstract class BLoginFragment<M> extends BFragment<M,BPresenter<BView<?>>
 
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.forget) {//忘记按钮点击
+            forgetClick();
+        }
+
         if (view.getId() == R.id.login) {//登录按钮点击
-            if (password.actionErrorCheck()) return;
-            login.setEnabled(false);
-            presenter.sub(login(phone.getText(), password.getText()));
-            return;
+            if (loginClick()) return;
         }
 
         if (view.getId() == R.id.register) {//登录页面 注册按钮点击
-            if (mode.equals(BConfig.LOGIN_MODE_LOGIN)) {
-                GoTo.start(this.getClass(), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_REGISTER));
-                return;
-            }
-            if (mode.equals(BConfig.LOGIN_MODE_REGISTER)) {//注册页面 注册按钮点击
-                if (captcha.actionErrorCheck()) return;
-                register.setEnabled(false);
-                presenter.sub(register(phone.getText(), captcha.getText()));
-            }
-            return;
+            registerClick();
         }
 
         if (view.getId() == R.id.next) {//重置密码页面 下一步按钮点击
-            if (mode.equals(BConfig.LOGIN_MODE_CAPTCHA)) {
-                if (captcha.actionErrorCheck()) return;
-                if (captcha.getText().equals(captchaStr)) {
-                    toast("验证成功");
-                    GoTo.start(getClass(), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_RESET));
-                } else {
-                    toast("验证码不正确");
-                }
-            } else {
-                if (checkPassword.actionErrorCheck()) return;
-                next.setEnabled(false);
-                presenter.sub(reset(password.getText(), checkPassword.getText()));
-            }
+            nextClick();
         }
+    }
+
+    protected void nextClick() {
+        if (mode.equals(BConfig.LOGIN_MODE_CAPTCHA)) {
+            if (captcha.actionErrorCheck()) return;
+            if (captcha.getText().equals(captchaStr)) {
+                toast("验证成功");
+                captchaSuccess();
+            } else {
+                toast("验证码不正确");
+            }
+        } else {
+            if (checkPassword.actionErrorCheck()) return;
+            next.setEnabled(false);
+            presenter.sub(reset(password.getText(), checkPassword.getText()));
+        }
+    }
+
+    protected void captchaSuccess() {
+        GoTo.start(getClass(), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_RESET));
+    }
+
+    protected void forgetClick() {
+        initCaptcha();
+    }
+
+    protected boolean loginClick() {
+        if (password.actionErrorCheck()) return true;
+        login.setEnabled(false);
+        presenter.sub(login(phone.getText(), password.getText()));
+        return false;
+    }
+
+    protected void registerClick() {
+        if (mode.equals(BConfig.LOGIN_MODE_LOGIN)) {
+            GoTo.start(this.getClass(), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_REGISTER));
+            return;
+        }
+        if (mode.equals(BConfig.LOGIN_MODE_REGISTER)) {//注册页面 注册按钮点击
+            if (captcha.actionErrorCheck()) return;
+            register.setEnabled(false);
+            presenter.sub(register(phone.getText(), captcha.getText()));
+        }
+        return;
     }
 
     protected Subscription login(String phone, String password) {

@@ -18,7 +18,7 @@
     <dimen name="dim_button_h_padding">15dp</dimen>
     <dimen name="dim_button_v_padding">10dp</dimen>
     <dimen name="dim_button_h_margin">100dp</dimen>
-    <dimen name="dim_button_v_margin">30dp</dimen>
+    <dimen name="dim_button_v_margin">15dp</dimen>
     <dimen name="dim_login_v_margin">0dp</dimen>
     <dimen name="dim_login_h_margin">55dp</dimen>
 

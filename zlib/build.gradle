@@ -51,7 +51,7 @@ dependencies {
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     api 'androidx.annotation:annotation:1.1.0'
     api 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    api 'androidx.lifecycle:lifecycle-common:2.1.0'
+    api 'androidx.lifecycle:lifecycle-common:2.2.0'
     api 'com.tencent.bugly:crashreport_upgrade:1.4.5'
     api 'pub.devrel:easypermissions:3.0.0'
     api 'com.github.bumptech.glide:glide:4.10.0'

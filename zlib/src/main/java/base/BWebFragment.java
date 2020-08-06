@@ -72,7 +72,7 @@ public class BWebFragment extends BFragment {
         String finalTitle = title;
         CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(-1, -1);
         layoutParams.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-        mWebView = new WebView(getActivity());
+        mWebView = new WebView(BApp.app());
         mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         WebSettings settings = mWebView.getSettings();
         settings.setLoadsImagesAutomatically(true);
@@ -96,8 +96,9 @@ public class BWebFragment extends BFragment {
         settings.setAllowFileAccess(true); // 允许访问文件
         settings.setSaveFormData(true);// 保存表单数据
         settings.setDomStorageEnabled(true);
-        settings.setMixedContentMode(MIXED_CONTENT_ALWAYS_ALLOW);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         if (!settings.getUserAgentString().contains("Mobile") && !settings.getUserAgentString().contains("TV"))
             settings.setUserAgentString(settings.getUserAgentString().replace("Safari", "Mobile Safari"));
         mAgentWeb = AgentWeb.with(this)
@@ -192,7 +193,10 @@ public class BWebFragment extends BFragment {
     @Subscribe()
     public void setWebEvent(WebEvent event) {
         if (BApp.app().act().equals(getActivity())) {
+            log(event.toString());
             switch (event.getType()) {
+                case WebEvent.LOAD_JS:
+//                    mWebView.evaluateJavascript(event.getValue(),this);
                 case WebEvent.REFRESH:
                     mWebView.reload();
                     break;

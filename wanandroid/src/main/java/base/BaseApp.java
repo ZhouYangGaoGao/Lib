@@ -24,8 +24,7 @@ public class BaseApp extends BApp {
         BConfig.get()
                 .setBaseUrl("https://www.wanandroid.com/")
                 .setBugLy("a0cb67e1d4")
-                .setInterceptor(new Interceptor())
-                .initCardView();
+                .setInterceptor(new Interceptor());
     }
 
     @Override

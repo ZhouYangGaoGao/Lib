@@ -2,9 +2,17 @@
 <resources>
     <dimen name="dim_button_h_margin">30dp</dimen>
     <dimen name="dim_login_h_margin">30dp</dimen>
-    <dimen name="dim_button_v_margin">20dp</dimen>
-    <dimen name="dim_login_v_margin">10dp</dimen>
+    <dimen name="dim_button_v_margin">10dp</dimen>
+    <dimen name="dim_login_v_margin">5dp</dimen>
 
     <color name="clo_theme">#36c177</color>
     <color name="clo_theme_88">#8836c177</color>
+
+    <style name="login" parent="login_parent">
+<!--        <item name="bl_stroke_color">#88ffffff</item>-->
+<!--        <item name="bl_stroke_width">1dp</item>-->
+<!--        <item name="bl_corners_radius">3dp</item>-->
+        <item name="hideLine">true</item>
+        <item name="textColor">@color/white</item>
+    </style>
 </resources>

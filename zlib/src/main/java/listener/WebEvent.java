@@ -1,8 +1,7 @@
 package listener;
 
-import org.greenrobot.eventbus.EventBus;
-
 public class WebEvent {
+    public static final int LOAD_JS = -1;
     public static final int REFRESH = 0;
     public static final int LOAD_URL = 1;
     public static final int FORWARD = 2;
@@ -14,7 +13,6 @@ public class WebEvent {
 
     public WebEvent(int type) {
         this.type = type;
-        EventBus.getDefault().post(this);
     }
 
     public WebEvent(int type, String value) {
@@ -33,5 +31,13 @@ public class WebEvent {
     public WebEvent setValue(String value) {
         this.value = value;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "WebEvent{" +
+                "type=" + type +
+                ", value='" + value + '\'' +
+                '}';
     }
 }

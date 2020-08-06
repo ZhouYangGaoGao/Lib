@@ -1,6 +1,5 @@
 package com.zhy.wlthd;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.view.View;
@@ -28,8 +27,8 @@ public class WLTSplashActivity extends BSplashActivity {
     protected void startLogin() {
         AnimatorSet set = new AnimatorSet();
         set.playTogether(ObjectAnimator.ofFloat(otherView, "alpha", 0f, 1f),
-                ObjectAnimator.ofFloat(otherView, "scaleX", 0f, 1f),
-                ObjectAnimator.ofFloat(otherView, "scaleY", 0f, 1f));
+                ObjectAnimator.ofFloat(otherView, "scaleX", 0.3f, 1f),
+                ObjectAnimator.ofFloat(otherView, "scaleY", 0.3f, 1f));
         set.setDuration(2000).start();
     }
 }

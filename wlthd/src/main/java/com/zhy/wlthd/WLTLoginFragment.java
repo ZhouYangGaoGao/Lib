@@ -1,6 +1,7 @@
 package com.zhy.wlthd;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 
@@ -11,6 +12,7 @@ import base.BLoginFragment;
 import rx.Subscription;
 import util.GoTo;
 import util.MDrawable;
+import util.ScreenUtils;
 
 /**
  * @author ZhouYang
@@ -27,16 +29,16 @@ public class WLTLoginFragment extends BLoginFragment<WLTLoginModel> {
         titleView.topContent.setBackgroundColor(0x00ffffff);
         titleView.centerTextView.setText("用户登录");
         titleView.centerTextView.setGravity(Gravity.CENTER_VERTICAL);
-
+        captchaStr="123456";
         register.setVisibility(View.GONE);
-
-        phone.initTextColor(0xffffffff,0);
-        phone.setBackground(MDrawable.tag(0x88ffffff,2));
-        phone.line.setVisibility(View.GONE);
-
-        password.initTextColor(0xffffffff,0);
-        password.setBackground(MDrawable.tag(0x88ffffff,2));
-        password.line.setVisibility(View.GONE);
+        forget.setVisibility(View.VISIBLE);
+        Drawable tag = MDrawable.tag(0x88ffffff, 2);
+        phone.setBackground(tag);
+        password.setBackground(tag);
+        captcha.setBackground(tag);
+        password.setBackground(tag);
+        checkPassword.setBackground(tag);
+        editContent.setPadding(0, ScreenUtils.dip2px(-5),0,ScreenUtils.dip2px(-5));
     }
 
     @Override
@@ -51,5 +53,19 @@ public class WLTLoginFragment extends BLoginFragment<WLTLoginModel> {
         };
     }
 
+    @Override
+    protected void captchaSuccess() {
+        initReset();
+    }
+
+    @Override
+    protected Subscription captcha(String phone) {
+        return super.captcha(phone);
+    }
+
+    @Override
+    protected Subscription reset(String password, String checkPassword) {
+        return super.reset(password, checkPassword);
+    }
 }
 

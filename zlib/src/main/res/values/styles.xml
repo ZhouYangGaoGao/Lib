@@ -156,10 +156,15 @@
         <item name="android:textSize">@dimen/ucrop_text_size_widget_text</item>
     </style>
 
-    <style name="login">
+    <style name="login" parent="login_parent"></style>
+
+    <style name="login_parent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/dim_login_v_margin</item>
+        <item name="android:layout_marginBottom">@dimen/dim_login_v_margin</item>
+        <item name="android:layout_marginLeft">@dimen/dim_login_h_margin</item>
+        <item name="android:layout_marginRight">@dimen/dim_login_h_margin</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">16sp</item>

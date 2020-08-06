@@ -37,7 +37,7 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
     protected boolean useEventBus = false;
     private Unbinder unbinder;
     private BActivity activity;
-    protected String title;
+    protected String title="";
     protected LevelCache cache;
     protected String TAG;
 
@@ -58,7 +58,7 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (contentView == null)
-            contentView = inflater.inflate(contentViewId == 0 ? R.layout.layout_list : contentViewId, null);
+            contentView = inflater.inflate(contentViewId == 0 ? R.layout.layout_list : contentViewId, container,false);
         unbinder = ButterKnife.bind(this, contentView);
         title = getIntent().getStringExtra(BConfig.TITLE);
         if (TextUtils.isEmpty(title) && getArguments() != null)

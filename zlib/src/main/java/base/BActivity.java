@@ -20,6 +20,7 @@ import java.util.List;
 import annotation.Presenter;
 import background.BackgroundLibrary;
 import butterknife.ButterKnife;
+import eventbus.hermes.annotation.Background;
 import eventbus.hermeseventbus.HermesEventBus;
 import listener.OnResultListener;
 import slidr.Slidr;
@@ -54,6 +55,8 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
         if (slidFinish) Slidr.attach(this, new SlidrConfig.Builder().edge(true).build());
         initView();
         noColor();
+        afterView();
+        if (preData == BConfig.GET_DATA_CREATE) getData();
     }
 
     public void noColor() {
@@ -67,13 +70,6 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
         cm.setSaturation(0);
         paint.setColorFilter(new ColorMatrixColorFilter(cm));
         return paint;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        afterView();
-        if (preData == BConfig.GET_DATA_CREATE) getData();
     }
 
     private void contentView() {

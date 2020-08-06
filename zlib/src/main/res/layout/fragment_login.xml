@@ -15,51 +15,64 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <custom.SmartView
-            android:id="@+id/phone"
-            style="@style/login"
-            android:layout_marginHorizontal="@dimen/dim_login_h_margin"
-            android:layout_marginTop="0dp"
-            app:mode="login" />
+        <LinearLayout
+            android:id="@+id/editContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="@dimen/dim_login_v_margin"
+            android:orientation="vertical">
 
-        <custom.SmartView
-            android:id="@+id/captcha"
-            style="@style/login"
-            android:layout_marginHorizontal="@dimen/dim_login_h_margin"
-            app:checkId="@id/phone"
-            app:mode="captcha" />
+            <custom.SmartView
+                android:id="@+id/phone"
+                style="@style/login"
+                app:mode="login" />
 
-        <custom.SmartView
-            android:id="@+id/password"
-            style="@style/login"
-            android:layout_marginHorizontal="@dimen/dim_login_h_margin"
-            app:checkId="@id/phone"
-            app:mode="password" />
+            <custom.SmartView
+                android:id="@+id/captcha"
+                style="@style/login"
+                app:checkId="@id/phone"
+                app:mode="captcha" />
 
-        <custom.SmartView
-            android:id="@+id/checkPassword"
-            style="@style/login"
-            android:layout_marginHorizontal="@dimen/dim_login_h_margin"
-            app:checkId="@id/password"
-            app:leftText="确认密码"
-            app:mode="password" />
+            <custom.SmartView
+                android:id="@+id/password"
+                style="@style/login"
+                app:checkId="@id/phone"
+                app:mode="password" />
+
+            <custom.SmartView
+                android:id="@+id/checkPassword"
+                style="@style/login"
+                app:checkId="@id/password"
+                app:leftText="确认密码"
+                app:mode="password" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/actionLayout"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/dim_button_v_margin"
-            android:layout_height="wrap_content">
+            android:paddingVertical="@dimen/dim_button_v_margin">
+
+            <TextView
+                android:id="@+id/forget"
+                style="@style/login"
+                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
+                android:layout_marginVertical="0dp"
+                android:gravity="right"
+                android:textSize="@dimen/dim_description_size"
+                android:text="@string/str_forget" />
 
             <background.view.BLTextView
                 android:id="@+id/login"
                 style="@style/login"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/dim_button_v_margin"
+                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
+                android:layout_marginVertical="@dimen/dim_button_v_margin"
                 android:paddingVertical="@dimen/dim_button_v_padding"
                 android:text="@string/str_login"
-                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
+                android:focusable="true"
                 app:bl_corners_radius="@dimen/dim_button_radius"
                 app:bl_enabled_solid_color="@color/clo_theme"
                 app:bl_unEnabled_solid_color="@color/clo_theme_88"
@@ -68,11 +81,10 @@
             <background.view.BLTextView
                 android:id="@+id/next"
                 style="@style/login"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/dim_button_v_margin"
+                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
+                android:layout_marginVertical="@dimen/dim_button_v_margin"
                 android:paddingVertical="@dimen/dim_button_v_padding"
                 android:text="@string/str_next"
-                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
                 app:bl_corners_radius="@dimen/dim_button_radius"
                 app:bl_enabled_solid_color="@color/clo_theme"
                 app:bl_unEnabled_solid_color="@color/clo_theme_88"
@@ -81,11 +93,10 @@
             <background.view.BLTextView
                 android:id="@+id/register"
                 style="@style/login"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/dim_button_v_margin"
+                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
+                android:layout_marginVertical="@dimen/dim_button_v_margin"
                 android:paddingVertical="@dimen/dim_button_v_padding"
                 android:text="@string/str_register"
-                android:layout_marginHorizontal="@dimen/dim_button_h_margin"
                 app:bl_corners_radius="@dimen/dim_button_radius"
                 app:bl_enabled_solid_color="@color/clo_theme"
                 app:bl_unEnabled_solid_color="@color/clo_theme_88" />
