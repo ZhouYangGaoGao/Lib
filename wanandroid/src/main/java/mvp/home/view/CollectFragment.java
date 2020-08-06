@@ -11,12 +11,12 @@ import rx.Observable;
 public class CollectFragment extends ArticleFragment {
     @Override
     public void beforeView() {
-        showTopBar = true;
+        info.showTop = true;
     }
 
     @Override
     protected Observable<?> get() {
-        return Manager.getApi().collectList(page);
+        return Manager.getApi().collectList(page.page);
     }
 
     @Override

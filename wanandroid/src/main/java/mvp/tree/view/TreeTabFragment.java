@@ -30,7 +30,7 @@ public class TreeTabFragment extends BTabsFragment<Tree> {
 
         @Override
         protected Observable<?> get() {
-            return Manager.getApi().treeList(page, cid);
+            return Manager.getApi().treeList(page.page, cid);
         }
     }
 }

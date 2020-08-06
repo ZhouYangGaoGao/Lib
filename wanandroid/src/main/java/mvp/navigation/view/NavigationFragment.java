@@ -3,7 +3,6 @@ package mvp.navigation.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ListView;
 
@@ -19,19 +18,17 @@ import adapter.ViewHolder;
 import adapter.group.BaseViewHolder;
 import adapter.group.GridLayoutManager;
 import adapter.group.GroupAdapter;
-import background.drawable.DrawableCreator;
 import base.BConfig;
 import base.BFragment;
 import base.BPresenter;
+import base.BSub;
 import base.BView;
 import base.BWebFragment;
 import base.Manager;
-import base.Subs;
 import butterknife.BindView;
 import custom.SmartView;
-import custom.TextView;
 import enums.LevelCache;
-import listener.SmartModel;
+import bean.Smart;
 import mvp.chapter.model.Article;
 import mvp.navigation.model.Navigation;
 import photopicker.lib.decoration.GridSpacingItemDecoration;
@@ -52,7 +49,7 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
     @Override
     public void beforeView() {
         contentViewId = R.layout.fragment_navigation;
-        cache = LevelCache.refresh;
+        levelCache = LevelCache.refresh;
     }
 
     @Override
@@ -114,14 +111,14 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
 
     private void jump(Article article, Navigation navigation, int childPosition) {
         GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, article.getLink()));
-        new SmartModel(R.drawable.ic_more_vert, article.isCollect() ? R.drawable.ic_favorite_white
+        new Smart(R.drawable.ic_more_vert, article.isCollect() ? R.drawable.ic_favorite_white
                 : R.drawable.ic_favorite_white_border) {
             @Override
             public void onClick(SmartView sv, int viewIndex, int resIndex) {
                 if (viewIndex == 2 && resIndex == 2) {
                     showDialog(article);
                 } else if (viewIndex == 2 && resIndex == 0) {
-                    presenter.sub(new Subs<Object>(article.isCollect() ? Manager.getApi().unCollect(article.getId())
+                    presenter.sub(new BSub<Object>(article.isCollect() ? Manager.getApi().unCollect(article.getId())
                             : Manager.getApi().collect(article.getId())) {
                         @Override
                         public void onSuccess(Object o) {
@@ -155,8 +152,8 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
 
     @Override
     protected Observable<?> get() {
-        if (cache.get(TAG) != null) {
-            success(cache.get(TAG));
+        if (levelCache.get(TAG) != null) {
+            success(levelCache.get(TAG));
             return null;
         }
         return Manager.getApi().navigation();
@@ -164,7 +161,7 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
 
     @Override
     public void onStop() {
-        cache.cache(TAG,adapter.getGroup());
+        levelCache.cache(TAG,adapter.getGroup());
         super.onStop();
     }
 }

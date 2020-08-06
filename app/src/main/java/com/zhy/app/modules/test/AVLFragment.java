@@ -3,7 +3,9 @@ package com.zhy.app.modules.test;
 import android.view.View;
 
 import com.wang.avi.AVLoadingIndicatorView;
+
 import adapter.CommonAdapter;
+
 import com.zhy.app.R;
 
 
@@ -15,9 +17,9 @@ import base.BSmartFragment;
 public class AVLFragment extends BSmartFragment<String> {
     @Override
     public void beforeView() {
-        numColumns = 3;
-        itemLayoutId = R.layout.item_avl;
-        scrollAble = true;
+        grid.numColumns = 3;
+        grid.itemLayoutId = R.layout.item_avl;
+        grid.expand = true;
         Collections.addAll(mData, getResources().getStringArray(R.array.load_name));
     }
 

@@ -20,6 +20,7 @@ import java.util.List;
 import annotation.Presenter;
 import background.BackgroundLibrary;
 import butterknife.ButterKnife;
+import enums.LevelDataTime;
 import eventbus.hermes.annotation.Background;
 import eventbus.hermeseventbus.HermesEventBus;
 import listener.OnResultListener;
@@ -32,7 +33,7 @@ import util.StatusBarUtil;
 public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActivity implements BView<M> {
 
     public P presenter;
-    protected int preData = 0;
+    protected LevelDataTime levelDataTime = LevelDataTime.create;
     protected boolean useEventBus = false;
     protected boolean slidFinish = false;
     protected boolean isFullScreen;
@@ -56,7 +57,7 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
         initView();
         noColor();
         afterView();
-        if (preData == BConfig.GET_DATA_CREATE) getData();
+        if (levelDataTime == LevelDataTime.create) getData();
     }
 
     public void noColor() {
@@ -145,7 +146,7 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
     @Override
     protected void onResume() {
         super.onResume();
-        if (preData == BConfig.GET_DATA_RESUME) getData();
+        if (levelDataTime == LevelDataTime.resume) getData();
     }
 
     @Override

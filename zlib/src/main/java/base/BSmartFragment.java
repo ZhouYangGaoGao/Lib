@@ -18,12 +18,17 @@ import java.util.List;
 import adapter.CommonAdapter;
 import adapter.ViewHolder;
 import background.drawable.DrawableCreator;
+import bean.Grid;
+import bean.Info;
+import bean.Page;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
 import custom.SmartView;
 import custom.StatusView;
+import bean.Card;
 import custom.card.CardView;
 import enums.LevelCache;
+import enums.LevelDataTime;
 import util.LayoutUtil;
 import util.ScreenUtils;
 
@@ -32,29 +37,17 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     private CommonAdapter<M> adapter;
     protected HeaderGridView gridView;
     protected SmartRefreshLayout refreshLayout;
-    protected SmartView mSmartView;
-    protected StatusView mStatusView;
-    protected String type = "";//预留参数 类型
+    protected SmartView mSmartView;//根布局
+    protected StatusView mStatusView;//状态视图
     protected List<M> mData = new ArrayList<>();//主列表数据
-    protected View heardView, footView, topView, bottomView;
-    protected int index = 0;//预留参数 下标
-    protected int horizontalSpacing = 1, verticalSpacing = 1;
-    protected int numColumns = 1;//列数
-    protected int isCard = 0;//是否卡片模式 0:否  >0:间距
-    protected int cardRadius = 10;//卡片圆角
-    protected int cardColor = 0xffffffff;//卡片背景色 正常
-    protected int cardColorPress = 0x11000000;//卡片背景色 按压
-    protected int bgColor = 0xffffffff;//列表背景色
-    protected int startPage = 1;//起始页码
-    protected int page = 1;//页码
-    protected int itemLayoutId = R.layout.item_text;//item布局
-    protected int rippleColor = 0x33000000;//item水波纹颜色
-    protected boolean isRefresh = false;//是否是刷新
-    protected boolean scrollAble = false;//* 可滑动
-    protected boolean showTopBar = true;
+    protected View heardView, footView, topView, bottomView;//其他视图
+    protected Grid grid = new Grid();//网格列表信息 间隔/背景/列数/布局
+    protected Card card = new Card();//卡片信息
+    protected Page page = new Page();//页码参数
+    protected Info info = new Info();//其他参数
 
     {
-        cache = LevelCache.refresh;
+        levelCache = LevelCache.refresh;
     }
 
     @Override
@@ -65,14 +58,17 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
         refreshLayout.setEnableLoadMoreWhenContentNotFull(false);
         gridView = (HeaderGridView) findViewById(R.id.gridView);
         mSmartView = (SmartView) findViewById(R.id.mTopView);
-        gridView.scrollAble = scrollAble;
-        refreshLayout.setEnablePureScrollMode(scrollAble);
-        gridView.setNumColumns(numColumns);
-        gridView.setBackgroundColor(bgColor);
-        mSmartView.topContent.setVisibility(showTopBar ? View.VISIBLE : View.GONE);
+        if (grid.expand) {
+            gridView.setExpand(true);
+            refreshLayout.setEnableLoadMore(false);
+            refreshLayout.setEnableRefresh(false);
+        }
+        gridView.setNumColumns(grid.numColumns);
+        gridView.setBackgroundColor(grid.bgColor);
+        mSmartView.topContent.setVisibility(info.showTop ? View.VISIBLE : View.GONE);
         if (mStatusView == null) {
             mStatusView = new StatusView(getContext());
-            if (preData == BConfig.GET_DATA_NEVER) mStatusView.empty();
+            if (levelDataTime == LevelDataTime.never) mStatusView.empty();
             mStatusView.getTv().setOnClickListener(v -> {
                 mStatusView.loading();
                 onRefresh(refreshLayout);
@@ -81,41 +77,40 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
         ((LinearLayout) findViewById(R.id.content)).addView(mStatusView, LayoutUtil.zoomVLp());
         gridView.setEmptyView(mStatusView);
         if (heardView != null) gridView.addHeaderView(heardView);
-        if (isCard > 0) initCard();
+        if (card != null && card.cardDiver > 0) initCard();
         if (footView != null) gridView.addFooterView(footView);
         if (topView != null) mSmartView.addView(topView, 1);
         if (bottomView != null) mSmartView.addView(bottomView);
         gridView.setAdapter(adapter = initAdapter());
-        gridView.setHorizontalSpacing(ScreenUtils.dip2px(horizontalSpacing));
-        gridView.setVerticalSpacing(ScreenUtils.dip2px(verticalSpacing));
+        gridView.setHorizontalSpacing(ScreenUtils.dip2px(grid.horizontalSpacing));
+        gridView.setVerticalSpacing(ScreenUtils.dip2px(grid.verticalSpacing));
         mSmartView.centerTextView.setText(title);
-        page = startPage;
     }
 
     private void initCard() {
-        gridView.addHeaderView(new EmptySizeView(isCard * 4 / 5));
-        gridView.addFooterView(new EmptySizeView(isCard / 5));
-        verticalSpacing = isCard - 10;
-        horizontalSpacing = verticalSpacing - (isCard / 5);
+        gridView.addHeaderView(new EmptySizeView(card.cardDiver * 4 / 5));
+        gridView.addFooterView(new EmptySizeView(card.cardDiver / 5));
+        grid.verticalSpacing = card.cardDiver - 10;
+        grid.horizontalSpacing = grid.verticalSpacing - (card.cardDiver / 5);
     }
 
     private CommonAdapter<M> initAdapter() {//初始化主列表适配器
-        return new CommonAdapter<M>(getContext(), mData, isCard > 0 ? R.layout.item_card : itemLayoutId) {
+        return new CommonAdapter<M>(getContext(), mData, card.cardDiver > 0 ? R.layout.item_card : grid.itemLayoutId) {
 
             @Override
             public boolean isEmpty() {//当列表有头部天加时 列表为空要显示头部
                 int count = gridView.getHeaderViewCount() + gridView.getFooterViewCount();
                 if (count > 2) return false;
-                if (isCard == 0 && count > 0) return false;
+                if (card.cardDiver == 0 && count > 0) return false;
                 return super.isEmpty();
             }
 
             @Override
             public void convert(ViewHolder h, M i) {//列表item的初始化 回调
-                if (isCard > 0) initCardItem(h);
+                if (card.cardDiver > 0) initCardItem(h);
                 else {
                     h.getConvertView().setBackground(background(new DrawableCreator.Builder()
-                            .setRipple(true, rippleColor))
+                            .setRipple(true, card.rippleColor))
                             .build());
                 }
                 h.setClick(new View.OnClickListener() {
@@ -133,23 +128,24 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     }
 
     private void initCardItem(ViewHolder h) {//初始化卡片
-        View contentView = getView(itemLayoutId);
+        View contentView = getView(grid.itemLayoutId);
         CardView cardView = h.getView(R.id.cardView);
         contentView.setBackground(background(new DrawableCreator.Builder()
-                .setRipple(true, rippleColor)
-                .setCornersRadius(ScreenUtils.dip2px(cardRadius)))
+                .setRipple(true, card.rippleColor)
+                .setCornersRadius(ScreenUtils.dip2px(card.cardRadius)))
                 .build());
         cardView.addView(contentView);
-        cardView.setRadius(ScreenUtils.dip2px(cardRadius));
+        cardView.setRadius(ScreenUtils.dip2px(card.cardRadius));
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) cardView.getLayoutParams();
         params.width = -1;
         params.height = -2;
-        params.setMargins(ScreenUtils.dip2px(isCard), 0, (h.getPosition() + 1) % numColumns == 0 ? ScreenUtils.dip2px(isCard) : 0, 0);
+        params.setMargins(ScreenUtils.dip2px(card.cardDiver), 0, (h.getPosition() + 1)
+                % grid.numColumns == 0 ? ScreenUtils.dip2px(card.cardDiver) : 0, 0);
         cardView.setLayoutParams(params);
     }
 
     protected DrawableCreator.Builder background(DrawableCreator.Builder drawableBuilder) {//设置item 的背景
-        return drawableBuilder.setPressedSolidColor(cardColorPress, cardColor);
+        return drawableBuilder.setPressedSolidColor(card.cardColorPress, card.cardColor);
     }
 
     protected void convert(ViewHolder h, M i) {//item回调
@@ -159,20 +155,20 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {//加载更多
-        isRefresh = false;
-        page++;
+        info.isRefresh = false;
+        page.page++;
         super.getData();
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {//刷新列表 重新获取数据
-        isRefresh = true;
-        page = startPage;
+        info.isRefresh = true;
+        page.resetPage();
         super.getData();
     }
 
     public void onData(List<M> datas) {//数据处理完成 更新页面
-        if (isRefresh) mData.clear();
+        if (info.isRefresh) mData.clear();
         mData.addAll(datas);
         upData();
     }
@@ -190,10 +186,10 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
 
     @Override
     public void getData() {
-        if (cache != null) {
-            List<M> data = cache.get(TAG);
+        if (levelCache != null) {
+            List<M> data = levelCache.get(TAG);
             if (data != null)
-                switch (cache) {
+                switch (levelCache) {
                     case only:
                         onData(data);
                         break;
@@ -202,7 +198,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
                         getNew();
                         break;
                     case refresh:
-                        if (isRefresh) getNew();
+                        if (info.isRefresh) getNew();
                         else onData(data);
                         break;
                 }
@@ -225,7 +221,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
 
     @Override
     public void onStop() {
-        if (mData != null && cache != null) cache.cache(TAG, mData);
+        if (mData != null && levelCache != null) levelCache.cache(TAG, mData);
         super.onStop();
     }
 

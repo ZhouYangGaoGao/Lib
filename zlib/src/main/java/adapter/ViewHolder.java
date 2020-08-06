@@ -1,7 +1,6 @@
 package adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -91,10 +90,6 @@ public class ViewHolder {
         return getView(id);
     }
 
-    public LinearLayout getLinearLayout(int id) {
-        return getView(id);
-    }
-
     /**
      * 为TextView设置字符串
      *
@@ -106,7 +101,6 @@ public class ViewHolder {
         TextView view = getView(viewId);
         view.setText(text);
         return this;
-
     }
 
     /**
@@ -140,6 +134,23 @@ public class ViewHolder {
             imageViewCard.loadImage(model);
         } else
             ImageUtils.loadImage(context, model, (ImageView) getView(viewId));
+        return this;
+    }
+
+    /**
+     * 设置图片 带默认图
+     *
+     * @param viewId
+     * @param model
+     * @param difImgRes
+     * @return
+     */
+    public ViewHolder setImage(int viewId, Object model, int difImgRes) {
+        if (getView(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
+            ImageViewCard imageViewCard = getView(viewId);
+            imageViewCard.loadImage(model, difImgRes);
+        } else
+            ImageUtils.loadImage(context, model, difImgRes, (ImageView) getView(viewId));
         return this;
     }
 
@@ -210,59 +221,34 @@ public class ViewHolder {
         return this;
     }
 
-    /**
-     * 设置图片 带默认图
-     *
-     * @param viewId
-     * @param model
-     * @param difImgRes
-     * @return
-     */
-    public ViewHolder setImageByUrl(int viewId, Object model, int difImgRes) {
-        if (getView(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
-            ImageViewCard imageViewCard = getView(viewId);
-            imageViewCard.loadImage(model, difImgRes);
-        } else
-            ImageUtils.loadImage(context, model, difImgRes, (ImageView) getView(viewId));
+    public ViewHolder setImageRound(int viewId, Object model, int dpRadius) {
+        if (model != null)
+            ImageUtils.loadRoundImage(context, model,dpRadius, (ImageView) getView(viewId));
         return this;
     }
 
-    public void setIncludTextColor(View textView, String keyWord, int colorOxff) {
-        TextView textView1 = (TextView) textView;
-        String text = textView1.getText().toString().trim();
-        if (text.contains(keyWord)) {
-            SpannableStringBuilder style = new SpannableStringBuilder(
-                    text);
-            style.setSpan(new ForegroundColorSpan(colorOxff),
-                    text.indexOf(keyWord), text.indexOf(keyWord)
-                            + keyWord.length(),
-                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            textView1.setText(style);
-        }
-    }
-
-    public void setIncludTextColor(View textView, int colorOxff, String... keyWords) {
-        TextView textView1 = (TextView) textView;
-        String text = textView1.getText().toString().trim();
+    public void setIncludeTextColor(View textView, int colorOx, String... keyWords) {
+        TextView tv = (TextView) textView;
+        String text = tv.getText().toString().trim();
         SpannableStringBuilder style = new SpannableStringBuilder(
                 text);
         for (int i = 0; i < keyWords.length; i++) {
             if (!TextUtils.isEmpty(keyWords[i]) && text.contains(keyWords[i])) {
-                style.setSpan(new ForegroundColorSpan(colorOxff),
+                style.setSpan(new ForegroundColorSpan(colorOx),
                         text.indexOf(keyWords[i]), text.indexOf(keyWords[i])
                                 + keyWords[i].length(),
                         Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             }
         }
-        textView1.setText(style);
+        tv.setText(style);
     }
 
 
-    public void setIncludTextBg(TextView textView, final String keyWord, Drawable drawable, final int color) {
-        setIncludTextBg(textView, keyWord, drawable, color, 0.75f);
+    public void setIncludeTextBg(TextView textView, final String keyWord, Drawable drawable, final int color) {
+        setIncludeTextBg(textView, keyWord, drawable, color, 0.75f);
     }
 
-    public void setIncludTextBg(TextView textView, final String keyWord, Drawable drawable, final int color, final float proportion) {
+    public void setIncludeTextBg(TextView textView, final String keyWord, Drawable drawable, final int color, final float proportion) {
         String text = textView.getText().toString();
         if (text.contains(keyWord)) {
             final float size = textView.getTextSize();

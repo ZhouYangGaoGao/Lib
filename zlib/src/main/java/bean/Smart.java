@@ -1,10 +1,11 @@
-package listener;
+package bean;
 
 import org.greenrobot.eventbus.EventBus;
 
 import custom.SmartView;
+import listener.SmartListener;
 
-public abstract class SmartModel implements SmartListener {
+public abstract class Smart implements SmartListener {
     public int[][] res = new int[3][4];
     public String[] text = new String[3];
     public int[] padding = new int[3];
@@ -14,11 +15,11 @@ public abstract class SmartModel implements SmartListener {
 
     protected void init(){};
 
-    public SmartModel(int rightRes) {
+    public Smart(int rightRes) {
         initRight(rightRes,0);
     }
 
-    public SmartModel(int rightOneRes, int rightTwoRes) {
+    public Smart(int rightOneRes, int rightTwoRes) {
         initRight(rightOneRes, rightTwoRes);
     }
 
@@ -29,7 +30,7 @@ public abstract class SmartModel implements SmartListener {
         EventBus.getDefault().postSticky(this);
     }
 
-    public SmartModel() {
+    public Smart() {
         init();
     }
 

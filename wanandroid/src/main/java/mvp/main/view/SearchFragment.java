@@ -3,10 +3,9 @@ package mvp.main.view;
 import com.zhy.wanandroid.R;
 
 import adapter.ViewHolder;
-import base.BConfig;
 import base.Manager;
-import custom.HistoryFragment;
 import custom.SmartView;
+import enums.LevelDataTime;
 import listener.SmartListener;
 import mvp.chapter.model.Article;
 import mvp.chapter.view.ArticleFragment;
@@ -15,9 +14,9 @@ import rx.Observable;
 public class SearchFragment extends ArticleFragment implements SmartListener {
     @Override
     public void beforeView() {
-        showTopBar = true;
-        cache = null;
-        preData = BConfig.GET_DATA_NEVER;
+        info.showTop = true;
+        levelCache = null;
+        levelDataTime = LevelDataTime.never;
     }
 
     @Override
@@ -41,6 +40,6 @@ public class SearchFragment extends ArticleFragment implements SmartListener {
 
     @Override
     protected Observable<?> get() {
-        return Manager.getApi().query(page, mSmartView.getText());
+        return Manager.getApi().query(page.page, mSmartView.getText());
     }
 }

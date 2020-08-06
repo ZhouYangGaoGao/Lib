@@ -8,16 +8,15 @@ import com.zhy.wanandroid.R;
 
 import java.util.List;
 
-import adapter.ViewHolder;
 import anylayer.AnyLayer;
 import anylayer.Layer;
 import base.BConfig;
 import base.BFragment;
 import base.BPresenter;
+import base.BSub;
 import base.BView;
 import base.BWebFragment;
 import base.Manager;
-import base.Subs;
 import butterknife.BindView;
 import custom.FlowLayout;
 import custom.PopView;
@@ -25,7 +24,7 @@ import custom.SmartView;
 import custom.TagAdapter;
 import custom.TagFlowLayout;
 import custom.TextView;
-import listener.SmartModel;
+import bean.Smart;
 import mvp.chapter.model.Article;
 import rx.Observable;
 import util.GoTo;
@@ -62,7 +61,7 @@ public class FriendFragment extends BFragment<List<Article>, BPresenter<BView<?>
                 GoTo.start(BWebFragment.class, new Intent()
                         .putExtra(BConfig.URL, article.getLink())
                         .putExtra(BConfig.TITLE, article.getTitle()));
-                new SmartModel(R.drawable.ic_more_vert, article.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
+                new Smart(R.drawable.ic_more_vert, article.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
                     @Override
                     public void onClick(SmartView sv, int viewIndex, int resIndex) {
                         if (viewIndex == 2 && resIndex == 2) {
@@ -78,7 +77,7 @@ public class FriendFragment extends BFragment<List<Article>, BPresenter<BView<?>
     }
 
     private void actionFavorite(Article i,int position, TextView tv, int trueRes, int falseRes) {
-        presenter.sub(new Subs<Object>(mData.get(position).isCollect() ? Manager.getApi().unCollect(i.getId())
+        presenter.sub(new BSub<Object>(mData.get(position).isCollect() ? Manager.getApi().unCollect(i.getId())
                 : Manager.getApi().collect(i.getId())) {
             @Override
             public void onSuccess(Object o) {

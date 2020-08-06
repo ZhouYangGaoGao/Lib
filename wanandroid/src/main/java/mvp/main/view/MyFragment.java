@@ -2,10 +2,7 @@ package mvp.main.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.FileUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,16 +11,12 @@ import androidx.annotation.Nullable;
 import com.tencent.bugly.beta.Beta;
 import com.zhy.wanandroid.R;
 
-import java.io.File;
-import java.io.FileReader;
-
-import background.view.BLImageView;
 import base.BActivity;
 import base.BApp;
 import base.BConfig;
 import base.BFragment;
+import base.BSub;
 import base.Manager;
-import base.Subs;
 import butterknife.BindView;
 import butterknife.OnClick;
 import custom.ImageViewCard;
@@ -34,11 +27,8 @@ import mvp.login.model.LoginModel;
 import photopicker.lib.PictureSelector;
 import photopicker.lib.config.PictureConfig;
 import util.FastBlur;
-import util.GlideApp;
 import util.GoTo;
-import util.ImageUtils;
 import util.MIntent;
-import util.ScreenUtils;
 
 public class MyFragment extends BFragment {
 
@@ -95,7 +85,7 @@ public class MyFragment extends BFragment {
                 Beta.checkUpgrade();
                 break;
             case R.id.mLogout:
-                presenter.sub(Subs.get(Manager.getApi().logout()));
+                presenter.sub(BSub.get(Manager.getApi().logout()));
                 BApp.app().logout();
                 break;
         }

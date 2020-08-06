@@ -25,7 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import custom.SmartView;
-import listener.SmartModel;
+import bean.Smart;
 import listener.WebEvent;
 
 import static android.webkit.WebSettings.*;
@@ -39,7 +39,7 @@ public class BWebFragment extends BFragment {
     private TextView titleView;
     public WebView mWebView;
     public AgentWeb mAgentWeb;
-    private SmartModel listener;
+    private Smart listener;
 
     @Override
     public void beforeView() {
@@ -182,7 +182,7 @@ public class BWebFragment extends BFragment {
     }
 
     @Subscribe(sticky = true)
-    public void setSmartListener(SmartModel listener) {
+    public void setSmartListener(Smart listener) {
         if (BApp.app().act().equals(getActivity())) {
             this.listener = listener;
             EventBus.getDefault().removeStickyEvent(listener);

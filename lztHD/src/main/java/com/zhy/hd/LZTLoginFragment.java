@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 
 import base.BConfig;
 import base.BLoginFragment;
+import base.BSub;
 import rx.Subscription;
 import util.GoTo;
 
@@ -27,11 +28,11 @@ public class LZTLoginFragment extends BLoginFragment<LZTLoginModel> {
 
     @Override
     protected Subscription login(String phone, String password) {
-        return new LZTSub<LZTLoginModel>(this,LZTManager.get().login(phone, password)) {
+        return new BSub<LZTLoginModel>(this,LZTManager.get().login(phone, password)) {
             @Override
             public void onSuccess(LZTLoginModel o) {
                 BConfig.get().setToken(o.getToken());
-                GoTo.start(LZTMainActivity.class, new Intent().putExtra(LZTConstant.URL, LZTConstant.url + new Gson().toJson(o)));
+                GoTo.start(LZTMainActivity.class, new Intent().putExtra(BConfig.URL, LZTConstant.url + new Gson().toJson(o)));
                 success(o);
             }
         };

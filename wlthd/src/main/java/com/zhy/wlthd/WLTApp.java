@@ -19,8 +19,9 @@ public class WLTApp extends BApp {
         BConfig.get().setBaseUrl("https://www.ahlzz.com/api/")
                 .setClient("cms")
                 .setFullScreen(true)
-                .setBugLy("5c1d24a237")
-                .setWebInterface(new WLTJS())
+                .setBugLy("a19f54cc33")
+                .setTestPassword("123456")
+                .setTestPhone("17600117227")
                 .setToken(loginModel == null ? "0" : loginModel.getToken());
     }
 }

@@ -28,9 +28,6 @@ public class BConfig {
     public static final String LOGIN_MODE_RESET = "reset";
     public static final String LOGIN_MODE_CAPTCHA = "captcha";
     public static final String TOP_SHOW = "showTop";
-    public static final int GET_DATA_NEVER = -1;
-    public static final int GET_DATA_CREATE = 0;
-    public static final int GET_DATA_RESUME = 1;
     public static final String TITLE = "title";
     public static final String BACK = "back";
     public static final String URL = "url";
@@ -39,6 +36,8 @@ public class BConfig {
     public static final String RE_PASSWORD = "repassword";
     public static final String PASSWORD = "password";
     public static final String USER_NAME = "username";
+    public static final String PHONE = "phone";
+    public static final String CLIENT = "client";
     public static final String PAGE = "page";
     public static final String ID = "id";
     public static final String TABS = "tabs";

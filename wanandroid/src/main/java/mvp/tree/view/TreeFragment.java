@@ -16,8 +16,8 @@ import util.GoTo;
 public class TreeFragment extends BSmartFragment<Tree> {
     @Override
     public void beforeView() {
-        isCard = 8;
-        showTopBar = false;
+        card.cardDiver = 8;
+        info.showTop = false;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TreeFragment extends BSmartFragment<Tree> {
             textView.setRightRes(R.drawable.ic_arrow_forward_black);
         }
         textView.setText(stringBuilder.toString());
-        h.setIncludTextColor(textView, i.getName(), getResources().getColor(R.color.clo_theme_88));
+        h.setIncludeTextColor(textView, getResources().getColor(R.color.clo_theme_88), i.getName());
     }
 
     @Override

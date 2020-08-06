@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import base.BConfig;
 import base.BLoginFragment;
+import base.BSub;
 import rx.Subscription;
 import util.GoTo;
 import util.MDrawable;
@@ -43,7 +44,7 @@ public class WLTLoginFragment extends BLoginFragment<WLTLoginModel> {
 
     @Override
     protected Subscription login(String phone, String password) {
-        return new WLTSub<WLTLoginModel>(this,WLTManager.get().login(phone, password)) {
+        return new BSub<WLTLoginModel>(this,WLTManager.get().login(phone, password)) {
             @Override
             public void onSuccess(WLTLoginModel o) {
                 BConfig.get().setToken(o.getToken());

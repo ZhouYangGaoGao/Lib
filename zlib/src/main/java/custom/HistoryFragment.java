@@ -29,9 +29,9 @@ public class HistoryFragment extends BSmartFragment<String> {
     protected int historyCount = 10;
 
     {
-        showTopBar = false;
-        isRefresh = false;
-        bgColor = 0xffaaaaaa;
+        info.showTop = false;
+        info.isRefresh = false;
+        grid.bgColor = 0xffaaaaaa;
         useEventBus = true;
     }
 

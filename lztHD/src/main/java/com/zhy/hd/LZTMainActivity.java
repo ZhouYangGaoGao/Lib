@@ -27,7 +27,7 @@ public class LZTMainActivity extends BActivity {
         if (model != null) {
             setIntent(new Intent()
                     .putExtra(BConfig.TOP_SHOW,false)
-                    .putExtra(LZTConstant.URL, LZTConstant.url + new Gson().toJson(model)));
+                    .putExtra(BConfig.URL, LZTConstant.url + new Gson().toJson(model)));
         } else {
             GoTo.start(LZTLoginFragment.class);
             finish();

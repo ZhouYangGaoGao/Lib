@@ -21,16 +21,16 @@ import util.Reflector;
  * Created by YangYang on 2017/4/19.
  */
 
-public class BSub<M extends BResponse<T>, T> extends Subscriber<M> {
+public class BSub<T> extends Subscriber<BResponse<T>> {
 
     private BView<T> mView;
     private String tag;
 
-    public BSub(Observable<M> observable) {
+    public BSub(Observable<? extends BResponse<T>> observable) {
         this(null, observable);
     }
 
-    public BSub(BView<T> mView, Observable<M> observable) {
+    public BSub(BView<T> mView, Observable<? extends BResponse<T>> observable) {
         this.mView = mView;
         tag = mView == null ? Reflector.name(this, 1) + "" : mView.getClass().getSimpleName();
         observable.subscribeOn(Schedulers.io())
@@ -38,11 +38,11 @@ public class BSub<M extends BResponse<T>, T> extends Subscriber<M> {
                 .subscribe(this);
     }
 
-    public static <M extends BResponse<T>, T> Subscription get(BView<T> view, Observable<M> observable) {
-        return new BSub<M, T>(view, observable);
+    public static <T> Subscription get(BView<T> view, Observable<? extends BResponse<T>> observable) {
+        return new BSub<T>(view, observable);
     }
 
-    public static <M extends BResponse<T>, T> Subscription get(Observable<M> observable) {
+    public static <T> Subscription get(Observable<? extends BResponse<T>> observable) {
         return get(null, observable);
     }
 
@@ -66,7 +66,7 @@ public class BSub<M extends BResponse<T>, T> extends Subscriber<M> {
     }
 
     @Override
-    public void onNext(M m) {
+    public void onNext(BResponse<T> m) {
         if (m == null) {
             onFail(BApp.app().getString(R.string.str_no_data));
         } else {

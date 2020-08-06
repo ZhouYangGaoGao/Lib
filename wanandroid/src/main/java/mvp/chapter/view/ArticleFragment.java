@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.necer.ndialog.ChoiceDialog;
 import com.zhy.wanandroid.R;
 
 import adapter.ViewHolder;
@@ -14,14 +13,14 @@ import anylayer.AnyLayer;
 import anylayer.Layer;
 import base.BConfig;
 import base.BSmartFragment;
+import base.BSub;
 import base.BWebFragment;
 import base.BaseBean;
 import base.Manager;
-import base.Subs;
 import custom.PopView;
 import custom.SmartView;
 import custom.TextView;
-import listener.SmartModel;
+import bean.Smart;
 import listener.WebEvent;
 import mvp.chapter.model.Article;
 import rx.Observable;
@@ -32,10 +31,10 @@ public class ArticleFragment extends BSmartFragment<Article> {
     protected int cid = 0;
 
     {
-        showTopBar = false;
-        isCard = 7;
-        startPage = 0;
-        itemLayoutId = R.layout.item_article;
+        info.showTop = false;
+        card.cardDiver = 7;
+        page.setStartPage(0);
+        grid.itemLayoutId = R.layout.item_article;
     }
 
     @Override
@@ -128,7 +127,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
     @Override
     protected void onItemClick(ViewHolder h, Article i) {
         GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, i.getLink()));
-        new SmartModel(R.drawable.ic_more_vert, i.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
+        new Smart(R.drawable.ic_more_vert, i.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
             @Override
             public void onClick(SmartView sv, int viewIndex, int resIndex) {
                 if (viewIndex == 2 && resIndex == 2) {
@@ -158,7 +157,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
     }
 
     private void actionFavorite(Article i, ViewHolder h, TextView tv, int trueRes, int falseRes) {
-        presenter.sub(new Subs<Object>(i.isCollect() ? unCollect(i)
+        presenter.sub(new BSub<Object>(i.isCollect() ? unCollect(i)
                 : Manager.getApi().collect(i.getId())) {
             @Override
             public void onSuccess(Object o) {
@@ -203,7 +202,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
 
     @Override
     protected Observable<?> get() {
-        return Manager.getApi().article(cid, page);
+        return Manager.getApi().article(cid, page.page);
     }
 }
 

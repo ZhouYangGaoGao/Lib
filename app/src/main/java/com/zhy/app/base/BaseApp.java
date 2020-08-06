@@ -21,6 +21,6 @@ public class BaseApp extends BApp {
         LoginModel user = Hawk.get(BConfig.LOGIN);
         BConfig.get().setBaseUrl("https://www.ahlzz.com/api/")
                 .setClient("cms")
-                .setToken(user==null?"0":(user.getToken()+""));
+                .setToken(user == null ? "0" : (user.getToken() + ""));
     }
 }

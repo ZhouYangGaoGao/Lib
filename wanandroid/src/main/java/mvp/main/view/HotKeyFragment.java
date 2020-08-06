@@ -18,15 +18,10 @@ public class HotKeyFragment extends BSmartFragment<Article> {
 
     @Override
     public void beforeView() {
-        numColumns = 3;
-        showTopBar = false;
-        bgColor = 0xffeeeeee;
-    }
-
-    @Override
-    public void afterView() {
-        refreshLayout.setEnableRefresh(false);
-        refreshLayout.setEnableLoadMore(false);
+        grid.numColumns = 3;
+        info.showTop = false;
+        grid.bgColor = 0xffeeeeee;
+        grid.expand = true;
     }
 
     @Override

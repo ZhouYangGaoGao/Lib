@@ -25,7 +25,7 @@ import com.zhy.android.R;
 import background.drawable.DrawableCreator;
 import base.BConfig;
 import listener.SmartListener;
-import listener.SmartModel;
+import bean.Smart;
 import rx.Subscription;
 import util.MTimer;
 import util.RexUtils;
@@ -397,8 +397,8 @@ public class SmartView extends LinearLayout {
      *                 可选多个
      */
     public void setListener(SmartListener listener, int... indexes) {
-        if (SmartModel.class.isAssignableFrom(listener.getClass())) {
-            indexes = ((SmartModel) listener).indexes;
+        if (Smart.class.isAssignableFrom(listener.getClass())) {
+            indexes = ((Smart) listener).indexes;
         }
         this.listener = listener;
         if (indexes == null || indexes.length == 0) {
@@ -430,20 +430,20 @@ public class SmartView extends LinearLayout {
             }
         });
 
-        if (SmartModel.class.isAssignableFrom(listener.getClass())) {
-            SmartModel smartModel = (SmartModel) listener;
-            for (int j = 0; j < smartModel.res[index].length; j++) {
-                if (smartModel.res[index][j] != 0) {
-                    textView.setRes(j, smartModel.res[index][j]);
+        if (Smart.class.isAssignableFrom(listener.getClass())) {
+            Smart smart = (Smart) listener;
+            for (int j = 0; j < smart.res[index].length; j++) {
+                if (smart.res[index][j] != 0) {
+                    textView.setRes(j, smart.res[index][j]);
                 }
             }
-            if (!TextUtils.isEmpty(smartModel.text[index])) {
-                textView.setText(smartModel.text[index]);
+            if (!TextUtils.isEmpty(smart.text[index])) {
+                textView.setText(smart.text[index]);
             }
 
-            if (smartModel.padding[index] != 0)
-                textView.setDrawablePadding(smartModel.padding[index]);
-            initGravity(smartModel.gravity);
+            if (smart.padding[index] != 0)
+                textView.setDrawablePadding(smart.padding[index]);
+            initGravity(smart.gravity);
         }
     }
 

@@ -27,8 +27,7 @@ public class WLTMainActivity extends BActivity {
         if (model != null) {
             setIntent(new Intent()
                     .putExtra(BConfig.TOP_SHOW,false)
-//                    .putExtra(WLTConstant.URL, WLTConstant.url + new Gson().toJson(model))
-                    .putExtra(BConfig.URL, "http://www.ahdhst.com/forest/ysweb/login"));
+                    .putExtra(BConfig.URL, WLTConstant.url + new Gson().toJson(model)));
         } else {
             GoTo.start(WLTLoginFragment.class);
             finish();
@@ -39,7 +38,7 @@ public class WLTMainActivity extends BActivity {
     @Override
     public void afterView() {
         BWebFragment fragment = (BWebFragment) getSupportFragmentManager().findFragmentById(R.id.mWebFragment);
-        fragment.mWebView.setInitialScale(scale = Hawk.get("scale", scale));
+//        fragment.mWebView.setInitialScale(scale = Hawk.get("scale", scale));
         findViewById(R.id.btn_more).setOnClickListener(new View.OnClickListener() {
 
             @Override

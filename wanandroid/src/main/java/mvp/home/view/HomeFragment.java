@@ -1,7 +1,6 @@
 package mvp.home.view;
 
 import android.os.Build;
-import android.widget.GridLayout;
 
 import androidx.annotation.RequiresApi;
 
@@ -9,8 +8,8 @@ import com.zhy.wanandroid.R;
 
 import java.util.List;
 
+import base.BSub;
 import base.Manager;
-import base.Subs;
 import hawk.Hawk;
 import mvp.chapter.model.Article;
 import mvp.chapter.view.ArticleFragment;
@@ -21,19 +20,19 @@ public class HomeFragment extends ArticleFragment {
     @Override
     public void beforeView() {
         heardView = getView(R.layout.fragment_banner);
-        isRefresh = !Hawk.contains(TAG);
+        info.isRefresh = !Hawk.contains(TAG);
     }
 
     @Override
     protected Observable<?> get() {
-        return Manager.getApi().list(page);
+        return Manager.getApi().list(page.page);
     }
 
     @Override
     public void onData(List<Article> datas) {
-        if (isRefresh) mData.clear();
+        if (info.isRefresh) mData.clear();
         mData.addAll(datas);
-        if (isRefresh) presenter.sub(new Subs<List<Article>>(Manager.getApi().top()) {
+        if (info.isRefresh) presenter.sub(new BSub<List<Article>>(Manager.getApi().top()) {
             @Override
             public void onSuccess(List<Article> articles) {
                 for (Article article : articles) {

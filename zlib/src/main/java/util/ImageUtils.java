@@ -12,7 +12,9 @@ import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.LruResourceCache;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.module.AppGlideModule;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -67,8 +69,25 @@ public class ImageUtils extends AppGlideModule {
                 .into(imageView);
     }
 
-    public static float fold = 1;
+    /**
+     * 图片圆角
+     * @param context
+     * @param model
+     * @param dpRadius
+     * @param imageView
+     */
+    public static void loadRoundImage(Context context, @NonNull Object model, int dpRadius, ImageView imageView) {
+        GlideApp.with(context).load(model).thumbnail(0.5f)
+                .apply(new RequestOptions().transform(new RoundedCorners(ScreenUtils.dip2px(dpRadius))))
+                .into(imageView);
+    }
+    public static void loadRoundImage(Context context, @NonNull Object model, ImageView imageView) {
+        GlideApp.with(context).load(model).thumbnail(0.5f)
+                .optionalCircleCrop()
+                .into(imageView);
+    }
 
+    public static float fold = 1;
     public static void loadImageResize(Context context, @NonNull Object model, ImageView imageView, int w, int h) {
         GlideApp.with(context).load(model).override((int) (w * fold), (int) (h * fold)).thumbnail(0.5f).centerCrop()
                 .into(imageView);
@@ -82,7 +101,6 @@ public class ImageUtils extends AppGlideModule {
      * @param imageView 加载图片的ImageView
      */
     public static void loadImageFit(Context context, @NonNull Object model, ImageView imageView) {
-
         GlideApp.with(context).load(model).fitCenter()
                 .into(imageView);
 
@@ -98,55 +116,4 @@ public class ImageUtils extends AppGlideModule {
         GlideApp.with(context).asGif().load(model).placeholder(resourceId).centerCrop()
                 .into(imageView);
     }
-
-    /**
-     * 获取bitmap
-     *
-     * @param file      文件
-     * @param maxWidth  最大宽度
-     * @param maxHeight 最大高度
-     * @return bitmap
-     */
-    public static Bitmap getBitmap(File file, int maxWidth, int maxHeight) {
-        if (file == null) return null;
-        InputStream is = null;
-        try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            is = new BufferedInputStream(new FileInputStream(file));
-            BitmapFactory.decodeStream(is, null, options);
-            options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
-            options.inJustDecodeBounds = false;
-            return BitmapFactory.decodeStream(is, null, options);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * 计算采样大小
-     *
-     * @param options   选项
-     * @param maxWidth  最大宽度
-     * @param maxHeight 最大高度
-     * @return 采样大小
-     */
-    private static int calculateInSampleSize(BitmapFactory.Options options, int maxWidth, int maxHeight) {
-        if (maxWidth == 0 || maxHeight == 0) return 1;
-        int height = options.outHeight;
-        int width = options.outWidth;
-        int inSampleSize = 1;
-        while ((height >>= 1) >= maxHeight && (width >>= 1) >= maxWidth) {
-            inSampleSize <<= 1;
-        }
-        return inSampleSize;
-    }
-
 }

@@ -17,6 +17,16 @@
         android:scaleType="fitXY"
         android:src="@mipmap/bg_code" />
 
+<!--    <ImageView-->
+<!--        android:id="@+id/iv_cover"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="142dp"-->
+<!--        android:layout_marginVertical="12dp"-->
+<!--        android:layout_marginStart="12dp"-->
+<!--        android:elevation="15dp"-->
+<!--        android:background="#11ffffff"-->
+<!--        android:src="@mipmap/bg_code" />-->
+
     <include layout="@layout/item_article"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"

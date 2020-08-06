@@ -15,7 +15,7 @@ public class LZTApp extends BApp {
 
     @Override
     protected void initApp() {
-        LZTLoginModel LZTLoginModel = Hawk.get(LZTConstant.LOGIN);
+        LZTLoginModel LZTLoginModel = Hawk.get(BConfig.LOGIN);
         BConfig.get().setBaseUrl("https://www.ahlzz.com/api/")
                 .setClient("cms")
                 .setFullScreen(true)

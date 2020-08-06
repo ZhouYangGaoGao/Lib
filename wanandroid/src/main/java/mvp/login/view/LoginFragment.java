@@ -1,13 +1,12 @@
 package mvp.login.view;
 
 import android.view.View;
-import android.widget.LinearLayout;
 
 import base.BConfig;
 import base.BLoginFragment;
+import base.BSub;
 import base.BaseApp;
 import base.Manager;
-import base.Subs;
 import mvp.login.model.LoginModel;
 import mvp.main.view.HomeActivity;
 import rx.Subscription;
@@ -15,7 +14,7 @@ import rx.Subscription;
 public class LoginFragment extends BLoginFragment<LoginModel> {
     @Override
     protected Subscription login(String phone, String password) {
-        return Subs.get(this, Manager.get().login(phone, password));
+        return BSub.get(this, Manager.get().login(phone, password));
     }
 
     @Override
@@ -28,7 +27,7 @@ public class LoginFragment extends BLoginFragment<LoginModel> {
                 @Override
                 public void onClick(View view) {
                     if (checkPassword.actionErrorCheck()) return;
-                    Subs.get(LoginFragment.this, Manager.get().register(phone.getText(), password.getText(), checkPassword.getText()));
+                    BSub.get(LoginFragment.this, Manager.get().register(phone.getText(), password.getText(), checkPassword.getText()));
                 }
             });
         }

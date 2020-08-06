@@ -15,11 +15,10 @@ import rx.Observable;
 
 public class ProjectFragment extends ArticleFragment {
 
-
     @Override
     public void beforeView() {
-        itemLayoutId = R.layout.item_project;
-        startPage = 1;
+        grid.itemLayoutId = R.layout.item_project;
+        page.setStartPage(1);
         super.beforeView();
     }
 
@@ -37,6 +36,6 @@ public class ProjectFragment extends ArticleFragment {
 
     @Override
     protected Observable<?> get() {
-        return Manager.getApi().projects(page, cid);
+        return Manager.getApi().projects(page.page, cid);
     }
 }
