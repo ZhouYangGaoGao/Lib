@@ -11,6 +11,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
+import adapter.ViewHolder;
+import custom.ImageViewCard;
+import util.ImageUtils;
+
 /**
  * 通用的RecyclerView.ViewHolder。提供了根据viewId获取View的方法。
  * 提供了对View、TextView、ImageView的常用设置方法。
@@ -85,7 +89,20 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         view.setTextSize(size);
         return this;
     }
-
+    /**
+     * 为ImageView设置图片
+     *
+     * @param viewId
+     * @return
+     */
+    public BaseViewHolder setImage(int viewId, Object model) {
+        if (get(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
+            ImageViewCard imageViewCard = get(viewId);
+            imageViewCard.loadImage(model);
+        } else
+            ImageUtils.loadImage(get(viewId).getContext(), model, (ImageView) get(viewId));
+        return this;
+    }
     public BaseViewHolder setImageResource(int viewId, int resId) {
         ImageView view = get(viewId);
         view.setImageResource(resId);

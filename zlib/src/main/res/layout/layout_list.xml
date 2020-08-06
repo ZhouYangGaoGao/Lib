@@ -19,14 +19,12 @@
         <com.scwang.smart.refresh.header.ClassicsHeader
             android:id="@+id/refreshHeader"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white" />
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/clo_list_bg"
             android:orientation="vertical">
 
             <custom.HeaderGridView
@@ -40,7 +38,6 @@
         <com.scwang.smart.refresh.footer.ClassicsFooter
             android:id="@+id/refreshFooter"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white" />
+            android:layout_height="wrap_content"/>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </custom.SmartView>

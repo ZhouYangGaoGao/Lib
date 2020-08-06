@@ -32,7 +32,6 @@ public class ArticleFragment extends BSmartFragment<Article> {
 
     {
         info.showTop = false;
-        card.cardDiver = 7;
         page.setStartPage(0);
         grid.itemLayoutId = R.layout.item_article;
     }
@@ -40,7 +39,7 @@ public class ArticleFragment extends BSmartFragment<Article> {
     @Override
     public void beforeView() {
         cid = getArguments() != null ? getArguments().getInt(BConfig.ID) : 0;
-        TAG = TAG + cid;
+        info.TAG = info.TAG + cid;
     }
 
     @Override

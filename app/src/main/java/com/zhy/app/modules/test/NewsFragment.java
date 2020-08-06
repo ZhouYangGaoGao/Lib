@@ -10,7 +10,6 @@ import rx.Observable;
 public class NewsFragment extends BSmartFragment<NewsModel> {
     @Override
     public void beforeView() {
-        card.cardDiver = 10;
         grid.itemLayoutId = R.layout.item_text;
     }
 

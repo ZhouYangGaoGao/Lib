@@ -31,7 +31,6 @@ public class TestFragment extends BSmartFragment<Class> {
     public void beforeView() {
         grid.numColumns = 2;
         grid.itemLayoutId = R.layout.item_text;
-        card.cardDiver = 10;
         mData.addAll(Arrays.asList(NewsFragment.class
                 , PicSelectViewFragment.class, SLikeFragment.class, AVLFragment.class,
                 BWebFragment.class, BannerFragment.class,

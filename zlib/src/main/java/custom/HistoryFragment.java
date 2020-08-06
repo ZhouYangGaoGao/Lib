@@ -30,9 +30,8 @@ public class HistoryFragment extends BSmartFragment<String> {
 
     {
         info.showTop = false;
-        info.isRefresh = false;
-        grid.bgColor = 0xffaaaaaa;
-        useEventBus = true;
+        info.useEventBus = true;
+        fresh.isRefresh = false;
     }
 
     @Override

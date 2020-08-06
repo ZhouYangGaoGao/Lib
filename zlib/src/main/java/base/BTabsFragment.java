@@ -29,7 +29,7 @@ public class BTabsFragment<M> extends BFragment<M, BPresenter<BView<?>>> {
         mViewPager = (ViewPager) findViewById(R.id.mViewPager);
         mTabView = (SmartTabLayout) findViewById(R.id.mTabView);
         mSmartView = (SmartView) findViewById(R.id.mSmartView);
-        mSmartView.centerTextView.setText(title);
+        mSmartView.centerTextView.setText(info.title);
         mSmartView.topContent.setVisibility(View.GONE);
         creator = FragmentPagerItems.with(getContext());
     }

@@ -43,7 +43,7 @@ public class BWebFragment extends BFragment {
 
     @Override
     public void beforeView() {
-        useEventBus = true;
+        info.useEventBus = true;
         contentViewId = R.layout.fragment_web;
     }
 
@@ -52,7 +52,7 @@ public class BWebFragment extends BFragment {
     @Override
     public void initView() {
         mSmartView = (SmartView) findViewById(R.id.mSmartView);
-        mSmartView.centerTextView.setText(title);
+        mSmartView.centerTextView.setText(info.title);
         boolean back = getIntent().getBooleanExtra(BConfig.BACK, false);
         if (getArguments() != null && !back) back = getArguments().getBoolean(BConfig.BACK, false);
         mSmartView.setBack(back);
@@ -69,7 +69,7 @@ public class BWebFragment extends BFragment {
             tmpUrl = BuildConfig.DEBUG ? "https://www.baidu.com/" : "url为空";
         }
         log(tmpUrl);
-        String finalTitle = title;
+        String finalTitle = info.title;
         CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(-1, -1);
         layoutParams.setBehavior(new AppBarLayout.ScrollingViewBehavior());
         mWebView = new WebView(BApp.app());

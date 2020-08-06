@@ -152,8 +152,8 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
 
     @Override
     protected Observable<?> get() {
-        if (levelCache.get(TAG) != null) {
-            success(levelCache.get(TAG));
+        if (levelCache.get(info.TAG) != null) {
+            success(levelCache.get(info.TAG));
             return null;
         }
         return Manager.getApi().navigation();
@@ -161,7 +161,7 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
 
     @Override
     public void onStop() {
-        levelCache.cache(TAG,adapter.getGroup());
+        levelCache.cache(info.TAG,adapter.getGroup());
         super.onStop();
     }
 }

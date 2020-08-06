@@ -13,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.zhy.android.R;
 
+import bean.Info;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import enums.LevelCache;
@@ -27,25 +29,23 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
     public P presenter;
     protected LevelDataTime levelDataTime = LevelDataTime.create;
     protected LevelCache levelCache = LevelCache.none;
+    protected Info info = new Info();//其他参数
     protected View contentView;
     protected int contentViewId = 0;
-    protected boolean useEventBus = false;
     private Unbinder unbinder;
     private BActivity activity;
-    protected String title = "";
-    protected String TAG;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TAG = getClass().getSimpleName();
+        info.TAG = getClass().getSimpleName();
+        setIndex(FragmentPagerItem.getPosition(getArguments()));
         if (BActivity.class.isAssignableFrom(getActivity().getClass())) {
             activity = (BActivity) getActivity();
             activity.initPresenter(this);
         }
         beforeView();
-        if (useEventBus) HermesEventBus.getDefault().register(this);
+        if (info.useEventBus) HermesEventBus.getDefault().register(this);
     }
 
     @Nullable
@@ -54,9 +54,9 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
         if (contentView == null)
             contentView = inflater.inflate(contentViewId == 0 ? R.layout.layout_list : contentViewId, container, false);
         unbinder = ButterKnife.bind(this, contentView);
-        title = getIntent().getStringExtra(BConfig.TITLE);
-        if (TextUtils.isEmpty(title) && getArguments() != null)
-            title = getArguments().getString(BConfig.TITLE, "");
+        setTitle(getIntent().getStringExtra(BConfig.TITLE));
+        if (TextUtils.isEmpty(info.title) && getArguments() != null)
+            setTitle(getArguments().getString(BConfig.TITLE,""));
         initView();
         return contentView;
     }
@@ -78,7 +78,7 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
 
     @Override
     public void onDestroyView() {
-        if (useEventBus) HermesEventBus.getDefault().unregister(this);
+        if (info.useEventBus) HermesEventBus.getDefault().unregister(this);
         unbinder.unbind();
         super.onDestroyView();
     }
@@ -148,4 +148,21 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
     public View getView(int layoutId) {
         return activity == null ? null : activity.getView(layoutId);
     }
+
+    public Fragment setType(String type) {
+        info.type = type;
+        return this;
+    }
+
+    public Fragment setIndex(int index) {
+        info.index = index;
+        return this;
+    }
+
+    public Fragment setTitle(String title) {
+        info.title = title;
+        return this;
+    }
+
+
 }

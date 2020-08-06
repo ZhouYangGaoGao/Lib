@@ -1,32 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mRootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <custom.AutoScrollViewPager
+    <custom.page.AutoPager
         android:id="@+id/mViewPager"
         android:layout_width="match_parent"
         android:layout_height="200dp" />
 
-    <com.ogaclejapan.smarttablayout.SmartTabLayout
+    <custom.page.IndicatorView
         android:id="@+id/indicator"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/mViewPager"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        app:stl_dividerColor="@color/picture_color_transparent"
-        app:stl_indicatorColor="@color/white"
-        app:stl_indicatorCornerRadius="5dp"
-        app:stl_indicatorGravity="center"
-        app:stl_indicatorInterpolation="smart"
-        app:stl_indicatorThickness="5dp"
-        app:stl_indicatorWidth="10dp"
-        app:stl_customTabTextLayoutId="@layout/layout_page_indicator"
-        app:stl_customTabTextViewId="@id/textView"
-        app:stl_underlineThickness="0dp" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:padding="15dp"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>
 

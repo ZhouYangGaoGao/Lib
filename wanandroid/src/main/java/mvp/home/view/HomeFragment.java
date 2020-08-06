@@ -20,7 +20,7 @@ public class HomeFragment extends ArticleFragment {
     @Override
     public void beforeView() {
         heardView = getView(R.layout.fragment_banner);
-        info.isRefresh = !Hawk.contains(TAG);
+        fresh.isRefresh = !Hawk.contains(info.TAG);
     }
 
     @Override
@@ -30,9 +30,9 @@ public class HomeFragment extends ArticleFragment {
 
     @Override
     public void onData(List<Article> datas) {
-        if (info.isRefresh) mData.clear();
+        if (fresh.isRefresh) mData.clear();
         mData.addAll(datas);
-        if (info.isRefresh) presenter.sub(new BSub<List<Article>>(Manager.getApi().top()) {
+        if (fresh.isRefresh) presenter.sub(new BSub<List<Article>>(Manager.getApi().top()) {
             @Override
             public void onSuccess(List<Article> articles) {
                 for (Article article : articles) {

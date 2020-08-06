@@ -16,7 +16,6 @@ import util.GoTo;
 public class TreeFragment extends BSmartFragment<Tree> {
     @Override
     public void beforeView() {
-        card.cardDiver = 8;
         info.showTop = false;
     }
 
