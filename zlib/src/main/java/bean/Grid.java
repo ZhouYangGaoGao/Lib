@@ -3,7 +3,7 @@ package bean;
 import com.zhy.android.R;
 
 public class Grid {
-    public int horizontalSpacing = 0, verticalSpacing = 0;
+    public int horizontalSpacing = 1, verticalSpacing = 1;
     public int numColumns = 1;//列数
     public int bgColor = 0x00000000;//列表背景色
     public int itemLayoutId = R.layout.item_text;//item布局

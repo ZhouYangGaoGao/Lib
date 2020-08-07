@@ -4,10 +4,10 @@ import com.zhy.app.R;
 import com.zhy.app.base.Manager;
 
 import adapter.ViewHolder;
-import base.BSmartFragment;
+import base.BListFragment;
 import rx.Observable;
 
-public class NewsFragment extends BSmartFragment<NewsModel> {
+public class NewsFragment extends BListFragment<NewsModel> {
     @Override
     public void beforeView() {
         grid.itemLayoutId = R.layout.item_text;
@@ -20,6 +20,6 @@ public class NewsFragment extends BSmartFragment<NewsModel> {
 
     @Override
     protected void convert(ViewHolder h, NewsModel i) {
-        h.setText(R.id.title, i.getIntro());
+        h.setText(R.id.title, i.getTitle());
     }
 }

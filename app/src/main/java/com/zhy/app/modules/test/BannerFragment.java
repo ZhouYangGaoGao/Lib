@@ -6,9 +6,9 @@ import com.zhy.app.R;
 import java.util.Collections;
 
 import adapter.group.BaseViewHolder;
-import base.BPagerFragment;
+import base.BBannerFragment;
 
-public class BannerFragment extends BPagerFragment<String> {
+public class BannerFragment extends BBannerFragment<String> {
 
     @Override
     public void beforeView() {

@@ -4,17 +4,15 @@ import android.view.View;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
-import adapter.CommonAdapter;
-
 import com.zhy.app.R;
 
 
 import java.util.Collections;
 
 import adapter.ViewHolder;
-import base.BSmartFragment;
+import base.BListFragment;
 
-public class AVLFragment extends BSmartFragment<String> {
+public class AVLFragment extends BListFragment<String> {
     @Override
     public void beforeView() {
         grid.numColumns = 3;

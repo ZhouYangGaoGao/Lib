@@ -1,7 +1,5 @@
 package adapter.group;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,8 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
-import adapter.ViewHolder;
-import custom.ImageViewCard;
+import custom.ImageCard;
 import util.ImageUtils;
 
 /**
@@ -89,6 +86,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         view.setTextSize(size);
         return this;
     }
+
     /**
      * 为ImageView设置图片
      *
@@ -97,31 +95,18 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
      */
     public BaseViewHolder setImage(int viewId, Object model) {
         if (get(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
-            ImageViewCard imageViewCard = get(viewId);
-            imageViewCard.loadImage(model);
+            ImageCard imageCard = get(viewId);
+            imageCard.loadImage(model);
         } else
             ImageUtils.loadImage(get(viewId).getContext(), model, (ImageView) get(viewId));
         return this;
     }
-    public BaseViewHolder setImageResource(int viewId, int resId) {
-        ImageView view = get(viewId);
-        view.setImageResource(resId);
+
+    public BaseViewHolder setImageRound(int viewId, Object model, int dpRadius) {
+        if (model != null)
+            ImageUtils.loadRoundImage(get(viewId).getContext(), model, dpRadius, (ImageView) get(viewId));
         return this;
     }
-
-    public BaseViewHolder setImageBitmap(int viewId, Bitmap bitmap) {
-        ImageView view = get(viewId);
-        view.setImageBitmap(bitmap);
-        return this;
-    }
-
-
-    public BaseViewHolder setImageDrawable(int viewId, Drawable drawable) {
-        ImageView view = get(viewId);
-        view.setImageDrawable(drawable);
-        return this;
-    }
-
 
     public BaseViewHolder setBackgroundColor(int viewId, int color) {
         View view = get(viewId);
@@ -153,5 +138,10 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     public View getConvertView() {
         return mViews.get(position);
+    }
+
+    public BaseViewHolder setClick(View.OnClickListener listener) {
+        itemView.setOnClickListener(listener);
+        return this;
     }
 }

@@ -19,7 +19,7 @@ import base.BSub;
 import base.Manager;
 import butterknife.BindView;
 import butterknife.OnClick;
-import custom.ImageViewCard;
+import custom.ImageCard;
 import custom.TextView;
 import hawk.Hawk;
 import mvp.home.view.CollectFragment;
@@ -34,7 +34,7 @@ public class MyFragment extends BFragment {
 
 
     @BindView(R.id.mIcon)
-    ImageViewCard mIcon;
+    ImageCard mIcon;
     @BindView(R.id.mBg)
     ImageView mBg;
     @BindView(R.id.mName)

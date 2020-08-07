@@ -18,7 +18,7 @@ import util.ImageUtils;
  * Created by YangYang on 2017/11/7.
  */
 
-public class ImageViewCard extends CardView {
+public class ImageCard extends CardView {
     private ImageView imageView;
     private static final ImageView.ScaleType[] sScaleTypeArray = {
             ImageView.ScaleType.MATRIX,
@@ -31,21 +31,21 @@ public class ImageViewCard extends CardView {
             ImageView.ScaleType.CENTER_INSIDE
     };
 
-    public ImageViewCard(Context context) {
+    public ImageCard(Context context) {
         this(context, null);
     }
 
-    public ImageViewCard(Context context, AttributeSet attrs) {
+    public ImageCard(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ImageViewCard(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ImageCard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         imageView = new ImageView(context);
         TypedArray t = context.obtainStyledAttributes(attrs,
-                R.styleable.ImageViewCard);
-        Drawable drawable = t.getDrawable(R.styleable.ImageViewCard_android_src);
-        int scaleType = t.getInt(R.styleable.ImageViewCard_android_scaleType, 6);
+                R.styleable.ImageCard);
+        Drawable drawable = t.getDrawable(R.styleable.ImageCard_android_src);
+        int scaleType = t.getInt(R.styleable.ImageCard_android_scaleType, 6);
         t.recycle();
         if (drawable != null) {
             imageView.setImageDrawable(drawable);
@@ -54,12 +54,12 @@ public class ImageViewCard extends CardView {
         addView(imageView);
     }
 
-    public ImageViewCard loadImage(Object model) {
+    public ImageCard loadImage(Object model) {
         ImageUtils.loadImage(imageView.getContext(), model, imageView);
         return this;
     }
 
-    public ImageViewCard loadImage(Object model, int dfSrcId) {
+    public ImageCard loadImage(Object model, int dfSrcId) {
         ImageUtils.loadImage(imageView.getContext(), model, dfSrcId, imageView);
         return this;
     }

@@ -3,7 +3,6 @@ package com.zhy.app.modules.test;
 import android.location.Location;
 import android.view.View;
 
-import adapter.CommonAdapter;
 import com.zhy.app.R;
 import com.zhy.app.modules.flow.CategoryActivity;
 import com.zhy.app.modules.one.view.SmartViewFragment;
@@ -12,8 +11,7 @@ import java.util.Arrays;
 
 import adapter.ViewHolder;
 import anylayer.AnyLayer;
-import base.BPermissionFragment;
-import base.BSmartFragment;
+import base.BListFragment;
 import base.BWebFragment;
 import util.GPSUtils;
 import util.GoTo;
@@ -25,21 +23,22 @@ import util.GoTo;
  * - generate by MvpAutoCodePlus plugin.
  */
 
-public class TestFragment extends BSmartFragment<Class> {
+public class TestFragment extends BListFragment<Class> {
 
     @Override
     public void beforeView() {
-        grid.numColumns = 2;
+        grid.numColumns = 3;
         grid.itemLayoutId = R.layout.item_text;
-        mData.addAll(Arrays.asList(NewsFragment.class
-                , PicSelectViewFragment.class, SLikeFragment.class, AVLFragment.class,
+        mData.addAll(Arrays.asList(NewsFragment.class,
+                PicSelectViewFragment.class, SLikeFragment.class, AVLFragment.class,
                 BWebFragment.class, BannerFragment.class,
-                PhotoFragment.class, SmartViewFragment.class,CategoryActivity.class));
+                PhotoFragment.class, SmartViewFragment.class, CategoryActivity.class));
     }
 
     @Override
     public void convert(ViewHolder h, Class i) {
         h.setText(R.id.title, i.getSimpleName());
+        h.getTextView(R.id.title).setSingleLine();
     }
 
     @Override

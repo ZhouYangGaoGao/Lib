@@ -20,10 +20,10 @@ import anylayer.AnimatorHelper;
 import anylayer.AnyLayer;
 import anylayer.DialogLayer;
 import anylayer.Layer;
-import base.BSmartFragment;
+import base.BListFragment;
 import util.ScreenUtils;
 
-public class HistoryFragment extends BSmartFragment<String> {
+public class HistoryFragment extends BListFragment<String> {
     protected SmartView histSmartView;
     private DialogLayer dialog;
     protected int historyCount = 10;
@@ -32,6 +32,7 @@ public class HistoryFragment extends BSmartFragment<String> {
         info.showTop = false;
         info.useEventBus = true;
         fresh.isRefresh = false;
+        card.card = false;
     }
 
     @Override

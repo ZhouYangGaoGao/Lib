@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 
 import com.google.gson.Gson;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -20,20 +21,18 @@ import adapter.ViewHolder;
 import background.drawable.DrawableCreator;
 import bean.Fresh;
 import bean.Grid;
-import bean.Info;
 import bean.Page;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
 import custom.SmartView;
 import custom.StatusView;
 import bean.Card;
-import custom.card.CardView;
 import enums.LevelCache;
 import enums.LevelDataTime;
 import util.LayoutUtil;
 import util.ScreenUtils;
 
-public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BView<?>>> implements OnRefreshLoadMoreListener {
+public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BView<?>>> implements OnRefreshLoadMoreListener {
 
     private CommonAdapter<M> adapter;
     protected HeaderGridView gridView;
@@ -82,7 +81,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
         ((LinearLayout) findViewById(R.id.content)).addView(mStatusView, LayoutUtil.zoomVLp());
         gridView.setEmptyView(mStatusView);
         if (heardView != null) gridView.addHeaderView(heardView);
-        if (card != null) initCard();
+        if (card.card) initCard();
         if (footView != null) gridView.addFooterView(footView);
         if (topView != null) mSmartView.addView(topView, 1);
         if (bottomView != null) mSmartView.addView(bottomView);
@@ -93,24 +92,28 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     }
 
     private void initCard() {
-        gridView.addHeaderView(new EmptySizeView(card.cardElevation));
-        gridView.addFooterView(new EmptySizeView(card.cardElevation));
+        grid.horizontalSpacing = 0;
+        grid.verticalSpacing = 0;
+        if (card.needHeardSpace)
+            gridView.addHeaderView(new EmptySizeView(card.cardElevation));
+        if (card.needFootSpace)
+            gridView.addFooterView(new EmptySizeView(card.cardElevation));
     }
 
     private CommonAdapter<M> initAdapter() {//初始化主列表适配器
-        return new CommonAdapter<M>(getContext(), mData, card != null ? R.layout.item_card : grid.itemLayoutId) {
+        return new CommonAdapter<M>(getContext(), mData, card.card ? R.layout.item_card : grid.itemLayoutId) {
 
             @Override
             public boolean isEmpty() {//当列表有头部天加时 列表为空要显示头部
                 int count = gridView.getHeaderViewCount() + gridView.getFooterViewCount();
                 if (count > 2) return false;
-                if (card != null && count > 0) return false;
+                if (card.card && count > 0) return false;
                 return super.isEmpty();
             }
 
             @Override
             public void convert(ViewHolder h, M i) {//列表item的初始化 回调
-                if (card != null) initCardItem(h);
+                if (card.card) initCardItem(h);
                 else {
                     h.getConvertView().setBackground(background(new DrawableCreator.Builder()
                             .setRipple(true, card.rippleColor))
@@ -122,7 +125,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
                         onItemClick(h, i);
                     }
                 });
-                BSmartFragment.this.convert(h, i);
+                BListFragment.this.convert(h, i);
             }
         };
     }
@@ -133,7 +136,7 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
     private void initCardItem(ViewHolder h) {//初始化卡片
         View contentView = getView(grid.itemLayoutId);
         CardView cardView = h.getView(R.id.cardView);
-        cardView.setCardElevation(ScreenUtils.dip2px(card.cardElevation));
+//        cardView.setCardElevation(ScreenUtils.dip2px(card.cardElevation));
         cardView.setRadius(ScreenUtils.dip2px(card.cardRadius));
         contentView.setBackground(background(new DrawableCreator.Builder()
                 .setRipple(true, card.rippleColor)
@@ -143,9 +146,12 @@ public abstract class BSmartFragment<M> extends BFragment<Object, BPresenter<BVi
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) cardView.getLayoutParams();
         params.width = -1;
         params.height = -2;
-        params.setMargins(ScreenUtils.dip2px(h.getPosition() % grid.numColumns == 0 ? 2 * card.cardElevation :
-                card.cardElevation), 0, ScreenUtils.dip2px((h.getPosition() + 1) %
-                grid.numColumns == 0 ? 2 * card.cardElevation : card.cardElevation), 0);
+        int margin = ScreenUtils.dip2px(card.cardElevation);
+        int left = h.getPosition() % grid.numColumns == 0 ? 2 * margin : margin;
+        int right = (h.getPosition() + 1) % grid.numColumns == 0 ? 2 * margin : margin;
+        int top = margin * 3 / 3;
+        int bottom = margin * 5 / 3;
+        params.setMargins(left, top, right, bottom);
         cardView.setLayoutParams(params);
     }
 

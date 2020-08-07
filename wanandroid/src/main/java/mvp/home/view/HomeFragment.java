@@ -21,6 +21,7 @@ public class HomeFragment extends ArticleFragment {
     public void beforeView() {
         heardView = getView(R.layout.fragment_banner);
         fresh.isRefresh = !Hawk.contains(info.TAG);
+        card.needHeardSpace=false;
     }
 
     @Override

@@ -70,7 +70,8 @@ public abstract class CCRRecyclerViewAdapter<M> extends RecyclerView.Adapter<CCR
 
     @Override
     public CCRRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CCRRecyclerViewHolder viewHolder = new CCRRecyclerViewHolder(this, mRecyclerView, LayoutInflater.from(mContext).inflate(viewType, parent, false), mOnRVItemClickListener, mOnRVItemLongClickListener);
+        CCRRecyclerViewHolder viewHolder = new CCRRecyclerViewHolder(this, mRecyclerView,
+                LayoutInflater.from(mContext).inflate(viewType, parent, false), mOnRVItemClickListener, mOnRVItemLongClickListener);
         viewHolder.getViewHolderHelper().setOnItemChildClickListener(mOnItemChildClickListener);
         viewHolder.getViewHolderHelper().setOnItemChildLongClickListener(mOnItemChildLongClickListener);
         viewHolder.getViewHolderHelper().setOnItemChildCheckedChangeListener(mOnItemChildCheckedChangeListener);

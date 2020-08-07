@@ -24,6 +24,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import java.lang.reflect.Field;
 
+import util.ScreenUtils;
+
 
 public class AutoPager extends RelativeLayout {
 
@@ -365,6 +367,9 @@ public class AutoPager extends RelativeLayout {
      * @param pageMargin item与item之间的宽度
      */
     public AutoPager setPageMargin(int tlWidth, int brWidth, int pageMargin) {
+        tlWidth= ScreenUtils.dip2px(tlWidth);
+        brWidth= ScreenUtils.dip2px(brWidth);
+        pageMargin= ScreenUtils.dip2px(pageMargin);
         if (pageMargin < 0) pageMargin = 0;
         addPageTransformer(new MarginPageTransformer(pageMargin));
         RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
@@ -389,7 +394,7 @@ public class AutoPager extends RelativeLayout {
         return this;
     }
 
-    public AutoPager setOuterPageChangeListener(ViewPager2.OnPageChangeCallback listener) {
+    public AutoPager setOnPageChangeListener(ViewPager2.OnPageChangeCallback listener) {
         this.changeCallback = listener;
         return this;
     }
@@ -473,7 +478,7 @@ public class AutoPager extends RelativeLayout {
         setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
-                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
+                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), ScreenUtils.dip2px(radius));
             }
         });
         setClipToOutline(true);

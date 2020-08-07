@@ -12,7 +12,7 @@ import adapter.ViewHolder;
 import anylayer.AnyLayer;
 import anylayer.Layer;
 import base.BConfig;
-import base.BSmartFragment;
+import base.BListFragment;
 import base.BSub;
 import base.BWebFragment;
 import base.BaseBean;
@@ -27,7 +27,7 @@ import rx.Observable;
 import util.GoTo;
 import util.MLayoutParams;
 
-public class ArticleFragment extends BSmartFragment<Article> {
+public class ArticleFragment extends BListFragment<Article> {
     protected int cid = 0;
 
     {

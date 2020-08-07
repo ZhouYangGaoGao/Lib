@@ -65,12 +65,14 @@ public class ImageUtils extends AppGlideModule {
      * @param imageView 加载图片的ImageView
      */
     public static void loadImage(Context context, @NonNull Object model, ImageView imageView) {
+        if (context!=null)
         GlideApp.with(context).load(model).thumbnail(0.5f)
                 .into(imageView);
     }
 
     /**
      * 图片圆角
+     *
      * @param context
      * @param model
      * @param dpRadius
@@ -81,6 +83,7 @@ public class ImageUtils extends AppGlideModule {
                 .apply(new RequestOptions().transform(new RoundedCorners(ScreenUtils.dip2px(dpRadius))))
                 .into(imageView);
     }
+
     public static void loadRoundImage(Context context, @NonNull Object model, ImageView imageView) {
         GlideApp.with(context).load(model).thumbnail(0.5f)
                 .optionalCircleCrop()
@@ -88,6 +91,7 @@ public class ImageUtils extends AppGlideModule {
     }
 
     public static float fold = 1;
+
     public static void loadImageResize(Context context, @NonNull Object model, ImageView imageView, int w, int h) {
         GlideApp.with(context).load(model).override((int) (w * fold), (int) (h * fold)).thumbnail(0.5f).centerCrop()
                 .into(imageView);

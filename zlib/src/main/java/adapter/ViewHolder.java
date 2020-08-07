@@ -14,13 +14,12 @@ import android.text.style.ImageSpan;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import base.BApp;
-import custom.ImageViewCard;
+import custom.ImageCard;
 import util.ImageUtils;
 
 public class ViewHolder {
@@ -129,9 +128,9 @@ public class ViewHolder {
      * @return
      */
     public ViewHolder setImage(int viewId, Object model) {
-        if (getView(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
-            ImageViewCard imageViewCard = getView(viewId);
-            imageViewCard.loadImage(model);
+        if (getView(viewId).getClass().getSimpleName().equals("ImageCard")) {
+            ImageCard imageCard = getView(viewId);
+            imageCard.loadImage(model);
         } else
             ImageUtils.loadImage(context, model, (ImageView) getView(viewId));
         return this;
@@ -146,9 +145,9 @@ public class ViewHolder {
      * @return
      */
     public ViewHolder setImage(int viewId, Object model, int difImgRes) {
-        if (getView(viewId).getClass().getSimpleName().equals("ImageViewCard")) {
-            ImageViewCard imageViewCard = getView(viewId);
-            imageViewCard.loadImage(model, difImgRes);
+        if (getView(viewId).getClass().getSimpleName().equals("ImageCard")) {
+            ImageCard imageCard = getView(viewId);
+            imageCard.loadImage(model, difImgRes);
         } else
             ImageUtils.loadImage(context, model, difImgRes, (ImageView) getView(viewId));
         return this;

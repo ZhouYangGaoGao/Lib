@@ -19,7 +19,7 @@
             android:scaleType="centerCrop"
             android:src="@mipmap/bg_code" />
 
-        <custom.ImageViewCard
+        <custom.ImageCard
             android:id="@+id/mIcon"
             android:layout_width="100dp"
             android:layout_height="100dp"

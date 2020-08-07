@@ -7,14 +7,14 @@ import com.zhy.wanandroid.R;
 import org.greenrobot.eventbus.EventBus;
 
 import adapter.ViewHolder;
-import base.BSmartFragment;
+import base.BListFragment;
 import base.Manager;
 import custom.HistoryFragment;
 import custom.TextView;
 import mvp.chapter.model.Article;
 import rx.Observable;
 
-public class HotKeyFragment extends BSmartFragment<Article> {
+public class HotKeyFragment extends BListFragment<Article> {
 
     @Override
     public void beforeView() {
@@ -22,6 +22,7 @@ public class HotKeyFragment extends BSmartFragment<Article> {
         info.showTop = false;
         grid.bgColor = 0xffeeeeee;
         grid.expand = true;
+        card.card = false;
     }
 
     @Override

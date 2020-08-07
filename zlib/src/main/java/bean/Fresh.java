@@ -6,6 +6,6 @@ public class Fresh {
     public boolean loadNotFull = false;//非满屏可加载更多
     public boolean loadMore = true;//可加载更多
     public boolean refresh = true;//可刷新
-    public int bgColor = 0xffeeeeee;//背景色
+    public int bgColor = 0xffffffff;//背景色
 
 }

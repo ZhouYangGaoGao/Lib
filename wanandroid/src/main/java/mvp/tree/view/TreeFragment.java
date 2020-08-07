@@ -6,14 +6,14 @@ import com.zhy.wanandroid.R;
 
 import adapter.ViewHolder;
 import base.BConfig;
-import base.BSmartFragment;
+import base.BListFragment;
 import base.Manager;
 import custom.TextView;
 import mvp.tree.model.Tree;
 import rx.Observable;
 import util.GoTo;
 
-public class TreeFragment extends BSmartFragment<Tree> {
+public class TreeFragment extends BListFragment<Tree> {
     @Override
     public void beforeView() {
         info.showTop = false;
