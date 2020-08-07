@@ -384,4 +384,18 @@
             <enum name="right" value="1" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="CardView" >
+        <attr name="cardCornerRadius"/>
+        <attr name="cardUseCompatPadding"/>
+        <attr name="cardBackgroundColor"/>
+        <attr name="cardElevation"/>
+        <attr name="cardMaxElevation"/>
+        <attr name="cardPreventCornerOverlap"/>
+        <attr name="cardForegroundColor"/>
+
+        <attr name="cardStartColor" format="reference|color"/>
+        <attr name="cardEndColor" format="reference|color"/>
+
+    </declare-styleable>
 </resources>

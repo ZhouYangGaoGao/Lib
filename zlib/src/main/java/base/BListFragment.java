@@ -5,7 +5,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 
 import com.google.gson.Gson;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -27,6 +26,7 @@ import custom.HeaderGridView;
 import custom.SmartView;
 import custom.StatusView;
 import bean.Card;
+import custom.card.CardView;
 import enums.LevelCache;
 import enums.LevelDataTime;
 import util.LayoutUtil;
@@ -41,8 +41,8 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
     protected StatusView mStatusView;//状态视图
     protected List<M> mData = new ArrayList<>();//主列表数据
     protected View heardView, footView, topView, bottomView;//其他视图
-    protected Grid grid = new Grid();//网格列表信息 间隔/背景/列数/布局
     protected Card card = new Card();//卡片信息
+    protected Grid grid = new Grid();//网格列表信息 间隔/背景/列数/布局
     protected Page page = new Page();//页码参数
     protected Fresh fresh = new Fresh();//刷新参数
 
@@ -92,8 +92,7 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
     }
 
     private void initCard() {
-        grid.horizontalSpacing = 0;
-        grid.verticalSpacing = 0;
+        grid.horizontalSpacing = grid.verticalSpacing = 0;
         if (card.needHeardSpace)
             gridView.addHeaderView(new EmptySizeView(card.cardElevation));
         if (card.needFootSpace)
@@ -115,8 +114,9 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
             public void convert(ViewHolder h, M i) {//列表item的初始化 回调
                 if (card.card) initCardItem(h);
                 else {
-                    h.getConvertView().setBackground(background(new DrawableCreator.Builder()
-                            .setRipple(true, card.rippleColor))
+                    h.getConvertView().setBackground(new DrawableCreator.Builder()
+                            .setRipple(true, card.rippleColor)
+                            .setPressedSolidColor(card.cardColorPress, card.cardColor)
                             .build());
                 }
                 h.setClick(new View.OnClickListener() {
@@ -136,27 +136,24 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
     private void initCardItem(ViewHolder h) {//初始化卡片
         View contentView = getView(grid.itemLayoutId);
         CardView cardView = h.getView(R.id.cardView);
-//        cardView.setCardElevation(ScreenUtils.dip2px(card.cardElevation));
-        cardView.setRadius(ScreenUtils.dip2px(card.cardRadius));
-        contentView.setBackground(background(new DrawableCreator.Builder()
+        cardView.setShadowColor(card.cardElevationStart,card.cardElevationEnd);
+        contentView.setBackground(new DrawableCreator.Builder()
                 .setRipple(true, card.rippleColor)
-                .setCornersRadius(ScreenUtils.dip2px(card.cardRadius)))
+                .setPressedSolidColor(card.cardColorPress, card.cardColor)
+                .setCornersRadius(ScreenUtils.dip2px(card.cardRadius))
                 .build());
         cardView.addView(contentView);
+        cardView.setMaxCardElevation(ScreenUtils.dip2px(card.cardElevation));
+        cardView.setRadius(ScreenUtils.dip2px(card.cardRadius));
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) cardView.getLayoutParams();
         params.width = -1;
         params.height = -2;
-        int margin = ScreenUtils.dip2px(card.cardElevation);
-        int left = h.getPosition() % grid.numColumns == 0 ? 2 * margin : margin;
-        int right = (h.getPosition() + 1) % grid.numColumns == 0 ? 2 * margin : margin;
-        int top = margin * 3 / 3;
-        int bottom = margin * 5 / 3;
-        params.setMargins(left, top, right, bottom);
+        params.setMargins(getMargin(h.getPosition()), 0, getMargin(h.getPosition() + 1), 0);
         cardView.setLayoutParams(params);
     }
 
-    protected DrawableCreator.Builder background(DrawableCreator.Builder drawableBuilder) {//设置item 的背景
-        return drawableBuilder.setPressedSolidColor(card.cardColorPress, card.cardColor);
+    private int getMargin(int point) {
+        return ScreenUtils.dip2px(point % grid.numColumns == 0 ? card.cardElevation : 0);
     }
 
     protected void convert(ViewHolder h, M i) {//item回调

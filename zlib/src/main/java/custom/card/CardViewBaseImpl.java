@@ -1,65 +1,73 @@
 package custom.card;
 
+
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
 import androidx.annotation.Nullable;
 
+class CardViewBaseImpl implements CardViewImpl {
 
-public class CardViewBaseImpl implements CardViewImpl {
-
-    private final RectF mCornerRect = new RectF();
+    @SuppressWarnings("WeakerAccess") /* synthetic access */
+    final RectF mCornerRect = new RectF();
 
     @Override
     public void initStatic() {
         // Draws a round rect using 7 draw operations. This is faster than using
         // canvas.drawRoundRect before JBMR1 because API 11-16 used alpha mask textures to draw
         // shapes.
-        RoundRectDrawableWithShadow.Companion.setSRoundRectHelper((canvas, bounds, cornerRadius, paint) -> {
-            final float twoRadius = cornerRadius * 2;
-            final float innerWidth = bounds.width() - twoRadius - 1;
-            final float innerHeight = bounds.height() - twoRadius - 1;
-            if (cornerRadius >= 1f) {
-                // increment corner radius to account for half pixels.
-                float roundedCornerRadius = cornerRadius + .5f;
-                mCornerRect.set(-roundedCornerRadius, -roundedCornerRadius, roundedCornerRadius,
-                        roundedCornerRadius);
-                int saved = canvas.save();
-                canvas.translate(bounds.left + roundedCornerRadius,
-                        bounds.top + roundedCornerRadius);
-                canvas.drawArc(mCornerRect, 180, 90, true, paint);
-                canvas.translate(innerWidth, 0);
-                canvas.rotate(90);
-                canvas.drawArc(mCornerRect, 180, 90, true, paint);
-                canvas.translate(innerHeight, 0);
-                canvas.rotate(90);
-                canvas.drawArc(mCornerRect, 180, 90, true, paint);
-                canvas.translate(innerWidth, 0);
-                canvas.rotate(90);
-                canvas.drawArc(mCornerRect, 180, 90, true, paint);
-                canvas.restoreToCount(saved);
-                //draw top and bottom pieces
-                canvas.drawRect(bounds.left + roundedCornerRadius - 1f, bounds.top,
-                        bounds.right - roundedCornerRadius + 1f,
-                        bounds.top + roundedCornerRadius, paint);
+        RoundRectDrawableWithShadow.sRoundRectHelper =
+                new RoundRectDrawableWithShadow.RoundRectHelper() {
+                    @Override
+                    public void drawRoundRect(Canvas canvas, RectF bounds, float cornerRadius,
+                                              Paint paint) {
+                        final float twoRadius = cornerRadius * 2;
+                        final float innerWidth = bounds.width() - twoRadius - 1;
+                        final float innerHeight = bounds.height() - twoRadius - 1;
+                        if (cornerRadius >= 1f) {
+                            // increment corner radius to account for half pixels.
+                            float roundedCornerRadius = cornerRadius + .5f;
+                            mCornerRect.set(-roundedCornerRadius, -roundedCornerRadius, roundedCornerRadius,
+                                    roundedCornerRadius);
+                            int saved = canvas.save();
+                            canvas.translate(bounds.left + roundedCornerRadius,
+                                    bounds.top + roundedCornerRadius);
+                            canvas.drawArc(mCornerRect, 180, 90, true, paint);
+                            canvas.translate(innerWidth, 0);
+                            canvas.rotate(90);
+                            canvas.drawArc(mCornerRect, 180, 90, true, paint);
+                            canvas.translate(innerHeight, 0);
+                            canvas.rotate(90);
+                            canvas.drawArc(mCornerRect, 180, 90, true, paint);
+                            canvas.translate(innerWidth, 0);
+                            canvas.rotate(90);
+                            canvas.drawArc(mCornerRect, 180, 90, true, paint);
+                            canvas.restoreToCount(saved);
+                            //draw top and bottom pieces
+                            canvas.drawRect(bounds.left + roundedCornerRadius - 1f, bounds.top,
+                                    bounds.right - roundedCornerRadius + 1f,
+                                    bounds.top + roundedCornerRadius, paint);
 
-                canvas.drawRect(bounds.left + roundedCornerRadius - 1f,
-                        bounds.bottom - roundedCornerRadius,
-                        bounds.right - roundedCornerRadius + 1f, bounds.bottom, paint);
-            }
-            // center
-            canvas.drawRect(bounds.left, bounds.top + cornerRadius,
-                    bounds.right, bounds.bottom - cornerRadius, paint);
-        });
+                            canvas.drawRect(bounds.left + roundedCornerRadius - 1f,
+                                    bounds.bottom - roundedCornerRadius,
+                                    bounds.right - roundedCornerRadius + 1f, bounds.bottom, paint);
+                        }
+                        // center
+                        canvas.drawRect(bounds.left, bounds.top + cornerRadius,
+                                bounds.right, bounds.bottom - cornerRadius, paint);
+                    }
+                };
     }
 
     @Override
     public void initialize(CardViewDelegate cardView, Context context,
-                           ColorStateList backgroundColor, float radius, float elevation, float maxElevation, float topDelta) {
+                           ColorStateList backgroundColor, float radius, float elevation, float maxElevation, int startColor, int endColor) {
         RoundRectDrawableWithShadow background = createBackground(context, backgroundColor, radius,
-                elevation, maxElevation,topDelta);
+                elevation, maxElevation, startColor, endColor);
         background.setAddPaddingForCorners(cardView.getPreventCornerOverlap());
         cardView.setCardBackground(background);
         updatePadding(cardView);
@@ -67,9 +75,9 @@ public class CardViewBaseImpl implements CardViewImpl {
 
     private RoundRectDrawableWithShadow createBackground(Context context,
                                                          ColorStateList backgroundColor, float radius, float elevation,
-                                                         float maxElevation, float topDelta) {
+                                                         float maxElevation, int startColor, int endColor) {
         return new RoundRectDrawableWithShadow(context.getResources(), backgroundColor, radius,
-                elevation, maxElevation,topDelta);
+                elevation, maxElevation, startColor, endColor);
     }
 
     @Override
@@ -104,24 +112,6 @@ public class CardViewBaseImpl implements CardViewImpl {
     }
 
     @Override
-    public void initialize(CardViewDelegate cardView, Context context,
-                           ColorStateList backgroundColor, float radius, float elevation,
-                           float maxElevation, int startColor, int endColor, float topDelta) {
-        RoundRectDrawableWithShadow background = createBackground(context, backgroundColor, radius,
-                elevation, maxElevation,startColor,endColor,topDelta);
-        background.setAddPaddingForCorners(cardView.getPreventCornerOverlap());
-        cardView.setCardBackground(background);
-        updatePadding(cardView);
-    }
-
-    private RoundRectDrawableWithShadow createBackground(Context context, ColorStateList backgroundColor,
-                                                         float radius, float elevation, float maxElevation,
-                                                         int startColor, int endColor, float topDelta) {
-        return new RoundRectDrawableWithShadow(context.getResources(), backgroundColor, radius,
-                elevation, maxElevation,startColor,endColor,topDelta);
-    }
-
-    @Override
     public void setRadius(CardViewDelegate cardView, float radius) {
         getShadowBackground(cardView).setCornerRadius(radius);
         updatePadding(cardView);
@@ -149,6 +139,12 @@ public class CardViewBaseImpl implements CardViewImpl {
     }
 
     @Override
+    public void setMaxElevation(CardViewDelegate cardView, float maxElevation,int startColor,int endColor) {
+        getShadowBackground(cardView).setMaxShadowSize(maxElevation,startColor,endColor);
+        updatePadding(cardView);
+    }
+
+    @Override
     public float getMaxElevation(CardViewDelegate cardView) {
         return getShadowBackground(cardView).getMaxShadowSize();
     }
@@ -167,3 +163,4 @@ public class CardViewBaseImpl implements CardViewImpl {
         return ((RoundRectDrawableWithShadow) cardView.getCardBackground());
     }
 }
+
