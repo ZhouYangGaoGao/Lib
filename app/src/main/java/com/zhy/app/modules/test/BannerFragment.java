@@ -1,23 +1,26 @@
 package com.zhy.app.modules.test;
 
-import com.wang.avi.AVLoadingIndicatorView;
-import com.zhy.app.R;
-
 import java.util.Collections;
 
 import adapter.group.BaseViewHolder;
 import base.BBannerFragment;
+import custom.page.ScaleInTransformer;
 
 public class BannerFragment extends BBannerFragment<String> {
 
     @Override
     public void beforeView() {
-        Collections.addAll(mData, getResources().getStringArray(R.array.load_name));
+        banner.indicatorSpacing = 2;
+        banner.pageMargin = 10;
+        banner.multiWidth = 25;
+        banner.transformer = new ScaleInTransformer();
+        Collections.addAll(mData, "", "", "");
     }
 
     @Override
     public void convert(BaseViewHolder h, String i) {
-        AVLoadingIndicatorView avl = h.get(R.id.avl);
-        avl.setIndicator(i);
+//        AVLoadingIndicatorView avl = h.get(R.id.avl);
+//        avl.setIndicator(i);
+//        avl.setLayerType(View.LAYER_TYPE_HARDWARE, null);
     }
 }

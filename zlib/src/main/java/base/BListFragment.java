@@ -13,6 +13,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhy.android.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import adapter.CommonAdapter;
@@ -29,6 +30,7 @@ import bean.Card;
 import custom.card.CardView;
 import enums.LevelCache;
 import enums.LevelDataTime;
+import hawk.Hawk;
 import util.LayoutUtil;
 import util.ScreenUtils;
 
@@ -136,7 +138,7 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
     private void initCardItem(ViewHolder h) {//初始化卡片
         View contentView = getView(grid.itemLayoutId);
         CardView cardView = h.getView(R.id.cardView);
-        cardView.setShadowColor(card.cardElevationStart,card.cardElevationEnd);
+        cardView.setShadowColor(card.cardElevationStart, card.cardElevationEnd);
         contentView.setBackground(new DrawableCreator.Builder()
                 .setRipple(true, card.rippleColor)
                 .setPressedSolidColor(card.cardColorPress, card.cardColor)
@@ -146,8 +148,6 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
         cardView.setMaxCardElevation(ScreenUtils.dip2px(card.cardElevation));
         cardView.setRadius(ScreenUtils.dip2px(card.cardRadius));
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) cardView.getLayoutParams();
-        params.width = -1;
-        params.height = -2;
         params.setMargins(getMargin(h.getPosition()), 0, getMargin(h.getPosition() + 1), 0);
         cardView.setLayoutParams(params);
     }
@@ -198,6 +198,7 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
             List<M> data = levelCache.get(info.TAG);
             if (data != null)
                 switch (levelCache) {
+                    case time:
                     case only:
                         onData(data);
                         break;
@@ -229,7 +230,14 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
 
     @Override
     public void onStop() {
-        if (mData != null && levelCache != null) levelCache.cache(info.TAG, mData);
+        if (mData != null && levelCache != null && levelCache != LevelCache.none) {
+
+//            if (levelCache != LevelCache.time && !Hawk.contains(info.TAG)) {
+//
+//            } else
+            levelCache.cache(info.TAG, mData);
+
+        }
         super.onStop();
     }
 

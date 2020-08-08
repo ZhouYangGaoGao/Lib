@@ -13,6 +13,7 @@ import adapter.ViewHolder;
 import anylayer.AnyLayer;
 import base.BListFragment;
 import base.BWebFragment;
+import enums.LevelCache;
 import util.GPSUtils;
 import util.GoTo;
 
@@ -29,6 +30,7 @@ public class TestFragment extends BListFragment<Class> {
     public void beforeView() {
         grid.numColumns = 3;
         grid.itemLayoutId = R.layout.item_text;
+        levelCache = LevelCache.none;
         mData.addAll(Arrays.asList(NewsFragment.class,
                 PicSelectViewFragment.class, SLikeFragment.class, AVLFragment.class,
                 BWebFragment.class, BannerFragment.class,

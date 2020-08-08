@@ -87,11 +87,6 @@ class RoundRectDrawableWithShadow extends Drawable {
         setShadowSize(shadowSize, maxShadowSize);
     }
 
-    public void setShadowColor(int mShadowStartColor, int mShadowEndColor) {
-        this.mShadowStartColor = mShadowStartColor;
-        this.mShadowEndColor = mShadowEndColor;
-    }
-
     private void setBackground(ColorStateList color) {
         mBackground = (color == null) ? ColorStateList.valueOf(Color.TRANSPARENT) : color;
         mPaint.setColor(mBackground.getColorForState(getState(), mBackground.getDefaultColor()));
@@ -376,7 +371,12 @@ class RoundRectDrawableWithShadow extends Drawable {
         return mBackground;
     }
 
+    public float getRadius() {
+        return mCornerRadius;
+    }
+
     interface RoundRectHelper {
         void drawRoundRect(Canvas canvas, RectF bounds, float cornerRadius, Paint paint);
     }
+
 }

@@ -3,6 +3,7 @@ package bean;
 import android.graphics.Color;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.zhy.android.R;
 
@@ -14,7 +15,7 @@ public class Banner {
     public int turningTime = 3000;//滚动间隔
     public int duration = 1000;//滚动时间
     public int indicatorSpacing = 10;//指示标间距
-    public int multiWidth = 30;//露出部分宽度
+    public int multiWidth = 0;//露出部分宽度
     public int pageMargin = 0;//页间距
     public float radius = 0f;//页圆角
     public float indicatorRadius = 3.5f;
@@ -27,7 +28,9 @@ public class Banner {
     public int indicatorSelectorColor = Color.WHITE;//指示标颜色
     public int indicatorStyle = IndicatorView.IndicatorStyle.INDICATOR_BEZIER;//指示标样式
     public boolean useIndicate = true;//使用指示标
-    public boolean isAutoScroll = true;//是否自动轮播
+    public boolean autoScroll = true;//是否自动轮播
     public boolean noDataHide = true;//无数据时隐藏
-    public Indicator indicator;//指示器,为空时用默认的
+    public Indicator indicator;//自定义指示器,为空时用默认的
+    public ViewPager2.PageTransformer transformer;
+
 }

@@ -8,7 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 public class ScaleInTransformer implements ViewPager2.PageTransformer {
 
     private static final float DEFAULT_CENTER = 0.5f;
-    private float mMinScale = 0.85f;
+    private float mMinScale = 0.8f;
 
     public ScaleInTransformer() {
     }

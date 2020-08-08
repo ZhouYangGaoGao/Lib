@@ -19,7 +19,8 @@ public class BannerFragment extends BBannerFragment<Article> {
     @Override
     public void beforeView() {
         banner.itemLayoutId = R.layout.item_banner;
-        transformer = new ScaleInTransformer();
+        banner.transformer = new ScaleInTransformer();
+        banner.multiWidth = 25;
         banner.useIndicate = false;
     }
 

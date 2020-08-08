@@ -36,8 +36,8 @@
     <color name="clo_sub_tab_select">#ffffff</color>
     <color name="clo_sub_tab_bg">@color/clo_theme</color>
     <color name="clo_sub_tab_indicator">#ffffff</color>
-    <color name="clo_card_shadow_end">#00000000</color>
-    <color name="clo_card_shadow_start">#11000000</color>
+    <color name="clo_shadow_end">#00000000</color>
+    <color name="clo_shadow_start">#11000000</color>
     <color name="clo_line">#aaaaaa</color>
     <color name="clo_status_bar">@color/clo_theme</color>
     <color name="clo_ripple">#88888888</color>

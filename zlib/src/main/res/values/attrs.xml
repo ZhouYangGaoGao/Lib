@@ -350,18 +350,6 @@
 
     <attr name="cardViewStyle" format="reference" />
 
-    <attr name="startColor" format="reference|color"/>
-    <attr name="topDelta" format="float"/>
-    <!-- Selected Paint Color (color). -->
-    <attr name="endColor" format="reference|color"/>
-    <declare-styleable name="CardViewShadow">
-        <!-- Default Paint Color (color). -->
-        <attr name="startColor" />
-        <!-- Selected Paint Color (color). -->
-        <attr name="endColor" />
-        <attr name="topDelta" />
-    </declare-styleable>
-
     <declare-styleable name="SubsamplingScaleImageView">
         <attr name="android:src"/>
         <attr name="assetName" format="string"/>
@@ -377,7 +365,7 @@
     </declare-styleable>
 
     <declare-styleable name="TagFlowLayout">
-        <attr name="max_select" format="integer"></attr>
+        <attr name="max_select" format="integer"/>
         <attr name="tag_gravity">
             <enum name="left" value="-1" />
             <enum name="center" value="0" />
@@ -396,6 +384,7 @@
 
         <attr name="cardStartColor" format="reference|color"/>
         <attr name="cardEndColor" format="reference|color"/>
+        <attr name="cardCropCorner" format="boolean"/>
 
     </declare-styleable>
 </resources>

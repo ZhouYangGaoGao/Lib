@@ -27,7 +27,6 @@ public abstract class BBannerFragment<M> extends BFragment {
 
     protected AutoPager mViewPager;
     protected OnPageChangeCallback pageChangeCallback;
-    protected ViewPager2.PageTransformer transformer;
     protected RelativeLayout mRootView;
     protected RecyclerView.Adapter<BaseViewHolder> adapter;
     protected List<M> mData = new ArrayList<>();
@@ -75,13 +74,12 @@ public abstract class BBannerFragment<M> extends BFragment {
         mViewPager.setOrientation(banner.orientation);
         mViewPager.setAutoTurningTime(banner.turningTime);
         mViewPager.setPagerScrollDuration(banner.duration);
-        mViewPager.setAutoPlay(banner.isAutoScroll);
+        mViewPager.setAutoPlay(banner.autoScroll);
         mViewPager.setPageMargin(banner.multiWidth, banner.pageMargin);
         mViewPager.setRoundCorners(banner.radius);
         mViewPager.setOnPageChangeListener(pageChangeCallback);
-        if (transformer!=null)
-        mViewPager.addPageTransformer(transformer);
-        mViewPager.setGravity(Gravity.BOTTOM);
+        if (banner.transformer!=null)
+        mViewPager.addPageTransformer(banner.transformer);
         ScreenUtils.setHight(mViewPager, banner.height / 360d);
         initAdapter();
     }

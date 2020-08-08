@@ -91,29 +91,29 @@
         <item >BallRotateIndicator</item>
 
         <item >CubeTransitionIndicator</item>
-<!--        <item >BallZigZagIndicator</item>-->
-<!--        <item >BallZigZagDeflectIndicator</item>-->
-<!--        <item >BallTrianglePathIndicator</item>-->
+        <item >BallZigZagIndicator</item>
+        <item >BallZigZagDeflectIndicator</item>
+        <item >BallTrianglePathIndicator</item>
 
-<!--        <item >BallScaleIndicator</item>-->
-<!--        <item >LineScaleIndicator</item>-->
-<!--        <item >LineScalePartyIndicator</item>-->
-<!--        <item >BallScaleMultipleIndicator</item>-->
+        <item >BallScaleIndicator</item>
+        <item >LineScaleIndicator</item>
+        <item >LineScalePartyIndicator</item>
+        <item >BallScaleMultipleIndicator</item>
 
-<!--        <item >BallPulseSyncIndicator</item>-->
-<!--        <item >BallBeatIndicator</item>-->
-<!--        <item >LineScalePulseOutIndicator</item>-->
-<!--        <item >BallScaleRippleIndicator</item>-->
+        <item >BallPulseSyncIndicator</item>
+        <item >BallBeatIndicator</item>
+        <item >LineScalePulseOutIndicator</item>
+        <item >BallScaleRippleIndicator</item>
 
-<!--        <item >LineScalePulseOutRapidIndicator</item>-->
-<!--        <item >BallScaleRippleMultipleIndicator</item>-->
-<!--        <item >BallSpinFadeLoaderIndicator</item>-->
-<!--        <item >LineSpinFadeLoaderIndicator</item>-->
+        <item >LineScalePulseOutRapidIndicator</item>
+        <item >BallScaleRippleMultipleIndicator</item>
+        <item >BallSpinFadeLoaderIndicator</item>
+        <item >LineSpinFadeLoaderIndicator</item>
 
-<!--        <item >TriangleSkewSpinIndicator</item>-->
-<!--        <item >PacmanIndicator</item>-->
-<!--        <item >BallGridBeatIndicator</item>-->
-<!--        <item >SemiCircleSpinIndicator</item>-->
+        <item >TriangleSkewSpinIndicator</item>
+        <item >PacmanIndicator</item>
+        <item >BallGridBeatIndicator</item>
+        <item >SemiCircleSpinIndicator</item>
     </array>
 
     <item name="type_header" type="integer"/>

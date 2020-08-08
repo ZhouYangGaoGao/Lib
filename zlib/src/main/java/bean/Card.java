@@ -2,7 +2,7 @@ package bean;
 
 import com.zhy.android.R;
 
-import base.BApp;
+import util.Resource;
 
 /**
  * 卡片配置信息
@@ -10,8 +10,8 @@ import base.BApp;
 public class Card {
     public int cardRadius = 10;//卡片圆角
     public int cardElevation = 7;//卡片阴影
-    public int cardElevationStart = BApp.app().getResources().getColor(R.color.clo_card_shadow_start);//卡片阴影开始颜色
-    public int cardElevationEnd = BApp.app().getResources().getColor(R.color.clo_card_shadow_end);//卡片阴影结束颜色
+    public int cardElevationStart = Resource.color(R.color.clo_shadow_start);//卡片阴影开始颜色
+    public int cardElevationEnd = Resource.color(R.color.clo_shadow_end);//卡片阴影结束颜色
     public int cardColor = 0xffffffff;//卡片背景色 正常
     public int cardColorPress = 0x11000000;//卡片背景色 按压
     public int rippleColor = 0x33000000;//item水波纹颜色

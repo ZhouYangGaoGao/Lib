@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="100dp"
-        app:cardStartColor="@color/clo_card_shadow_start"
-        app:cardEndColor="@color/clo_card_shadow_end"
+        app:cardStartColor="@color/clo_shadow_start"
+        app:cardEndColor="@color/clo_shadow_end"
         app:cardPreventCornerOverlap="false" />
 
 </FrameLayout>
