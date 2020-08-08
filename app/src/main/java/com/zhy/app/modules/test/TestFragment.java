@@ -40,6 +40,7 @@ public class TestFragment extends BListFragment<Class> {
     @Override
     public void convert(ViewHolder h, Class i) {
         h.setText(R.id.title, i.getSimpleName());
+        h.getTextView(R.id.title).setAutoZoom(true);
         h.getTextView(R.id.title).setSingleLine();
     }
 
@@ -82,7 +83,6 @@ public class TestFragment extends BListFragment<Class> {
             }
         });
     }
-
 
 }
 
