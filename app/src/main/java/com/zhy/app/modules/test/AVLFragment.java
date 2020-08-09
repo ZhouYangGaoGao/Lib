@@ -18,7 +18,7 @@ public class AVLFragment extends BListFragment<String> {
     public void beforeView() {
         grid.numColumns = 3;
         grid.itemLayoutId = R.layout.item_avl;
-        levelCache = LevelCache.none;
+        info.levelCache = LevelCache.none;
         Collections.addAll(mData, getResources().getStringArray(R.array.load_name));
     }
 

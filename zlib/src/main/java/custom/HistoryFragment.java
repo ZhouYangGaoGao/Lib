@@ -31,7 +31,6 @@ public class HistoryFragment extends BListFragment<String> {
     {
         info.showTop = false;
         info.useEventBus = true;
-        fresh.isRefresh = false;
         card.card = false;
     }
 
@@ -40,7 +39,7 @@ public class HistoryFragment extends BListFragment<String> {
         super.initView();
         refreshLayout.setEnablePureScrollMode(true);
         mStatusView.empty();
-        mStatusView.getTv().setText("无历史记录");
+        mStatusView.getTextView().setText("无历史记录");
     }
 
     public void setSmartView(SmartView smartView) {

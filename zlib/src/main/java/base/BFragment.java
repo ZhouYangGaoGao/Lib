@@ -28,7 +28,6 @@ import util.LogUtils;
 public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragment implements BView<M> {
     public P presenter;
     protected LevelDataTime levelDataTime = LevelDataTime.create;
-    protected LevelCache levelCache = LevelCache.none;
     protected Info info = new Info();//其他参数
     protected View contentView;
     protected int contentViewId = 0;
@@ -163,6 +162,5 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
         info.title = title;
         return this;
     }
-
 
 }

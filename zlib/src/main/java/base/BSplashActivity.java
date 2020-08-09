@@ -16,7 +16,7 @@ public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
 
     protected int centerIconRes = R.drawable.ic_welcomm;
     protected int bgRes;
-    protected Class loginCls = BLoginFragment.class, homeCls = BHomeActivity.class;
+    protected Class<?> loginCls = BLoginFragment.class, homeCls = BHomeActivity.class;
     protected View otherView;
     protected TextView centerTv;
     protected RelativeLayout mRootView;
@@ -44,7 +44,7 @@ public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
         });
     }
 
-    private void startHome() {
+    protected void startHome() {
         GoTo.start(homeCls);
         finish();
     }

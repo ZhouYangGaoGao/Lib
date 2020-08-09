@@ -79,6 +79,7 @@
     <string name="str_no_captcha_listener">未设置验证码监听</string>
     <string name="str_no_data">无数据</string>
     <string name="str_empty_data">暂无数据</string>
+    <string name="str_error_data">加载出错</string>
     <array name="load_name" >
         <item >BallPulseIndicator</item>
         <item >BallGridPulseIndicator</item>

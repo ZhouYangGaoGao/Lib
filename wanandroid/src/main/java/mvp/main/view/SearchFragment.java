@@ -15,7 +15,7 @@ public class SearchFragment extends ArticleFragment implements SmartListener {
     @Override
     public void beforeView() {
         info.showTop = true;
-        levelCache = null;
+        info.levelCache = null;
         levelDataTime = LevelDataTime.never;
     }
 

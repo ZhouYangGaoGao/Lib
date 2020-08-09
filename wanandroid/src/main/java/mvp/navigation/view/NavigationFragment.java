@@ -25,6 +25,7 @@ import base.BSub;
 import base.BView;
 import base.BWebFragment;
 import base.Manager;
+import bean.Info;
 import butterknife.BindView;
 import custom.SmartView;
 import enums.LevelCache;
@@ -38,7 +39,7 @@ import util.GoTo;
 import util.MDrawable;
 import util.ScreenUtils;
 
-public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<BView<?>>> {
+public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<BView<?>>> implements Info.DataListener<List<Navigation>> {
     @BindView(R.id.tabListView)
     ListView tabListView;
     @BindView(R.id.mRecyclerView)
@@ -49,7 +50,7 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
     @Override
     public void beforeView() {
         contentViewId = R.layout.fragment_navigation;
-        levelCache = LevelCache.refresh;
+        info.levelCache = LevelCache.refresh;
     }
 
     @Override
@@ -151,17 +152,25 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
     }
 
     @Override
+    public void getData() {
+        if (info.needNew(this))
+            super.getData();
+    }
+
+    @Override
     protected Observable<?> get() {
-        if (levelCache.get(info.TAG) != null) {
-            success(levelCache.get(info.TAG));
-            return null;
-        }
+
         return Manager.getApi().navigation();
     }
 
     @Override
     public void onStop() {
-        levelCache.cache(info.TAG,adapter.getGroup());
+        info.save(adapter.getGroup());
         super.onStop();
+    }
+
+    @Override
+    public void onData(List<Navigation> navigations) {
+        success(navigations);
     }
 }

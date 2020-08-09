@@ -13,7 +13,6 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhy.android.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import adapter.CommonAdapter;
@@ -21,6 +20,7 @@ import adapter.ViewHolder;
 import background.drawable.DrawableCreator;
 import bean.Fresh;
 import bean.Grid;
+import bean.Info;
 import bean.Page;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
@@ -30,7 +30,6 @@ import bean.Card;
 import custom.card.CardView;
 import enums.LevelCache;
 import enums.LevelDataTime;
-import hawk.Hawk;
 import util.LayoutUtil;
 import util.ScreenUtils;
 
@@ -49,7 +48,7 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
     protected Fresh fresh = new Fresh();//刷新参数
 
     {
-        levelCache = LevelCache.refresh;
+        info.levelCache = LevelCache.refresh;
     }
 
     @Override
@@ -60,27 +59,24 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
         refreshLayout.setOnRefreshLoadMoreListener(this);
         refreshLayout.setEnableAutoLoadMore(fresh.autoLoadMore);
         refreshLayout.setEnableLoadMoreWhenContentNotFull(fresh.loadNotFull);
-        refreshLayout.setEnableLoadMore(fresh.loadMore);
-        if (grid.expand) {
-            gridView.setExpand(true);
-            refreshLayout.setEnableLoadMore(false);
-            refreshLayout.setEnableRefresh(false);
-        } else {
-            refreshLayout.setEnableRefresh(fresh.refresh);
-            refreshLayout.setBackgroundColor(fresh.bgColor);
-        }
+        refreshLayout.setBackgroundColor(fresh.bgColor);
+        refreshLayout.setEnableLoadMore(!grid.expand && fresh.loadMore);
+        refreshLayout.setEnableRefresh(!grid.expand && fresh.refresh);
+        gridView.setExpand(grid.expand);
         gridView.setNumColumns(grid.numColumns);
         gridView.setBackgroundColor(grid.bgColor);
         mSmartView.topContent.setVisibility(info.showTop ? View.VISIBLE : View.GONE);
         if (mStatusView == null) {
-            mStatusView = new StatusView(getContext());
-            if (levelDataTime == LevelDataTime.never) mStatusView.empty();
-            mStatusView.getTv().setOnClickListener(v -> {
-                mStatusView.loading();
-                onRefresh(refreshLayout);
-            });
+            mStatusView = new StatusView(getContext()) {
+                @Override
+                public void onClick(View v) {
+                    super.onClick(v);
+                    onRefresh(refreshLayout);
+                }
+            };
         }
-        ((LinearLayout) findViewById(R.id.content)).addView(mStatusView, LayoutUtil.zoomVLp());
+        if (levelDataTime == LevelDataTime.never) mStatusView.empty();
+        ((LinearLayout) findViewById(R.id.content)).addView(mStatusView, 0, LayoutUtil.zoomVLp());
         gridView.setEmptyView(mStatusView);
         if (heardView != null) gridView.addHeaderView(heardView);
         if (card.card) initCard();
@@ -106,10 +102,14 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
 
             @Override
             public boolean isEmpty() {//当列表有头部天加时 列表为空要显示头部
-                int count = gridView.getHeaderViewCount() + gridView.getFooterViewCount();
-                if (count > 2) return false;
-                if (card.card && count > 0) return false;
-                return super.isEmpty();
+                int headerCount = gridView.getHeaderViewCount();
+                int footCount = gridView.getFooterViewCount();
+                if (card.card) {
+                    if (card.needHeardSpace) headerCount--;
+                    if (card.needFootSpace) footCount--;
+                }
+                if (headerCount + footCount > 0 && mData.size() == 0) return false;
+                return mData.size() == 0;
             }
 
             @Override
@@ -163,26 +163,27 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {//加载更多
-        fresh.isRefresh = false;
+        info.isRefresh = false;
         page.page++;
         super.getData();
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {//刷新列表 重新获取数据
-        fresh.isRefresh = true;
+        info.isRefresh = true;
         page.resetPage();
         super.getData();
     }
 
     public void onData(List<M> datas) {//数据处理完成 更新页面
-        if (fresh.isRefresh) mData.clear();
+        if (info.isRefresh) mData.clear();
         mData.addAll(datas);
         upData();
     }
 
     @Override
     public void success(Object data) {//数据加载完成 进行处理
+        mStatusView.empty("数据加载完成 进行处理");
         if (data == null) return;
         if (BList.class.isAssignableFrom(data.getClass())) {
             onData(((BList<M>) data).getList());
@@ -194,25 +195,12 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
 
     @Override
     public void getData() {
-        if (levelCache != null) {
-            List<M> data = levelCache.get(info.TAG);
-            if (data != null)
-                switch (levelCache) {
-                    case time:
-                    case only:
-                        onData(data);
-                        break;
-                    case replace:
-                        onData(data);
-                        getNew();
-                        break;
-                    case refresh:
-                        if (fresh.isRefresh) getNew();
-                        else onData(data);
-                        break;
-                }
-            else getNew();
-        } else getNew();
+        if (info.needNew(new Info.DataListener<List<M>>() {
+            @Override
+            public void onData(List<M> t) {
+                BListFragment.this.onData(t);
+            }
+        })) getNew();
     }
 
     /**
@@ -230,14 +218,7 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
 
     @Override
     public void onStop() {
-        if (mData != null && levelCache != null && levelCache != LevelCache.none) {
-
-//            if (levelCache != LevelCache.time && !Hawk.contains(info.TAG)) {
-//
-//            } else
-            levelCache.cache(info.TAG, mData);
-
-        }
+        info.save(mData);
         super.onStop();
     }
 
@@ -247,12 +228,12 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
     @Override
     public void fail(String message) {//数据加载失败 吐司提示
         super.fail(message);
+        mStatusView.error(message + "\n点击重试");
         upData();
     }
 
     @Override
     public void completed() {//数据加载完成 结束loading
-        mStatusView.empty();
         refreshLayout.finishLoadMore();
         refreshLayout.finishRefresh();
     }
