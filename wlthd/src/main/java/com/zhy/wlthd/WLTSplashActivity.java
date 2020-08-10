@@ -50,7 +50,6 @@ public class WLTSplashActivity extends BSplashActivity {
         set.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-
             }
 
             @Override
@@ -60,12 +59,10 @@ public class WLTSplashActivity extends BSplashActivity {
 
             @Override
             public void onAnimationCancel(Animator animation) {
-
             }
 
             @Override
             public void onAnimationRepeat(Animator animation) {
-
             }
         });
         set.setDuration(2000).start();
