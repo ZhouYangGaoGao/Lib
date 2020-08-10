@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import base.BApp;
+import custom.StatusView;
 
 /**
  * 通用的分组列表Adapter。通过它可以很方便的实现列表的分组效果。
@@ -1071,8 +1072,7 @@ public abstract class GroupAdapter<T>
      * @return
      */
     public View getEmptyView(ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_empty, parent, false);
-        return view;
+        return new StatusView(mContext).empty();
     }
 
     class GroupDataObserver extends RecyclerView.AdapterDataObserver {

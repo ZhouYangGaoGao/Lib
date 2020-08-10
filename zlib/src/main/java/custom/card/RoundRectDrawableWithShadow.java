@@ -138,9 +138,9 @@ class RoundRectDrawableWithShadow extends Drawable {
                 mPrintedShadowClipWarning = true;
             }
         }
-        if (mRawShadowSize == shadowSize && mRawMaxShadowSize == maxShadowSize) {
-            return;
-        }
+//        if (mRawShadowSize == shadowSize && mRawMaxShadowSize == maxShadowSize) {
+//            return;
+//        }
         mRawShadowSize = shadowSize;
         mRawMaxShadowSize = maxShadowSize;
         mShadowSize = (int) (shadowSize * SHADOW_MULTIPLIER + mInsetShadow + .5f);

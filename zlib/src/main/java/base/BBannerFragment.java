@@ -89,7 +89,7 @@ public abstract class BBannerFragment<M> extends BFragment {
             @NonNull
             @Override
             public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return new BaseViewHolder(LayoutInflater.from(getContext()).inflate(banner.itemLayoutId, parent, false));
+                return new BaseViewHolder(LayoutInflater.from(BApp.app()).inflate(banner.itemLayoutId, parent, false));
             }
 
             @Override

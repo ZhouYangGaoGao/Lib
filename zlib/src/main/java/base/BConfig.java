@@ -176,14 +176,14 @@ public class BConfig {
                 } else urlNewBuilder = request.url().newBuilder();
                 RequestBody body = request.body();
                 //添加头部
-                Request newRequest = builder.addHeader("client", getClient())
+                Request newRequest = builder.addHeader("client", client)
                         .addHeader("system", "android " + SystemUtil.getDeviceBrand() + " " + SystemUtil.getSystemModel())
                         .addHeader("Content-Type", "application/json; charset=UTF-8")
                         .addHeader("token", getToken())
                         .method(request.method(), body)
                         .url(urlNewBuilder.build())
                         .build();
-                LogUtils.e("Url==", newRequest.url() + "\nHeader==" + newRequest.headers().toString());
+                LogUtils.e("Url==", newRequest.toString());
                 return chain.proceed(newRequest);
             }
         };

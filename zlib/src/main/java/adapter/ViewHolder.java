@@ -242,7 +242,6 @@ public class ViewHolder {
         tv.setText(style);
     }
 
-
     public void setIncludeTextBg(TextView textView, final String keyWord, Drawable drawable, final int color) {
         setIncludeTextBg(textView, keyWord, drawable, color, 0.75f);
     }

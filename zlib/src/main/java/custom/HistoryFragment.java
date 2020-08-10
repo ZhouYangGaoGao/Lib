@@ -31,6 +31,7 @@ public class HistoryFragment extends BListFragment<String> {
     {
         info.showTop = false;
         info.useEventBus = true;
+        grid.bgColor = 0xffeeeeee;
         card.card = false;
     }
 

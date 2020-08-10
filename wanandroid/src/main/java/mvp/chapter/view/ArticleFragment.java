@@ -1,6 +1,7 @@
 package mvp.chapter.view;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,11 +22,14 @@ import custom.PopView;
 import custom.SmartView;
 import custom.TextView;
 import bean.Smart;
+import custom.card.CardView;
 import listener.WebEvent;
 import mvp.chapter.model.Article;
 import rx.Observable;
 import util.GoTo;
 import util.MLayoutParams;
+import util.Resource;
+import util.ScreenUtils;
 
 public class ArticleFragment extends BListFragment<Article> {
     protected int cid = 0;
@@ -62,6 +66,15 @@ public class ArticleFragment extends BListFragment<Article> {
         initTop(i, tagLayout);
 
         initClick(h, i, initTitle(h, i));
+
+        initShadow(h, i.isCollect());
+    }
+
+    private void initShadow(ViewHolder h, boolean isCollect) {
+        log("initShadow" + isCollect);
+        CardView cardView = h.getView(R.id.cardView);
+        cardView.setShadowColor(isCollect ? 0x336200EE : Resource.color(R.color.clo_shadow_start), 0);
+        cardView.setMaxCardElevation(ScreenUtils.dip2px(isCollect ? card.cardElevation + 0.1f : card.cardElevation));
     }
 
     private TextView initTitle(ViewHolder h, Article i) {
@@ -166,6 +179,7 @@ public class ArticleFragment extends BListFragment<Article> {
                 TextView listFavoriteView = h.getTagView("favorite");
                 if (listFavoriteView != null)
                     listFavoriteView.setLeftRes(mData.get(h.getPosition()).isCollect() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
+                initShadow(h, mData.get(h.getPosition()).isCollect());
             }
         });
     }

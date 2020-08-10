@@ -31,7 +31,7 @@ public class Interceptor implements okhttp3.Interceptor {
                 .method(request.method(), body)
                 .url(urlNewBuilder.build())
                 .build();
-        LogUtils.e("Url==", newRequest.toString() + "\nHeader==" + newRequest.headers().toString());
+        LogUtils.e("Url==", newRequest.toString() + "\n");
         return chain.proceed(newRequest);
     }
 }

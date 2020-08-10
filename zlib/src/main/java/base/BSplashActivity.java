@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 
 import com.zhy.android.R;
 
-import custom.TextView;
+import custom.StatusView;
 import hawk.Hawk;
 import util.GoTo;
 import util.StatusBarUtil;
@@ -18,23 +18,23 @@ public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
     protected int bgRes;
     protected Class<?> loginCls = BLoginFragment.class, homeCls = BHomeActivity.class;
     protected View otherView;
-    protected TextView centerTv;
+    protected StatusView mStatusView;
     protected RelativeLayout mRootView;
     protected int delay = 17;
 
     {
-        contentViewId = R.layout.layout_empty;
+        contentViewId = R.layout.layout_b_splash;
         statusBarColor = 0xffffffff;
     }
 
     @Override
     public void initView() {
-        centerTv = findViewById(R.id.tv_empty);
+        mStatusView = findViewById(R.id.mStatusView);
         mRootView = findViewById(R.id.mRootView);
         if (bgRes != 0) mRootView.setBackgroundResource(bgRes);
         if (otherView != null) mRootView.addView(otherView);
-        centerTv.setTopRes(centerIconRes);
-        centerTv.setText("欢迎页");
+        mStatusView.setEmptyIcon(centerIconRes);
+        mStatusView.setEmptyStr("欢迎页");
         StatusBarUtil.setTransparentForImageView(this, null);
         MTimer.timer(delay).subscribe(aLong -> {
             if (Hawk.get(BConfig.LOGIN) == null)

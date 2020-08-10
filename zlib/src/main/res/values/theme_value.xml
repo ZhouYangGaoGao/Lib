@@ -20,7 +20,7 @@
     <dimen name="dim_button_h_margin">100dp</dimen>
     <dimen name="dim_button_v_margin">15dp</dimen>
     <dimen name="dim_login_v_margin">0dp</dimen>
-    <dimen name="dim_login_h_margin">55dp</dimen>
+    <dimen name="dim_login_h_margin">40dp</dimen>
 
     <color name="clo_big_title">#ffffff</color>
     <color name="clo_title">#111111</color>

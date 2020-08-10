@@ -30,6 +30,7 @@ import bean.Card;
 import custom.card.CardView;
 import enums.LevelCache;
 import enums.LevelDataTime;
+import hawk.Hawk;
 import util.LayoutUtil;
 import util.ScreenUtils;
 
@@ -42,8 +43,8 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
     protected StatusView mStatusView;//状态视图
     protected List<M> mData = new ArrayList<>();//主列表数据
     protected View heardView, footView, topView, bottomView;//其他视图
-    protected Card card = new Card();//卡片信息
     protected Grid grid = new Grid();//网格列表信息 间隔/背景/列数/布局
+    protected Card card = new Card();//卡片信息
     protected Page page = new Page();//页码参数
     protected Fresh fresh = new Fresh();//刷新参数
 
@@ -53,8 +54,6 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
 
     @Override
     public void initView() {
-        gridView = (HeaderGridView) findViewById(R.id.gridView);
-        mSmartView = (SmartView) findViewById(R.id.mTopView);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshLoadMoreListener(this);
         refreshLayout.setEnableAutoLoadMore(fresh.autoLoadMore);
@@ -62,35 +61,43 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
         refreshLayout.setBackgroundColor(fresh.bgColor);
         refreshLayout.setEnableLoadMore(!grid.expand && fresh.loadMore);
         refreshLayout.setEnableRefresh(!grid.expand && fresh.refresh);
+
+        if (mStatusView == null) initStatusView();
+        if (levelDataTime == LevelDataTime.never) mStatusView.empty();
+        ((LinearLayout) findViewById(R.id.content)).addView(mStatusView, 0, LayoutUtil.zoomVLp());
+
+        gridView = (HeaderGridView) findViewById(R.id.gridView);
+        if (heardView != null) gridView.addHeaderView(heardView);
+        if (footView != null) gridView.addFooterView(footView);
+        if (card.card) initCard();
         gridView.setExpand(grid.expand);
         gridView.setNumColumns(grid.numColumns);
         gridView.setBackgroundColor(grid.bgColor);
-        mSmartView.topContent.setVisibility(info.showTop ? View.VISIBLE : View.GONE);
-        if (mStatusView == null) {
-            mStatusView = new StatusView(getContext()) {
-                @Override
-                public void onClick(View v) {
-                    super.onClick(v);
-                    onRefresh(refreshLayout);
-                }
-            };
-        }
-        if (levelDataTime == LevelDataTime.never) mStatusView.empty();
-        ((LinearLayout) findViewById(R.id.content)).addView(mStatusView, 0, LayoutUtil.zoomVLp());
         gridView.setEmptyView(mStatusView);
-        if (heardView != null) gridView.addHeaderView(heardView);
-        if (card.card) initCard();
-        if (footView != null) gridView.addFooterView(footView);
-        if (topView != null) mSmartView.addView(topView, 1);
-        if (bottomView != null) mSmartView.addView(bottomView);
         gridView.setAdapter(adapter = initAdapter());
         gridView.setHorizontalSpacing(ScreenUtils.dip2px(grid.horizontalSpacing));
         gridView.setVerticalSpacing(ScreenUtils.dip2px(grid.verticalSpacing));
+
+        mSmartView = (SmartView) findViewById(R.id.mTopView);
+        mSmartView.topContent.setVisibility(info.showTop ? View.VISIBLE : View.GONE);
         mSmartView.centerTextView.setText(info.title);
+        if (topView != null) mSmartView.addView(topView, 1);
+        if (bottomView != null) mSmartView.addView(bottomView);
+
+
+    }
+
+    private void initStatusView() {
+        mStatusView = new StatusView(getContext()) {
+            @Override
+            public void onClick(View v) {
+                super.onClick(v);
+                onRefresh(refreshLayout);
+            }
+        };
     }
 
     private void initCard() {
-        grid.horizontalSpacing = grid.verticalSpacing = 0;
         if (card.needHeardSpace)
             gridView.addHeaderView(new EmptySizeView(card.cardElevation));
         if (card.needFootSpace)
@@ -199,8 +206,12 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
             @Override
             public void onData(List<M> t) {
                 BListFragment.this.onData(t);
+                mStatusView.empty();
             }
-        })) getNew();
+        })) {
+            mStatusView.loading();
+            getNew();
+        }
     }
 
     /**

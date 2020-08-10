@@ -266,7 +266,19 @@
             <enum name="different" value="112" />
         </attr>
     </declare-styleable>
-
+    <declare-styleable name="StatusView">
+        <attr name="errorSrc" format="reference" />
+        <attr name="errorText" format="reference|string" />
+        <attr name="emptySrc" format="reference"/>
+        <attr name="emptyText" format="reference|string" />
+        <attr name="loadingIndex" format="integer" />
+        <attr name="defaultModel" format="enum" >
+            <enum name="empty" value="1"/>
+            <enum name="error" value="2"/>
+            <enum name="loading" value="3"/>
+        </attr>
+        <attr name="loadingColor" format="reference|color" />
+    </declare-styleable>
     <attr name="picture.title.textColor" format="reference|color" />
     <attr name="picture.right.textColor" format="reference|color" />
     <attr name="picture.leftBack.icon" format="reference" />
@@ -351,21 +363,21 @@
     <attr name="cardViewStyle" format="reference" />
 
     <declare-styleable name="SubsamplingScaleImageView">
-        <attr name="android:src"/>
-        <attr name="assetName" format="string"/>
-        <attr name="panEnabled" format="boolean"/>
-        <attr name="zoomEnabled" format="boolean"/>
-        <attr name="quickScaleEnabled" format="boolean"/>
-        <attr name="tileBackgroundColor" format="color"/>
+        <attr name="android:src" />
+        <attr name="assetName" format="string" />
+        <attr name="panEnabled" format="boolean" />
+        <attr name="zoomEnabled" format="boolean" />
+        <attr name="quickScaleEnabled" format="boolean" />
+        <attr name="tileBackgroundColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="ImageCard">
-        <attr name="android:src"/>
-        <attr name="android:scaleType"/>
+        <attr name="android:src" />
+        <attr name="android:scaleType" />
     </declare-styleable>
 
     <declare-styleable name="TagFlowLayout">
-        <attr name="max_select" format="integer"/>
+        <attr name="max_select" format="integer" />
         <attr name="tag_gravity">
             <enum name="left" value="-1" />
             <enum name="center" value="0" />
@@ -373,18 +385,18 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="CardView" >
-        <attr name="cardCornerRadius"/>
-        <attr name="cardUseCompatPadding"/>
-        <attr name="cardBackgroundColor"/>
-        <attr name="cardElevation"/>
-        <attr name="cardMaxElevation"/>
-        <attr name="cardPreventCornerOverlap"/>
-        <attr name="cardForegroundColor"/>
+    <declare-styleable name="CardView">
+        <attr name="cardCornerRadius" />
+        <attr name="cardUseCompatPadding" />
+        <attr name="cardBackgroundColor" />
+        <attr name="cardElevation" />
+        <attr name="cardMaxElevation" />
+        <attr name="cardPreventCornerOverlap" />
+        <attr name="cardForegroundColor" />
 
-        <attr name="cardStartColor" format="reference|color"/>
-        <attr name="cardEndColor" format="reference|color"/>
-        <attr name="cardCropCorner" format="boolean"/>
+        <attr name="cardStartColor" format="reference|color" />
+        <attr name="cardEndColor" format="reference|color" />
+        <attr name="cardCropCorner" format="boolean" />
 
     </declare-styleable>
 </resources>

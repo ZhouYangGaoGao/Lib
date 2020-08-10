@@ -85,6 +85,7 @@ public class BSub<T> extends Subscriber<BResponse<T>> {
         if (Looper.getMainLooper() != Looper.myLooper()) return;
         if (BApp.app().act() == null) return;
         Toast.makeText(BApp.app().act(), message, Toast.LENGTH_SHORT).show();
+        if (mView != null) mView.fail(message);
     }
 
     public void onSuccess(T t) {
