@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <custom.PicSelectView
+    <com.zhy.photo.PicSelectView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:numColumns="4" />
 
-    <custom.PicSelectView
+    <com.zhy.photo.PicSelectView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -21,7 +21,7 @@
         app:bl_solid_color="@color/white"
         app:numColumns="4" />
 
-    <custom.PicSelectView
+    <com.zhy.photo.PicSelectView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:numColumns="4"

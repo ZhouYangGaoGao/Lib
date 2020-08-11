@@ -3,9 +3,12 @@ package mvp.navigation.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.necer.ndialog.ChoiceDialog;
@@ -32,7 +35,7 @@ import enums.LevelCache;
 import bean.Smart;
 import mvp.chapter.model.Article;
 import mvp.navigation.model.Navigation;
-import photopicker.lib.decoration.GridSpacingItemDecoration;
+//import photopicker.lib.decoration.GridSpacingItemDecoration;
 import rx.Observable;
 import util.Dialogs;
 import util.GoTo;
@@ -88,8 +91,9 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
             @Override
             public void onBindHeaderViewHolder(BaseViewHolder holder, Navigation navigation) {
                 holder.setText(R.id.title, navigation.getName());
+                holder.getTextView(R.id.title).setGravity(Gravity.CENTER);
                 holder.setTextColor(R.id.title, getResources().getColor(R.color.clo_big_title));
-                holder.setBackgroundColor(R.id.title, getResources().getColor(R.color.clo_theme_88));
+                holder.setBackgroundColor(R.id.title, getResources().getColor(R.color.clo_theme));
             }
 
             @Override
@@ -106,7 +110,8 @@ public class NavigationFragment extends BFragment<List<Navigation>, BPresenter<B
                         });
             }
         });
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, ScreenUtils.dip2px(1), false));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayout.HORIZONTAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayout.VERTICAL));
         mRecyclerView.setLayoutManager(layoutManager = new GridLayoutManager(getContext(), 2, adapter));
     }
 

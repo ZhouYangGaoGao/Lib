@@ -5,5 +5,4 @@
     <item name="slidable_panel" type="id" />
     <item name="slidable_content" type="id" />
 
-    <item name="id_recycler" type="id" tools:ignore="ResourceName" />
 </resources>

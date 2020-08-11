@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/picture_color_grey"
+    android:background="@color/clo_theme_88"
     android:orientation="vertical">
 
     <com.wang.avi.AVLoadingIndicatorView
@@ -12,5 +12,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="12dp"
-        app:indicatorColor="@color/clo_theme_88" />
+        app:indicatorColor="@color/clo_theme" />
 </LinearLayout>

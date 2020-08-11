@@ -1,70 +1,63 @@
 package com.zhy.wlthd;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.widget.RelativeLayout;
 
 import base.BSplashActivity;
+import custom.TextView;
+import util.AnimatorUtil;
 import util.IncludeUtil;
 import util.MLayoutParams;
 
 public class WLTSplashActivity extends BSplashActivity {
 
+    private TextView mCompany;
+
     @Override
     public void beforeView() {
         homeCls = WLTMainActivity.class;
-        centerIconRes = R.mipmap.ic_logo;
+        centerIconRes = R.mipmap.ic_splash;
         bgRes = R.mipmap.bg_welcome;
         otherView = getView(R.layout.layout_login);
         RelativeLayout.LayoutParams params = MLayoutParams.marginRLP(0);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         otherView.setLayoutParams(params);
-        delay = 55500;
+
+        mCompany = new TextView(this);
+        mCompany.setText("东华（安徽）生态规划院有限公司\ncopyright © 2019\n");
+        mCompany.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+        mCompany.setTextColor(Color.WHITE);
+        mCompany.setBackgroundColor(0x44ffffff);
+        mCompany.setTextSize(12);
+        mCompany.setLayoutParams(new RelativeLayout.LayoutParams(-1, -1));
+        delay = 14000;
     }
 
     @Override
-    public void initView() {
-        super.initView();
+    public void afterView() {
+        otherView.setAlpha(0);
+        mRootView.addView(mCompany, 0);
         mStatusView.empty("互联网+造林 v1.0\n安徽省营造林管理平台");
-//        IncludeUtil.setSize(mStatusView.getTextView(),"互联网+造林", 1.2f);
+        mStatusView.getTextView().setTextSize(20);
         IncludeUtil.with(mStatusView.getTextView())
                 .addColor("互联网+造林 v1.0", Color.BLACK)
-                .addSize("v1.0", 0.9f)
-                .addSize("互联网+造林", 1.2f)
+                .addSize("v1.0", 0.7f)
+                .addSize("互联网+造林", 1.1f)
+                .addSize("安徽省营造林管理平台", 0.85f)
                 .setColor("安徽省营造林管理平台", 0xff0c5b5f);
-        otherView.setAlpha(0);
     }
 
     @Override
     protected void startLogin() {
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(ObjectAnimator.ofFloat(otherView, "alpha", 0f, 1f),
-                ObjectAnimator.ofFloat(otherView, "scaleX", 0.3f, 1f),
-                ObjectAnimator.ofFloat(otherView, "scaleY", 0.3f, 1f),
-                ObjectAnimator.ofFloat(mStatusView, "translationX", 0, -mStatusView.getLeft()),
-                ObjectAnimator.ofFloat(mStatusView, "translationY", 0, -mStatusView.getTop()),
-                ObjectAnimator.ofFloat(mStatusView, "scaleX", 1f, 0.6f),
-                ObjectAnimator.ofFloat(mStatusView, "scaleY", 1f, 0.6f));
-        set.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mStatusView.empty(" \n ");
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
-        set.setDuration(2000).start();
+        mStatusView.empty("\n");
+        AnimatorUtil.with(mStatusView, 2000)
+                .translationX(0, -mStatusView.getLeft() - (int) (mStatusView.getWidth() / 7))
+                .translationY(0, -mStatusView.getTop()- (int) (mStatusView.getHeight() / 7))
+                .scale(1f, 0.5f)
+                .scale(otherView, 0.3f, 1f)
+                .alpha(otherView, 0f, 1f)
+                .alpha(mCompany, 1f, 0f)
+                .play();
     }
 }

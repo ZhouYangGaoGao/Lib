@@ -15,6 +15,7 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:elevation="10dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical"
         app:bl_corners_radius="5dp"
         app:bl_solid_color="#44ffffff">

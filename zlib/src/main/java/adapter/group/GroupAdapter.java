@@ -4,14 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.FrameLayout;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 
 import com.zhy.android.R;
 
@@ -20,6 +15,9 @@ import java.util.List;
 
 import base.BApp;
 import custom.StatusView;
+
+//import androidx.databinding.DataBindingUtil;
+//import androidx.databinding.ViewDataBinding;
 
 /**
  * 通用的分组列表Adapter。通过它可以很方便的实现列表的分组效果。
@@ -115,15 +113,15 @@ public abstract class GroupAdapter<T>
         if (viewType == TYPE_EMPTY) {
             return new BaseViewHolder(getEmptyView(parent));
         } else {
-            if (mUseBinding) {
-                ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
-                        getLayoutId(mTempPosition, viewType), parent, false);
-                return new BaseViewHolder(binding.getRoot());
-            } else {
+//            if (mUseBinding) {
+//                ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
+//                        getLayoutId(mTempPosition, viewType), parent, false);
+//                return new BaseViewHolder(binding.getRoot());
+//            } else {
                 View view = LayoutInflater.from(mContext).inflate(
                         getLayoutId(mTempPosition, viewType), parent, false);
                 return new BaseViewHolder(view);
-            }
+//            }
         }
     }
 

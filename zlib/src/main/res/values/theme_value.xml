@@ -2,7 +2,7 @@
 <resources>
     <color name="clo_theme">#00BCD4</color>
     <color name="clo_theme_88">#8800BCD4</color>
-
+    <dimen name="dim_top_hight">45dp</dimen>
     <dimen name="dim_big_title_size">16sp</dimen>
     <dimen name="dim_title_size">14sp</dimen>
     <dimen name="dim_sub_title_size">13sp</dimen>

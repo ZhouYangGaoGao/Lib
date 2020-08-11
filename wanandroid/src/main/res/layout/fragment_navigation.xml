@@ -8,13 +8,13 @@
         android:id="@+id/tabListView"
         android:layout_width="80dp"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:scrollbars="none" />
 
     <adapter.group.StickyHeaderLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginLeft="1dp">
+        android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mRecyclerView"

@@ -1,9 +1,9 @@
 package mvp.chapter.view;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -27,9 +27,9 @@ import listener.WebEvent;
 import mvp.chapter.model.Article;
 import rx.Observable;
 import util.GoTo;
-import util.MLayoutParams;
 import util.Resource;
 import util.ScreenUtils;
+import util.layoutparams.LLParams;
 
 public class ArticleFragment extends BListFragment<Article> {
     protected int cid = 0;
@@ -71,7 +71,6 @@ public class ArticleFragment extends BListFragment<Article> {
     }
 
     private void initShadow(ViewHolder h, boolean isCollect) {
-        log("initShadow" + isCollect);
         CardView cardView = h.getView(R.id.cardView);
         cardView.setShadowColor(isCollect ? 0x336200EE : Resource.color(R.color.clo_shadow_start), 0);
         cardView.setMaxCardElevation(ScreenUtils.dip2px(isCollect ? card.cardElevation + 0.1f : card.cardElevation));
@@ -88,40 +87,41 @@ public class ArticleFragment extends BListFragment<Article> {
     private void initDate(Article i, LinearLayout tagLayout) {
         if (!TextUtils.isEmpty(i.getNiceShareDate()))
             tagLayout.addView(new TextView(getActivity()).setText(i.getNiceShareDate())
-                    .setLayout(MLayoutParams.marginLLP(0, 0))
-                    .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10));
+                    .setLayout(LLParams.ZW())
+                    .gravity(Gravity.RIGHT)
+                    .tagStyle(0x00000000, Resource.color(R.color.clo_source), 10));
     }
 
     protected void initChapter(Article i, LinearLayout tagLayout) {
         if (!TextUtils.isEmpty(i.getSuperChapterName()) && !TextUtils.isEmpty(i.getChapterName()))
             tagLayout.addView(new TextView(getActivity()).setText(i.getSuperChapterName() + "/" + i.getChapterName())
-                    .setLayout(MLayoutParams.marginLLP(0, 0))
+                    .setLayout(LLParams.WW())
                     .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10), 0);
     }
 
     private void initShare(Article i, LinearLayout tagLayout) {
         if (!TextUtils.isEmpty(i.getShareUser()))
             tagLayout.addView(new TextView(getActivity()).setText("分享人:" + i.getShareUser())
-                    .setLayout(MLayoutParams.marginLLP(0, 8))
+                    .setLayout(LLParams.WW().marginE(8))
                     .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10), 0);
     }
 
     private void initAuthor(Article i, LinearLayout tagLayout) {
         if (!TextUtils.isEmpty(i.getAuthor()))
             tagLayout.addView(new TextView(getActivity()).setText("作者:" + i.getAuthor())
-                    .setLayout(MLayoutParams.marginLLP(0, 8))
+                    .setLayout(LLParams.WW().marginE(8))
                     .tagStyle(0x00000000, getResources().getColor(R.color.clo_source), 10), 0);
     }
 
     private void initTop(Article i, LinearLayout tagLayout) {
         if (i.isTop()) tagLayout.addView(new TextView(getActivity()).setText("置顶")
-                .setLayout(MLayoutParams.marginLLP(0, 5))
+                .setLayout(LLParams.WW().marginE(5))
                 .tagStyle(0xffff0000, 8), 0);
     }
 
     private void initFresh(Article i, LinearLayout tagLayout) {
         if (i.isFresh()) tagLayout.addView(new TextView(getActivity()).setText("新")
-                .setLayout(MLayoutParams.marginLLP(0, 5))
+                .setLayout(LLParams.WW().marginE(5))
                 .tagStyle(0xffff0000, 8), 0);
     }
 
@@ -130,7 +130,7 @@ public class ArticleFragment extends BListFragment<Article> {
             for (Article.Tag tag : i.getTags()) {
                 tagLayout.addView(new TextView(getContext())
                         .setText(tag.getName())
-                        .setLayout(MLayoutParams.marginLLP(0, 5))
+                        .setLayout(LLParams.WW().marginE(5))
                         .tagStyle(BConfig.get().getColorTheme(), 8), 0);
             }
         }

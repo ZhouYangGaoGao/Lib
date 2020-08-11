@@ -1,0 +1,63 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zhy.photo">
+
+    <application>
+
+        <!--图片预览界面-->
+        <activity
+            android:name="photopicker.view.CCRPhotoPreviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/CCRPPTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <!--图片选择界面-->
+        <activity
+            android:name="photopicker.view.CCRPhotoPickerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/CCRPPTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <!--图片选择预览界面-->
+        <activity
+            android:name="photopicker.view.CCRPhotoPickerPreviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/CCRPPTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <provider
+            android:name="photopicker.lib.PictureFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name="photopicker.lib.PictureSelectorActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name="photopicker.lib.PictureSelectorCameraEmptyActivity"
+            android:theme="@style/Picture.Theme.Translucent"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity android:name="photopicker.lib.PicturePreviewActivity" />
+        <activity
+            android:name="photopicker.lib.PicturePlayVideoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="sensor" />
+        <activity android:name="photopicker.lib.PictureExternalPreviewActivity" />
+        <activity
+            android:name="photopicker.ucrop.UCropActivity"
+            android:theme="@style/Base.Theme.NoActionBar" />
+        <activity
+            android:name="photopicker.ucrop.PictureMultiCuttingActivity"
+            android:theme="@style/Base.Theme.NoActionBar" />
+    </application>
+
+</manifest>

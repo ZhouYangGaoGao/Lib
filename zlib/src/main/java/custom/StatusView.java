@@ -12,8 +12,6 @@ import android.widget.RelativeLayout;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.zhy.android.R;
 
-import base.BApp;
-import util.MLayoutParams;
 import util.Resource;
 
 public class StatusView extends RelativeLayout implements View.OnClickListener {
@@ -89,6 +87,7 @@ public class StatusView extends RelativeLayout implements View.OnClickListener {
         tv = new TextView(context);
         tv.setText(emptyStr);
         tv.setTopDrawable(emptyIcon);
+        tv.setDrawablePadding(15);
         tv.setGravity(Gravity.CENTER);
         tv.setTextColor(getResources().getColor(R.color.clo_no_data));
         tv.setOnClickListener(this);

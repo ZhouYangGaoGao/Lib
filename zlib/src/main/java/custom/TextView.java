@@ -261,6 +261,9 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
         return this;
     }
 
+    public TextView gravity(int gravity){
+        setGravity(gravity);return this;
+    }
     public TextView tagStyle(int cloStroke, int cloText, int sizeSp) {
         setBackground(MDrawable.tag(cloStroke, 2));
         setTextSize(sizeSp);

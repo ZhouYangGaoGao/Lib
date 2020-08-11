@@ -1,6 +1,7 @@
 package enums;
 
 import hawk.Hawk;
+import util.LogUtils;
 
 public enum LevelCache {
     only, replace, refresh, time/*秒数*/, none;
@@ -23,6 +24,7 @@ public enum LevelCache {
         if (this == time && Hawk.contains(durationKey(key)) && Hawk.contains(timeKey(key))) {
             if ((Hawk.get(timeKey(key), 0) + Hawk.get(durationKey(key), 0)) < System.currentTimeMillis()) {
                 Hawk.delete(timeKey(key));
+                LogUtils.e(timeKey(key),"缓存时间过,重新获取");
                 return null;
             }
         }

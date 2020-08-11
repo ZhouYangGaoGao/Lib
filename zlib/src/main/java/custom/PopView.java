@@ -1,6 +1,7 @@
 package custom;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -19,7 +20,7 @@ public class PopView extends LinearLayout {
 
     public PopView(String... items) {
         this(BApp.app().act());
-        setBackground(MDrawable.solid(getResources().getColor(R.color.picture_color_grey), 10));
+        setBackground(MDrawable.solid(Color.GRAY, 10));
         setOrientation(VERTICAL);
         LayoutParams params = new LayoutParams(-2, -2);
         params.setMargins(dp(5),dp(5),dp(5),dp(5));

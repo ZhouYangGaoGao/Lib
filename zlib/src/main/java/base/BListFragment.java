@@ -1,5 +1,6 @@
 package base;
 
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ import java.util.List;
 import adapter.CommonAdapter;
 import adapter.ViewHolder;
 import background.drawable.DrawableCreator;
+import bean.Card;
 import bean.Fresh;
 import bean.Grid;
 import bean.Info;
@@ -26,13 +28,11 @@ import custom.EmptySizeView;
 import custom.HeaderGridView;
 import custom.SmartView;
 import custom.StatusView;
-import bean.Card;
 import custom.card.CardView;
 import enums.LevelCache;
 import enums.LevelDataTime;
-import hawk.Hawk;
-import util.LayoutUtil;
 import util.ScreenUtils;
+import util.layoutparams.LLParams;
 
 public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BView<?>>> implements OnRefreshLoadMoreListener {
 
@@ -49,7 +49,8 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
     protected Fresh fresh = new Fresh();//刷新参数
 
     {
-        info.levelCache = LevelCache.refresh;
+        info.levelCache = LevelCache.time;
+        info.levelCache.cacheDuration(info.TAG, 60);
     }
 
     @Override
@@ -64,8 +65,7 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
 
         if (mStatusView == null) initStatusView();
         if (levelDataTime == LevelDataTime.never) mStatusView.empty();
-        ((LinearLayout) findViewById(R.id.content)).addView(mStatusView, 0, LayoutUtil.zoomVLp());
-
+        linearLayout(R.id.content).addView(mStatusView, 0, LLParams.MZG(Gravity.CENTER));
         gridView = (HeaderGridView) findViewById(R.id.gridView);
         if (heardView != null) gridView.addHeaderView(heardView);
         if (footView != null) gridView.addFooterView(footView);

@@ -1,12 +1,8 @@
 package mvp.main.view;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
-
-import androidx.annotation.Nullable;
 
 import com.tencent.bugly.beta.Beta;
 import com.zhy.wanandroid.R;
@@ -24,8 +20,6 @@ import custom.TextView;
 import hawk.Hawk;
 import mvp.home.view.CollectFragment;
 import mvp.login.model.LoginModel;
-import photopicker.lib.PictureSelector;
-import photopicker.lib.config.PictureConfig;
 import util.FastBlur;
 import util.GoTo;
 import util.MIntent;
@@ -67,11 +61,11 @@ public class MyFragment extends BFragment {
             case R.id.mRootView:
                 break;
             case R.id.mIcon:
-                PictureSelector.create(this)
-                        .openGallery(PictureConfig.TYPE_IMAGE)
-                        .isCamera(true)
-                        .selectionMode(PictureConfig.SINGLE)
-                        .forResult(PictureConfig.CHOOSE_REQUEST);
+//                PictureSelector.create(this)
+//                        .openGallery(PictureConfig.TYPE_IMAGE)
+//                        .isCamera(true)
+//                        .selectionMode(PictureConfig.SINGLE)
+//                        .forResult(PictureConfig.CHOOSE_REQUEST);
                 break;
             case R.id.mCollect:
                 GoTo.start(CollectFragment.class, new MIntent(BConfig.TITLE, "我的收藏"));
@@ -91,10 +85,10 @@ public class MyFragment extends BFragment {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST)
-            mIcon.loadImage(PictureSelector.obtainMultipleResult(data).get(0).getPath());
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST)
+//            mIcon.loadImage(PictureSelector.obtainMultipleResult(data).get(0).getPath());
+//    }
 }

@@ -27,6 +27,7 @@ import photopicker.lib.entity.LocalMedia;
 import photopicker.lib.style.PictureCropParameterStyle;
 import photopicker.lib.style.PictureParameterStyle;
 import com.zhy.app.R;
+import com.zhy.photo.GlideEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,6 @@ import java.util.List;
 import base.BConfig;
 import photopicker.adapter.GridImageAdapter;
 import custom.FullyGridLayoutManager;
-import custom.GlideEngine;
 
 /**
  * author：luck

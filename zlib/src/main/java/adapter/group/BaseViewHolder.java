@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
+//import androidx.databinding.DataBindingUtil;
+//import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import custom.ImageCard;
@@ -35,15 +35,15 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         mViews = new SparseArray<>();
     }
 
-    /**
-     * 获取item对应的ViewDataBinding对象
-     *
-     * @param <T>
-     * @return
-     */
-    public <T extends ViewDataBinding> T getBinding() {
-        return DataBindingUtil.getBinding(this.itemView);
-    }
+//    /**
+//     * 获取item对应的ViewDataBinding对象
+//     *
+//     * @param <T>
+//     * @return
+//     */
+//    public <T extends ViewDataBinding> T getBinding() {
+//        return DataBindingUtil.getBinding(this.itemView);
+//    }
 
     /**
      * 根据View Id 获取对应的View

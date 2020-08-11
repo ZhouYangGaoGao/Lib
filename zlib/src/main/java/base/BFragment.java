@@ -6,6 +6,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
@@ -55,7 +58,7 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
         unbinder = ButterKnife.bind(this, contentView);
         setTitle(getIntent().getStringExtra(BConfig.TITLE));
         if (TextUtils.isEmpty(info.title) && getArguments() != null)
-            setTitle(getArguments().getString(BConfig.TITLE,""));
+            setTitle(getArguments().getString(BConfig.TITLE, ""));
         initView();
         return contentView;
     }
@@ -83,6 +86,18 @@ public abstract class BFragment<M, P extends BPresenter<BView<?>>> extends Fragm
     }
 
     protected View findViewById(@IdRes int id) {
+        return contentView.findViewById(id);
+    }
+
+    protected LinearLayout linearLayout(@IdRes int id) {
+        return contentView.findViewById(id);
+    }
+
+    protected RelativeLayout relativeLayout(@IdRes int id) {
+        return contentView.findViewById(id);
+    }
+
+    protected FrameLayout frameLayout(@IdRes int id) {
         return contentView.findViewById(id);
     }
 

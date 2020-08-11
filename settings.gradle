@@ -1,3 +1,4 @@
+include ':photo'
 include ':wlthd'
 include ':wanandroid'
 rootProject.name='android'
