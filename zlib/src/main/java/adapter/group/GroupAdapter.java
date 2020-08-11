@@ -118,6 +118,7 @@ public abstract class GroupAdapter<T>
 //                        getLayoutId(mTempPosition, viewType), parent, false);
 //                return new BaseViewHolder(binding.getRoot());
 //            } else {
+
                 View view = LayoutInflater.from(mContext).inflate(
                         getLayoutId(mTempPosition, viewType), parent, false);
                 return new BaseViewHolder(view);
