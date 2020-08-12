@@ -5,6 +5,7 @@ import com.zhy.wanandroid.R;
 import adapter.ViewHolder;
 import base.Manager;
 import custom.SmartView;
+import enums.CacheType;
 import enums.LevelDataTime;
 import listener.SmartListener;
 import mvp.chapter.model.Article;
@@ -15,7 +16,7 @@ public class SearchFragment extends ArticleFragment implements SmartListener {
     @Override
     public void beforeView() {
         info.showTop = true;
-        info.levelCache = null;
+        info.setCacheType(CacheType.none);
         levelDataTime = LevelDataTime.never;
     }
 

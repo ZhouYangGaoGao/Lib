@@ -22,6 +22,7 @@ public class TagFlowLayout extends FlowLayout
         implements TagAdapter.OnDataChangedListener {
 
     private TagAdapter mTagAdapter;
+    private View emptyView;
     private int mSelectedMax = -1;//-1为不限制数量
     private static final String TAG = "TagFlowLayout";
 
@@ -53,6 +54,9 @@ public class TagFlowLayout extends FlowLayout
         this(context, null);
     }
 
+    public void setEmptyView(View emptyView) {
+        this.emptyView = emptyView;
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -91,6 +95,10 @@ public class TagFlowLayout extends FlowLayout
         removeAllViews();
         TagAdapter adapter = mTagAdapter;
         TagView tagViewContainer = null;
+        if (emptyView != null) {
+            emptyView.setVisibility(adapter.getCount() == 0 ? GONE : VISIBLE);
+            setVisibility(adapter.getCount() > 0 ? GONE : VISIBLE);
+        }
         HashSet preCheckedList = mTagAdapter.getPreCheckedList();
         for (int i = 0; i < adapter.getCount(); i++) {
             View tagView = adapter.getView(this, i, adapter.getItem(i));

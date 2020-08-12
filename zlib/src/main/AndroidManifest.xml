@@ -27,8 +27,5 @@
         <activity android:name="base.BHomeActivity"/>
         <activity android:name="base.BFragmentActivity"
             android:configChanges="orientation|screenSize"/>
-
-
-
     </application>
 </manifest>

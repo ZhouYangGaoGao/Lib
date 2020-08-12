@@ -3,7 +3,6 @@ package base;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
@@ -29,29 +28,21 @@ import custom.HeaderGridView;
 import custom.SmartView;
 import custom.StatusView;
 import custom.card.CardView;
-import enums.LevelCache;
 import enums.LevelDataTime;
 import util.ScreenUtils;
 import util.layoutparams.LLParams;
 
-public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BView<?>>> implements OnRefreshLoadMoreListener {
+public abstract class BListFragment<M> extends BListDataFragment<M> implements OnRefreshLoadMoreListener{
 
     private CommonAdapter<M> adapter;
     protected HeaderGridView gridView;
     protected SmartRefreshLayout refreshLayout;
     protected SmartView mSmartView;//根布局
-    protected StatusView mStatusView;//状态视图
-    protected List<M> mData = new ArrayList<>();//主列表数据
     protected View heardView, footView, topView, bottomView;//其他视图
     protected Grid grid = new Grid();//网格列表信息 间隔/背景/列数/布局
     protected Card card = new Card();//卡片信息
     protected Page page = new Page();//页码参数
     protected Fresh fresh = new Fresh();//刷新参数
-
-    {
-        info.levelCache = LevelCache.time;
-        info.levelCache.cacheDuration(info.TAG, 60);
-    }
 
     @Override
     public void initView() {
@@ -83,18 +74,6 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
         mSmartView.centerTextView.setText(info.title);
         if (topView != null) mSmartView.addView(topView, 1);
         if (bottomView != null) mSmartView.addView(bottomView);
-
-
-    }
-
-    private void initStatusView() {
-        mStatusView = new StatusView(getContext()) {
-            @Override
-            public void onClick(View v) {
-                super.onClick(v);
-                onRefresh(refreshLayout);
-            }
-        };
     }
 
     private void initCard() {
@@ -172,75 +151,19 @@ public abstract class BListFragment<M> extends BFragment<Object, BPresenter<BVie
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {//加载更多
         info.isRefresh = false;
         page.page++;
-        super.getData();
+        getNew();
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {//刷新列表 重新获取数据
         info.isRefresh = true;
         page.resetPage();
-        super.getData();
-    }
-
-    public void onData(List<M> datas) {//数据处理完成 更新页面
-        if (info.isRefresh) mData.clear();
-        mData.addAll(datas);
-        upData();
-    }
-
-    @Override
-    public void success(Object data) {//数据加载完成 进行处理
-        mStatusView.empty("数据加载完成 进行处理");
-        if (data == null) return;
-        if (BList.class.isAssignableFrom(data.getClass())) {
-            onData(((BList<M>) data).getList());
-            total(((BList<M>) data).getTotal());
-        } else if (List.class.isAssignableFrom(data.getClass())) {
-            onData((List<M>) data);
-        } else fail(new Gson().toJson(data));
-    }
-
-    @Override
-    public void getData() {
-        if (info.needNew(new Info.DataListener<List<M>>() {
-            @Override
-            public void onData(List<M> t) {
-                BListFragment.this.onData(t);
-                mStatusView.empty();
-            }
-        })) {
-            mStatusView.loading();
-            getNew();
-        }
-    }
-
-    /**
-     * 发起网络请求数据
-     */
-    private void getNew() {
-        mStatusView.loading();
-        super.getData();
+        getNew();
     }
 
     protected void upData() {//通知适配器更新数据
         if (adapter != null)
             adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onStop() {
-        info.save(mData);
-        super.onStop();
-    }
-
-    public void total(int total) {//列表总数量
-    }
-
-    @Override
-    public void fail(String message) {//数据加载失败 吐司提示
-        super.fail(message);
-        mStatusView.error(message + "\n点击重试");
-        upData();
     }
 
     @Override

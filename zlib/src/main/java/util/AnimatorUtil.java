@@ -30,8 +30,23 @@ public class AnimatorUtil {
         return with(view, 300);
     }
 
-    public void play() {
+    public void playTogether() {
         set.playTogether(animators);
+        set.start();
+    }
+
+    public void playTogether(Animator.AnimatorListener listener) {
+        set.addListener(listener);
+        set.playTogether(animators);
+        set.start();
+    }
+    public void playSequentially() {
+        set.playSequentially(animators);
+        set.start();
+    }
+    public void playSequentially(Animator.AnimatorListener listener) {
+        set.addListener(listener);
+        set.playSequentially(animators);
         set.start();
     }
 

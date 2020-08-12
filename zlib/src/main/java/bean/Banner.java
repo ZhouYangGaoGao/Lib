@@ -23,7 +23,7 @@ public class Banner {
     public float indicatorRatio = 1f;
     public float indicatorRatioSelect = 1.5f;//指示标拉伸比例
     public int itemLayoutId = R.layout.item_avl;
-    public int orientation = RecyclerView.HORIZONTAL;//方向
+    public int orientation = ViewPager2.ORIENTATION_HORIZONTAL;//方向
     public int indicatorColor = Color.WHITE;//指示标颜色
     public int indicatorSelectorColor = Color.WHITE;//指示标颜色
     public int indicatorStyle = IndicatorView.IndicatorStyle.INDICATOR_BEZIER;//指示标样式

@@ -4,13 +4,24 @@ import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Visibility;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.zhy.android.R;
 
@@ -44,6 +55,9 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
     public void onCreate(@Nullable Bundle savedInstanceState) {
         statusBarColor = getResources().getColor(R.color.clo_status_bar);
         isFullScreen = BConfig.get().isFullScreen();
+//        initTransition();
+//                setUpTransition();
+
         super.onCreate(savedInstanceState);
         beforeView();
         if (useEventBus) HermesEventBus.getDefault().register(this);
@@ -58,6 +72,20 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
         noColor();
         afterView();
         if (levelDataTime == LevelDataTime.create) getData();
+    }
+
+    private void initTransition() {
+        //设置允许通过ActivityOptions.makeSceneTransitionAnimation发送或者接收Bundle
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        //设置使用TransitionManager进行动画，不设置的话系统会使用一个默认的TransitionManager
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+    }
+
+    protected void setUpTransition() {
+        getWindow().setExitTransition(new Fade(Visibility.MODE_OUT).setDuration(400));//传入新建的变换
+        getWindow().setReenterTransition(new Slide(Gravity.LEFT).setDuration(400));
+        getWindow().setEnterTransition(new Slide(Gravity.RIGHT).setDuration(400));
+        getWindow().setReturnTransition(new Fade(Visibility.MODE_IN).setDuration(400));
     }
 
     public void noColor() {
@@ -137,10 +165,16 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultListener != null) {
-            resultListener.onResult(requestCode, resultCode, data);
-        }
-        resultListener = null;
+//        FragmentManager fragmentManager=getSupportFragmentManager();
+//        for (Fragment fragment:
+//             fragmentManager.getFragments()) {
+//            fragment.onActivityResult(requestCode,resultCode,data);
+//        }
+//
+//        if (resultListener != null) {
+//            resultListener.onResult(requestCode, resultCode, data);
+//        }
+//        resultListener = null;
     }
 
     @Override

@@ -70,7 +70,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
                 drawableIndex = 3;
             }
         }
-        return !textClickable && drawableIndex == -1 ? false:super.onTouchEvent(event);
+        return !textClickable && drawableIndex == -1 ? false : super.onTouchEvent(event);
     }
 
     public TextView setLeftRes(int... resId) {
@@ -111,41 +111,49 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     }
 
     public TextView setLeftDrawable(Drawable... drawable) {
-        setCompoundDrawablesWithIntrinsicBounds(getDrawable(drawable), getCompoundDrawables()[1], getCompoundDrawables()[2], getCompoundDrawables()[3]);
+        setCompoundDrawablesWithIntrinsicBounds(getDrawable(drawable),
+                getCompoundDrawables()[1], getCompoundDrawables()[2], getCompoundDrawables()[3]);
         return this;
     }
 
     public TextView setTopDrawable(Drawable... drawable) {
-        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getDrawable(drawable), getCompoundDrawables()[2], getCompoundDrawables()[3]);
+        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0],
+                getDrawable(drawable), getCompoundDrawables()[2], getCompoundDrawables()[3]);
         return this;
     }
 
     public TextView setRightDrawable(Drawable... drawable) {
-        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], getDrawable(drawable), getCompoundDrawables()[3]);
+        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0],
+                getCompoundDrawables()[1], getDrawable(drawable), getCompoundDrawables()[3]);
         return this;
     }
 
     public TextView setBottomDrawable(Drawable... drawable) {
-        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], getCompoundDrawables()[2], getDrawable(drawable));
+        setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0],
+                getCompoundDrawables()[1], getCompoundDrawables()[2], getDrawable(drawable));
         return this;
     }
 
-    public TextView setRes(int drawableIndex, int resId) {
+    public TextView setDrawable(int drawableIndex, Drawable... drawables) {
         switch (drawableIndex) {
             case 0:
-                setLeftRes(resId);
+                setLeftDrawable(drawables);
                 break;
             case 1:
-                setTopRes(resId);
+                setTopDrawable(drawables);
                 break;
             case 2:
-                setRightRes(resId);
+                setRightDrawable(drawables);
                 break;
             case 3:
-                setBottomRes(resId);
+                setBottomDrawable(drawables);
                 break;
         }
         return this;
+    }
+
+    public TextView setRes(int drawableIndex, int... resIds) {
+        return setDrawable(drawableIndex,getDrawables(resIds));
     }
 
     public TextView setTextRes(int res) {
@@ -261,9 +269,11 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
         return this;
     }
 
-    public TextView gravity(int gravity){
-        setGravity(gravity);return this;
+    public TextView gravity(int gravity) {
+        setGravity(gravity);
+        return this;
     }
+
     public TextView tagStyle(int cloStroke, int cloText, int sizeSp) {
         setBackground(MDrawable.tag(cloStroke, 2));
         setTextSize(sizeSp);

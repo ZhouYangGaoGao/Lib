@@ -27,6 +27,7 @@ import listener.WebEvent;
 import mvp.chapter.model.Article;
 import rx.Observable;
 import util.GoTo;
+import util.MIntent;
 import util.Resource;
 import util.ScreenUtils;
 import util.layoutparams.LLParams;
@@ -138,14 +139,24 @@ public class ArticleFragment extends BListFragment<Article> {
 
     @Override
     protected void onItemClick(ViewHolder h, Article i) {
-        GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, i.getLink()));
-        new Smart(R.drawable.ic_more_vert, i.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
+        new Smart(2) {
+            @Override
+            protected void init() {
+                res[2][2] = R.drawable.ic_more_vert;
+                res[2][0] = i.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border;
+                GoTo.start(BWebFragment.class, new MIntent(BConfig.URL, i.getLink()));
+                sendSticky();
+            }
+
             @Override
             public void onClick(SmartView sv, int viewIndex, int resIndex) {
-                if (viewIndex == 2 && resIndex == 2) {
-                    showPop(i, sv.getTVs()[viewIndex]);
-                } else if (viewIndex == 2 && resIndex == 0) {
-                    actionFavorite(i, h, sv.getTVs()[2], R.drawable.ic_favorite_white, R.drawable.ic_favorite_white_border);
+                switch (getId(viewIndex,resIndex)){
+                    case "22":
+                        showPop(i, sv.getTVs()[viewIndex]);
+                        break;
+                    case "20":
+                        actionFavorite(i, h, sv.getTVs()[2], R.drawable.ic_favorite_white, R.drawable.ic_favorite_white_border);
+                        break;
                 }
             }
         };

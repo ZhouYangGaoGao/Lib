@@ -34,7 +34,7 @@ public class BSplashActivity extends BActivity<Object, BPresenter<BView<?>>> {
         if (bgRes != 0) mRootView.setBackgroundResource(bgRes);
         if (otherView != null) mRootView.addView(otherView);
         mStatusView.setEmptyIcon(centerIconRes);
-        mStatusView.setEmptyStr("欢迎页");
+        mStatusView.setEmptyStr(getResources().getString(R.string.app_name));
         StatusBarUtil.setTransparentForImageView(this, null);
         MTimer.timer(delay).subscribe(aLong -> {
             if (Hawk.get(BConfig.LOGIN) == null)

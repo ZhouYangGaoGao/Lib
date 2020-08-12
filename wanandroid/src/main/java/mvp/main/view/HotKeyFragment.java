@@ -9,7 +9,7 @@ import org.greenrobot.eventbus.EventBus;
 import adapter.ViewHolder;
 import base.BListFragment;
 import base.Manager;
-import custom.HistoryFragment;
+import base.BHistoryFragment;
 import custom.TextView;
 import mvp.chapter.model.Article;
 import rx.Observable;
@@ -40,6 +40,6 @@ public class HotKeyFragment extends BListFragment<Article> {
 
     @Override
     protected void onItemClick(ViewHolder h, Article i) {
-        EventBus.getDefault().post(new HistoryFragment.SearchBean(i.getTitle()));
+        EventBus.getDefault().post(new BHistoryFragment.SearchBean(i.getTitle()));
     }
 }

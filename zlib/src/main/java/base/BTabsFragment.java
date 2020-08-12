@@ -12,7 +12,7 @@ import com.zhy.android.R;
 import annotation.Presenter;
 import custom.SmartView;
 
-public class BTabsFragment<M> extends BFragment<M, BPresenter<BView<?>>> {
+public abstract class BTabsFragment<M> extends BListDataFragment<M> {
 
     protected ViewPager mViewPager;
     protected SmartTabLayout mTabView;
@@ -38,4 +38,5 @@ public class BTabsFragment<M> extends BFragment<M, BPresenter<BView<?>>> {
         mViewPager.setAdapter(new FragmentStatePagerItemAdapter(getChildFragmentManager(), creator.create()));
         mTabView.setViewPager(mViewPager);
     }
+
 }

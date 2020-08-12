@@ -236,7 +236,7 @@
         <attr name="enable" format="boolean" />
         <attr name="focusable" format="boolean" />
         <attr name="delete" format="boolean" />
-        <attr name="history" format="boolean" />
+        <attr name="historyCount" format="integer" />
         <attr name="hideLine" format="boolean" />
         <attr name="leftText" format="reference|string" />
         <attr name="centerText" format="reference|string" />

@@ -698,6 +698,23 @@ public class PictureSelectionModel {
         }
     }
 
+    public void forResult(Fragment fragment,int requestCode) {
+        if (!DoubleUtils.isFastDoubleClick()) {
+            Activity activity = selector.getActivity();
+            if (activity == null || selectionConfig == null) {
+                return;
+            }
+            Intent intent = new Intent(activity, selectionConfig.camera
+                    ? PictureSelectorCameraEmptyActivity.class : PictureSelectorActivity.class);
+            fragment.startActivityForResult(intent, requestCode);
+            PictureWindowAnimationStyle windowAnimationStyle = selectionConfig.windowAnimationStyle;
+            activity.overridePendingTransition(windowAnimationStyle != null &&
+                    windowAnimationStyle.activityEnterAnimation != 0 ?
+                    windowAnimationStyle.activityEnterAnimation :
+                    R.anim.picture_anim_enter, R.anim.picture_anim_fade_in);
+        }
+    }
+
     /**
      * # replace for setPictureWindowAnimationStyle();
      * Start to select media and wait for result.

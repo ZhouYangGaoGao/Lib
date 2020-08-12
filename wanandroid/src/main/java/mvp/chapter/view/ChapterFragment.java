@@ -1,7 +1,5 @@
 package mvp.chapter.view;
 
-import java.util.List;
-
 import base.BConfig;
 import base.BTabsFragment;
 import base.Manager;
@@ -16,7 +14,7 @@ import util.MBundle;
  * - generate by MvpAutoCodePlus plugin.
  */
 
-public class ChapterFragment extends BTabsFragment<List<Tree>> {
+public class ChapterFragment extends BTabsFragment<Tree> {
 
     @Override
     protected Observable<?> get() {
@@ -24,11 +22,12 @@ public class ChapterFragment extends BTabsFragment<List<Tree>> {
     }
 
     @Override
-    public void success(List<Tree> data) {
-        for (Tree chapter: data) {
+    protected void upData() {
+        for (Tree chapter: mData) {
             creator.add(chapter.getName(), ArticleFragment.class, MBundle.create(BConfig.ID,chapter.getId()));
         }
         initFragments();
+
     }
 }
 

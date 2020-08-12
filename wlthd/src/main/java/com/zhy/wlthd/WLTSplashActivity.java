@@ -8,7 +8,7 @@ import base.BSplashActivity;
 import custom.TextView;
 import util.AnimatorUtil;
 import util.IncludeUtil;
-import util.MLayoutParams;
+import util.layoutparams.RLParams;
 
 public class WLTSplashActivity extends BSplashActivity {
 
@@ -20,7 +20,7 @@ public class WLTSplashActivity extends BSplashActivity {
         centerIconRes = R.mipmap.ic_splash;
         bgRes = R.mipmap.bg_welcome;
         otherView = getView(R.layout.layout_login);
-        RelativeLayout.LayoutParams params = MLayoutParams.marginRLP(0);
+        RelativeLayout.LayoutParams params = RLParams.WW();
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         otherView.setLayoutParams(params);
 
@@ -31,13 +31,14 @@ public class WLTSplashActivity extends BSplashActivity {
         mCompany.setBackgroundColor(0x44ffffff);
         mCompany.setTextSize(12);
         mCompany.setLayoutParams(new RelativeLayout.LayoutParams(-1, -1));
-        delay = 14000;
+        delay = 2500;
     }
 
     @Override
     public void afterView() {
         otherView.setAlpha(0);
         mRootView.addView(mCompany, 0);
+        mStatusView.getTextView().setEnabled(false);
         mStatusView.empty("互联网+造林 v1.0\n安徽省营造林管理平台");
         mStatusView.getTextView().setTextSize(20);
         IncludeUtil.with(mStatusView.getTextView())
@@ -45,7 +46,7 @@ public class WLTSplashActivity extends BSplashActivity {
                 .addSize("v1.0", 0.7f)
                 .addSize("互联网+造林", 1.1f)
                 .addSize("安徽省营造林管理平台", 0.85f)
-                .setColor("安徽省营造林管理平台", 0xff0c5b5f);
+                .setColor("安徽省营造林管理平台", 0xff0b4938);
     }
 
     @Override
@@ -58,6 +59,6 @@ public class WLTSplashActivity extends BSplashActivity {
                 .scale(otherView, 0.3f, 1f)
                 .alpha(otherView, 0f, 1f)
                 .alpha(mCompany, 1f, 0f)
-                .play();
+                .playTogether();
     }
 }

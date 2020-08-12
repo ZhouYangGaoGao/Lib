@@ -31,7 +31,7 @@
         android:singleLine="true"
         tools:text="rightTextView" />
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <custom.EditText
         android:id="@+id/centerEditText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

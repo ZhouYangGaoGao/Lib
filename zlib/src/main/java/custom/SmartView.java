@@ -17,13 +17,13 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
 
 import com.zhy.android.BuildConfig;
 import com.zhy.android.R;
 
 import background.drawable.DrawableCreator;
 import base.BConfig;
+import base.BHistoryFragment;
 import listener.SmartListener;
 import bean.Smart;
 import rx.Subscription;
@@ -32,11 +32,11 @@ import util.RexUtils;
 
 public class SmartView extends LinearLayout {
     public TextView leftTextView, centerTextView, rightTextView;
-    public AppCompatEditText centerEditText;
+    public EditText centerEditText;
     public RelativeLayout topContent;
     public View line;
     private float centerVMargin, centerHMargin, centerRMargin, centerLMargin;
-    private int checkId, measure, mode = 10, captchaSecond;
+    private int checkId, measure, mode = 10, captchaSecond, historyCount;
     private Subscription subscribe;
     private boolean back;
 
@@ -47,10 +47,17 @@ public class SmartView extends LinearLayout {
     private static final int MODE_SEARCH = 1;//搜索
     private static final int MODE_TOP = 0;//顶部
     private static final int MODE_LOGIN = 2;//登录
+    private static final int MODE_PASSWORD = 3;//password
+    private static final int MODE_CAPTCHA = 4;//captcha 验证码
+    private static final int MODE_TEST = 5;//test
 
     public static final int GRAVITY_CENTER = 11;
     public static final int GRAVITY_RIGHT = 12;
     public static final int GRAVITY_LEFT = 10;
+
+    public static final int INPUT_TYPE_NUMBER = 0;
+    public static final int INPUT_TYPE_PASSWORD = 1;
+    public static final int INPUT_TYPE_NUMBER_PASSWORD = 2;
 
 
     public SmartView(Context context) {
@@ -77,6 +84,7 @@ public class SmartView extends LinearLayout {
         measure = t.getInt(R.styleable.SmartView_measure, 0);
         int inputType = t.getInt(R.styleable.SmartView_inputType, -1);
         captchaSecond = t.getInt(R.styleable.SmartView_captchaSecond, 20);
+        historyCount = t.getInt(R.styleable.SmartView_historyCount, 10);
         int gravity = t.getInt(R.styleable.SmartView_gravity, mode == 0 ? GRAVITY_CENTER : GRAVITY_LEFT);
         checkId = t.getResourceId(R.styleable.SmartView_checkId, 0);
         int textColor = t.getColor(R.styleable.SmartView_textColor, mode < 2 ?
@@ -90,7 +98,6 @@ public class SmartView extends LinearLayout {
         boolean enable = t.getBoolean(R.styleable.SmartView_enable, true);
         boolean focusable = t.getBoolean(R.styleable.SmartView_focusable, true);
         boolean delete = t.getBoolean(R.styleable.SmartView_delete, true);
-        boolean historyAble = t.getBoolean(R.styleable.SmartView_history, true);
         boolean onlyIcon = t.getBoolean(R.styleable.SmartView_onlyIcon, false);
         boolean hideLine = t.getBoolean(R.styleable.SmartView_hideLine, false);
         Drawable llIcon = t.getDrawable(R.styleable.SmartView_llIcon);
@@ -113,7 +120,7 @@ public class SmartView extends LinearLayout {
         centerEditText = view.findViewById(R.id.centerEditText);
         rightTextView = view.findViewById(R.id.rightTextView);
         topContent = view.findViewById(R.id.relativeLayout);
-        tvs = new TextView[]{leftTextView, centerTextView, rightTextView};
+        tvs = new TextView[]{leftTextView, centerTextView, rightTextView, centerEditText};
         line = view.findViewById(R.id.line);
         LayoutParams params = new LayoutParams(orientation == 1 ? -1 : 0, height > 0 ? dip2px(height)
                 : (int) (height == -2 ? getResources().getDimension(R.dimen.dim_top_hight) : -1));
@@ -127,22 +134,19 @@ public class SmartView extends LinearLayout {
             view.setBackgroundColor(getResources().getColor(R.color.clo_top_bg));//top search 模式默认主题颜色背景
         }
         switch (mode) {
-            case 10://common
-                centerTextView.setVisibility(VISIBLE);
-                break;
-            case 0://top
+            case MODE_TOP://top
                 if (measure == 0) measure = MEASURE_MAX;
                 centerEditText.setVisibility(GONE);
                 centerTextView.setVisibility(VISIBLE);
                 centerTextView.setMarquee(1);
                 hideLine = true;
                 break;
-            case 1://search
+            case MODE_SEARCH://search
                 hideLine = true;
                 crIcon = getResources().getDrawable(android.R.drawable.ic_menu_search);
                 search();
                 break;
-            case 2://login
+            case MODE_LOGIN://login
                 centerEditText.setVisibility(VISIBLE);
                 if (TextUtils.isEmpty(leftText)) leftText = "手机号";
                 if (TextUtils.isEmpty(centerText) && BuildConfig.DEBUG && !TextUtils.isEmpty(BConfig.get().getTestPhone()))
@@ -159,7 +163,7 @@ public class SmartView extends LinearLayout {
                     });
                 }
                 break;
-            case 3://password
+            case MODE_PASSWORD://password
                 centerEditText.setVisibility(VISIBLE);
                 if (TextUtils.isEmpty(leftText)) leftText = "密码";
                 if (TextUtils.isEmpty(centerText) && BuildConfig.DEBUG && !TextUtils.isEmpty(BConfig.get().getTestPassword()))
@@ -182,7 +186,7 @@ public class SmartView extends LinearLayout {
                     }
                 });
                 break;
-            case 4://captcha 验证码
+            case MODE_CAPTCHA://captcha 验证码
                 centerEditText.setVisibility(VISIBLE);
                 if (TextUtils.isEmpty(leftText))
                     leftText = getContext().getString(R.string.str_captcha);
@@ -199,7 +203,7 @@ public class SmartView extends LinearLayout {
                         .setCornersRadius(dip2px(15))
                         .setSolidColor(0xffeeeeee).build());
                 break;
-            case 5:
+            case MODE_TEST:
                 if (BuildConfig.DEBUG && TextUtils.isEmpty(leftText)) leftText = "标题";
                 if (BuildConfig.DEBUG && TextUtils.isEmpty(centerText)) centerText = "内容";
                 if (BuildConfig.DEBUG && TextUtils.isEmpty(rightText)) rightText = "备注";
@@ -229,7 +233,6 @@ public class SmartView extends LinearLayout {
                     width(dip2px(centerRMargin), centerHMargin));
         centerEditText.setEnabled(enable);
         centerEditText.setEnabled(focusable);
-
     }
 
     private void initIcon(Drawable llIcon, Drawable ltIcon, Drawable lrIcon, Drawable lbIcon,
@@ -274,13 +277,13 @@ public class SmartView extends LinearLayout {
 
     private void initInputType(int inputType) {
         switch (inputType) {
-            case 0:
+            case INPUT_TYPE_NUMBER:
                 centerEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 break;
-            case 1:
+            case INPUT_TYPE_PASSWORD:
                 centerEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 break;
-            case 2:
+            case INPUT_TYPE_NUMBER_PASSWORD:
                 centerEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
                 break;
         }
@@ -317,8 +320,8 @@ public class SmartView extends LinearLayout {
         return this;
     }
 
-    public void initHistory(HistoryFragment historyFragment) {
-        historyFragment.setSmartView(this);
+    public void initHistory(BHistoryFragment historyFragment) {
+        historyFragment.setSmartView(this, historyCount);
     }
 
     public void setBack(boolean back) {
@@ -402,12 +405,12 @@ public class SmartView extends LinearLayout {
         }
         this.listener = listener;
         if (indexes == null || indexes.length == 0) {
-            initClick(0);
-            initClick(1);
-            initClick(2);
+            for (int i = 0; i < tvs.length; i++) {
+                initClick(i);
+            }
         } else {
             for (int index : indexes) {
-                if (index >= 0 && index <= 2)
+                if (index >= 0 && index <= 3)
                     initClick(index);
             }
         }
@@ -435,6 +438,10 @@ public class SmartView extends LinearLayout {
             for (int j = 0; j < smart.res[index].length; j++) {
                 if (smart.res[index][j] != 0) {
                     textView.setRes(j, smart.res[index][j]);
+                }
+
+                if (smart.drawable[index][j] != null) {
+                    textView.setDrawable(j, smart.drawable[index][j]);
                 }
             }
             if (!TextUtils.isEmpty(smart.text[index])) {

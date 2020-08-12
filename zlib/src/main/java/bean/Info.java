@@ -1,6 +1,6 @@
 package bean;
 
-import enums.LevelCache;
+import enums.CacheType;
 import hawk.Hawk;
 import util.JsonUtil;
 
@@ -11,25 +11,34 @@ public class Info {
     public int index = 0;//预留参数 下标
     public boolean useEventBus = false;
     public boolean showTop = true;//显示顶部
-    public LevelCache levelCache = LevelCache.none;
     public boolean isRefresh = false;//是否是刷新
+    private CacheType cacheType = CacheType.none;
+
+    public void setCacheType(CacheType cacheType) {
+        this.cacheType = cacheType;
+    }
+
+    public void setLevelCache(long duration) {
+        this.cacheType = CacheType.time;
+        cacheType.cacheDuration(TAG, duration);
+    }
 
     public boolean save(Object object) {
         if (object == null) return false;
-        if (levelCache == null) return false;
-        if (levelCache == LevelCache.none) return false;
-        if (levelCache == LevelCache.time && Hawk.contains(TAG)) {
+        if (cacheType == null) return false;
+        if (cacheType == CacheType.none) return false;
+        if (cacheType == CacheType.time && Hawk.contains(TAG)) {
             if (Hawk.get(TAG) != null && JsonUtil.getJson(Hawk.get(TAG)).equals(JsonUtil.getJson(object)))
                 return false;
         }
-        levelCache.cache(TAG, object);
+        cacheType.cache(TAG, object);
         return true;
     }
 
     public <T> boolean needNew(DataListener<T> listener) {
-        T data = levelCache.get(TAG);
+        T data = cacheType.get(TAG);
         if (data != null)
-            switch (levelCache) {
+            switch (cacheType) {
                 case time:
                 case only:
                     if (listener != null) listener.onData(data);

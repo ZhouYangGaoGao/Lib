@@ -11,6 +11,7 @@ public class SplashActivity extends BSplashActivity {
     public void beforeView() {
         loginCls = LoginFragment.class;
         homeCls= MainActivity.class;
+        delay=2000;
     }
 
 }

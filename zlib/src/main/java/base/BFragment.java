@@ -22,7 +22,6 @@ import com.zhy.android.R;
 import bean.Info;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import enums.LevelCache;
 import enums.LevelDataTime;
 import eventbus.hermeseventbus.HermesEventBus;
 import rx.Observable;

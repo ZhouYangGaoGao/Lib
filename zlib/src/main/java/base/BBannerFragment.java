@@ -1,7 +1,5 @@
 package base;
 
-import android.annotation.SuppressLint;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +7,9 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback;
 
 import com.zhy.android.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import adapter.group.BaseViewHolder;
 import bean.Banner;
@@ -23,36 +17,18 @@ import custom.page.AutoPager;
 import custom.page.IndicatorView;
 import util.ScreenUtils;
 
-public abstract class BBannerFragment<M> extends BFragment {
+public abstract class BBannerFragment<M> extends BListDataFragment<M> {
 
     protected AutoPager mViewPager;
     protected OnPageChangeCallback pageChangeCallback;
     protected RelativeLayout mRootView;
     protected RecyclerView.Adapter<BaseViewHolder> adapter;
-    protected List<M> mData = new ArrayList<>();
     protected Banner banner = new Banner();
 
     {
         contentViewId = R.layout.fragment_pager;
     }
 
-    @Override
-    public void success(Object data) {
-        if (BList.class.isAssignableFrom(data.getClass())) {
-            onData(((BList) data).getList());
-            total(((BList) data).getTotal());
-        } else if (List.class.isAssignableFrom(data.getClass())) {
-            onData((List<M>) data);
-        }
-    }
-
-    public void onData(List<M> datas) {
-        mData.clear();
-        mData.addAll(datas);
-        upDate();
-    }
-
-    @SuppressLint("WrongConstant")
     @Override
     public void initView() {
         mRootView = (RelativeLayout) findViewById(R.id.mRootView);
@@ -78,8 +54,8 @@ public abstract class BBannerFragment<M> extends BFragment {
         mViewPager.setPageMargin(banner.multiWidth, banner.pageMargin);
         mViewPager.setRoundCorners(banner.radius);
         mViewPager.setOnPageChangeListener(pageChangeCallback);
-        if (banner.transformer!=null)
-        mViewPager.addPageTransformer(banner.transformer);
+        if (banner.transformer != null)
+            mViewPager.addPageTransformer(banner.transformer);
         ScreenUtils.setHight(mViewPager, banner.height / 360d);
         initAdapter();
     }
@@ -104,7 +80,8 @@ public abstract class BBannerFragment<M> extends BFragment {
         });
     }
 
-    protected void upDate() {
+    @Override
+    protected void upData() {
         adapter.notifyDataSetChanged();
         if (!banner.noDataHide) return;
         if (mData.size() > 0) {
@@ -113,7 +90,4 @@ public abstract class BBannerFragment<M> extends BFragment {
     }
 
     protected abstract void convert(BaseViewHolder h, M i);
-
-    protected void total(int total) {
-    }
 }

@@ -6,17 +6,14 @@ import android.view.View;
 
 import com.zhy.wanandroid.R;
 
-import java.util.List;
-
 import anylayer.AnyLayer;
 import anylayer.Layer;
 import base.BConfig;
-import base.BFragment;
-import base.BPresenter;
+import base.BListDataFragment;
 import base.BSub;
-import base.BView;
 import base.BWebFragment;
 import base.Manager;
+import bean.Smart;
 import butterknife.BindView;
 import custom.FlowLayout;
 import custom.PopView;
@@ -24,28 +21,25 @@ import custom.SmartView;
 import custom.TagAdapter;
 import custom.TagFlowLayout;
 import custom.TextView;
-import bean.Smart;
 import mvp.chapter.model.Article;
 import rx.Observable;
 import util.GoTo;
+import util.MIntent;
 
-public class FriendFragment extends BFragment<List<Article>, BPresenter<BView<?>>> {
+public class FriendFragment extends BListDataFragment<Article> {
 
     @BindView(R.id.mTabFlowLayout)
     TagFlowLayout mTabFlowLayout;
     @BindView(R.id.mSmartView)
     SmartView mSmartView;
-    private List<Article> mData;
 
     @Override
     public void beforeView() {
         contentViewId = R.layout.fragment_frends;
     }
 
-
     @Override
-    public void success(List<Article> data) {
-        this.mData = data;
+    protected void upData() {
         mTabFlowLayout.setAdapter(new TagAdapter<Article>(mData) {
             @Override
             public View getView(FlowLayout parent, int position, Article i) {
@@ -54,29 +48,36 @@ public class FriendFragment extends BFragment<List<Article>, BPresenter<BView<?>
             }
         });
 
-        mTabFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-            @Override
-            public boolean onTagClick(View view, int position, FlowLayout parent) {
-                Article article = mData.get(position);
-                GoTo.start(BWebFragment.class, new Intent()
-                        .putExtra(BConfig.URL, article.getLink())
-                        .putExtra(BConfig.TITLE, article.getTitle()));
-                new Smart(R.drawable.ic_more_vert, article.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border) {
-                    @Override
-                    public void onClick(SmartView sv, int viewIndex, int resIndex) {
-                        if (viewIndex == 2 && resIndex == 2) {
-                            showPop(article, sv.getTVs()[viewIndex]);
-                        } else if (viewIndex == 2 && resIndex == 0) {
-                            actionFavorite(article, position,sv.getTVs()[2], R.drawable.ic_favorite_white, R.drawable.ic_favorite_white_border);
-                        }
+        mTabFlowLayout.setOnTagClickListener((view, position, parent) -> {
+            Article i = mData.get(position);
+
+            new Smart(2) {
+                @Override
+                protected void init() {
+                    res[2][2] = R.drawable.ic_more_vert;
+                    res[2][0] = i.isCollect() ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_white_border;
+                    GoTo.start(BWebFragment.class, new MIntent(BConfig.URL, i.getLink()).putExtra(BConfig.TITLE, i.getTitle()));
+                    sendSticky();
+                }
+
+                @Override
+                public void onClick(SmartView sv, int viewIndex, int resIndex) {
+                    switch (viewIndex + "" + resIndex) {
+                        case "22":
+                            showPop(i, sv.getTVs()[viewIndex]);
+                            break;
+                        case "20":
+                            actionFavorite(i, position, sv.getTVs()[2], R.drawable.ic_favorite_white, R.drawable.ic_favorite_white_border);
+                            break;
                     }
-                };
-                return false;
-            }
+                }
+            };
+            return false;
         });
     }
 
-    private void actionFavorite(Article i,int position, TextView tv, int trueRes, int falseRes) {
+
+    private void actionFavorite(Article i, int position, TextView tv, int trueRes, int falseRes) {
         presenter.sub(new BSub<Object>(mData.get(position).isCollect() ? Manager.getApi().unCollect(i.getId())
                 : Manager.getApi().collect(i.getId())) {
             @Override
@@ -120,5 +121,4 @@ public class FriendFragment extends BFragment<List<Article>, BPresenter<BView<?>
     protected Observable<?> get() {
         return Manager.getApi().friend();
     }
-
 }

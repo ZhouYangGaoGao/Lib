@@ -11,14 +11,14 @@ import java.util.Collections;
 
 import adapter.ViewHolder;
 import base.BListFragment;
-import enums.LevelCache;
+import enums.CacheType;
 
 public class AVLFragment extends BListFragment<String> {
     @Override
     public void beforeView() {
         grid.numColumns = 3;
         grid.itemLayoutId = R.layout.item_avl;
-        info.levelCache = LevelCache.none;
+        info.setCacheType(CacheType.none);
         Collections.addAll(mData, getResources().getStringArray(R.array.load_name));
     }
 
