@@ -1,4 +1,4 @@
-package util.layoutparams;
+package util.layout;
 
 import android.widget.FrameLayout;
 
@@ -6,9 +6,8 @@ import base.BApp;
 
 public class FLParams extends FrameLayout.LayoutParams {
     public FLParams(int width, int height) {
-        super(width, height);
+        super(px(width), px(height));
     }
-
     public static FLParams WW() {
         return new FLParams(-2, -2);
     }
@@ -25,8 +24,24 @@ public class FLParams extends FrameLayout.LayoutParams {
         return new FLParams(-1, -2);
     }
 
-    public FLParams(int width, int height, int weight) {
-        super(width, height, weight);
+    public static FLParams WW(int gravity) {
+        return new FLParams(-2, -2, gravity);
+    }
+
+    public static FLParams MM(int gravity) {
+        return new FLParams(-1, -1, gravity);
+    }
+
+    public static FLParams WM(int gravity) {
+        return new FLParams(-2, -1, gravity);
+    }
+
+    public static FLParams MW(int gravity) {
+        return new FLParams(-1, -2, gravity);
+    }
+
+    public FLParams(int width, int height, int gravity) {
+        super(px(width), px(height), gravity);
     }
 
     public FLParams gravity(int gravity) {
@@ -44,13 +59,13 @@ public class FLParams extends FrameLayout.LayoutParams {
         return margin(margin, margin, margin, margin);
     }
 
-    public FLParams marginStart(int start) {
-        setMarginStart(start);
+    public FLParams marginS(int start) {
+        setMarginStart(px(start));
         return this;
     }
 
-    public FLParams marginEnd(int end) {
-        setMarginEnd(end);
+    public FLParams marginE(int end) {
+        setMarginEnd(px(end));
         return this;
     }
 

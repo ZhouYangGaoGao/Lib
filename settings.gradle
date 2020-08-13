@@ -1,3 +1,4 @@
+include ':Orient-Ui'
 include ':photo'
 include ':wlthd'
 include ':wanandroid'

@@ -12,25 +12,20 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhy.android.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import adapter.CommonAdapter;
 import adapter.ViewHolder;
 import background.drawable.DrawableCreator;
 import bean.Card;
 import bean.Fresh;
 import bean.Grid;
-import bean.Info;
 import bean.Page;
 import custom.EmptySizeView;
 import custom.HeaderGridView;
 import custom.SmartView;
-import custom.StatusView;
 import custom.card.CardView;
 import enums.LevelDataTime;
 import util.ScreenUtils;
-import util.layoutparams.LLParams;
+import util.layout.LLParams;
 
 public abstract class BListFragment<M> extends BListDataFragment<M> implements OnRefreshLoadMoreListener{
 

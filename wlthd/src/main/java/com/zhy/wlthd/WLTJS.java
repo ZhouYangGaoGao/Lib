@@ -11,7 +11,7 @@ import util.LogUtils;
 import util.MMap;
 
 public class WLTJS extends BWebJS {
-    private final static String LOCATION = "location(";
+    private final static String LOCATION = "locationPosition(";
     private GPSUtils gpsUtils;
 
     @JavascriptInterface
@@ -23,6 +23,7 @@ public class WLTJS extends BWebJS {
     @JavascriptInterface
     @Override
     public String getInfo(int code, String info) {
+        returnInfo = "";
         switch (code) {
             case 100://当前位置获取
                 GPSUtils.location(this);
@@ -34,19 +35,17 @@ public class WLTJS extends BWebJS {
                 if (gpsUtils != null) gpsUtils.removeListener();
                 break;
         }
-
         return super.getInfo(code, info);
     }
 
     @Override
     public void onReceiveValue(String value) {
-
+        LogUtils.e("onReceiveValue-->value" + value);
     }
 
     @Override
     public void location(Location location) {
         String json = new Gson().toJson(new MMap("latitude", location.getLatitude()).add("longitude", location.getLongitude()));
-        LogUtils.e("location", json);
         callJs(LOCATION + json + ")");
     }
 }

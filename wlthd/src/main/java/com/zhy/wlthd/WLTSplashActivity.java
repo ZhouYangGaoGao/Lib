@@ -8,7 +8,7 @@ import base.BSplashActivity;
 import custom.TextView;
 import util.AnimatorUtil;
 import util.IncludeUtil;
-import util.layoutparams.RLParams;
+import util.layout.RLParams;
 
 public class WLTSplashActivity extends BSplashActivity {
 
@@ -16,7 +16,7 @@ public class WLTSplashActivity extends BSplashActivity {
 
     @Override
     public void beforeView() {
-        homeCls = WLTMainActivity.class;
+        homeCls = WLTHomeActivity.class;
         centerIconRes = R.mipmap.ic_splash;
         bgRes = R.mipmap.bg_welcome;
         otherView = getView(R.layout.layout_login);

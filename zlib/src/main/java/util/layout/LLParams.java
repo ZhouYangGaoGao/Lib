@@ -1,4 +1,4 @@
-package util.layoutparams;
+package util.layout;
 
 import android.widget.LinearLayout;
 

@@ -30,7 +30,7 @@ import util.GoTo;
 import util.MIntent;
 import util.Resource;
 import util.ScreenUtils;
-import util.layoutparams.LLParams;
+import util.layout.LLParams;
 
 public class ArticleFragment extends BListFragment<Article> {
     protected int cid = 0;

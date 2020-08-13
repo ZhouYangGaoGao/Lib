@@ -10,7 +10,6 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".WLTSplashActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,6 +18,10 @@
         </activity>
         <activity
             android:name="base.BFragmentActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".WLTHomeActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="landscape" />
         <activity
             android:name=".WLTMainActivity"

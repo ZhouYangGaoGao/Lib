@@ -17,6 +17,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import util.LogUtils;
+import util.Resource;
 import util.SystemUtil;
 
 public class BConfig {
@@ -42,6 +43,7 @@ public class BConfig {
     public static final String ID = "id";
     public static final String TABS = "tabs";
     public static final String COOKIES = "cookies";
+    public static String[] LOADINGS;
     private static BConfig config;
     private Interceptor interceptor;
     private CookieJar cookieJar;
@@ -63,6 +65,7 @@ public class BConfig {
     }
 
     private BConfig() {
+        LOADINGS = Resource.stringArray(R.array.load_name);
     }
 
     public CookieJar getCookieJar() {

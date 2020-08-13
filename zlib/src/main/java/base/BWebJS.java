@@ -14,6 +14,7 @@ public class BWebJS implements ValueCallback<String>, GPSUtils.OnLocationListene
 
     protected Activity activity;
     protected AgentWeb agentWeb;
+    protected String returnInfo = "";
 
     public BWebJS setActivity(Activity activity) {
         this.activity = activity;
@@ -32,16 +33,17 @@ public class BWebJS implements ValueCallback<String>, GPSUtils.OnLocationListene
 
     @JavascriptInterface
     public String getInfo(int code, String info) {
-        LogUtils.e("code=" + code, "info=" + info);
-        return "";
+        LogUtils.e("code = " + code, "info = " + info + "\nreturn = " + returnInfo);
+        return returnInfo;
     }
 
     @Override
     public void onReceiveValue(String value) {
-        LogUtils.e("onReceiveValue=" + value);
+        LogUtils.e("onReceive = " + value);
     }
 
     public void callJs(String jsStr) {
+        LogUtils.e("callJs", jsStr);
         if (agentWeb != null)
             agentWeb.getJsAccessEntrace().callJs(jsStr, this);
     }

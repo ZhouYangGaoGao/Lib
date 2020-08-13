@@ -20,6 +20,7 @@ public class WLTApp extends BApp {
                 .setClient("cms")
                 .setFullScreen(true)
                 .setBugLy("a19f54cc33")
+                .setWebInterface(new WLTJS())
                 .setTestPassword("123456")
                 .setTestPhone("17600117227")
                 .setToken(loginModel == null ? "0" : loginModel.getToken());

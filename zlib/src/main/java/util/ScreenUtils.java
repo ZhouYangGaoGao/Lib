@@ -4,16 +4,70 @@ package util;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+
 import base.BApp;
 
 public class ScreenUtils {
+    private static double mInch = 0;
+    /**
+     * 获取屏幕尺寸
+     * @return
+     */
+    public static double getScreenInch() {
+        if (mInch != 0.0d) {
+            return mInch;
+        }
+
+        try {
+            int realWidth = 0, realHeight = 0;
+            Display display = BApp.app().act().getWindowManager().getDefaultDisplay();
+            DisplayMetrics metrics = new DisplayMetrics();
+            display.getMetrics(metrics);
+            if (android.os.Build.VERSION.SDK_INT >= 17) {
+                Point size = new Point();
+                display.getRealSize(size);
+                realWidth = size.x;
+                realHeight = size.y;
+            } else if (android.os.Build.VERSION.SDK_INT < 17
+                    && android.os.Build.VERSION.SDK_INT >= 14) {
+                Method mGetRawH = Display.class.getMethod("getRawHeight");
+                Method mGetRawW = Display.class.getMethod("getRawWidth");
+                realWidth = (Integer) mGetRawW.invoke(display);
+                realHeight = (Integer) mGetRawH.invoke(display);
+            } else {
+                realWidth = metrics.widthPixels;
+                realHeight = metrics.heightPixels;
+            }
+
+            mInch =formatDouble(Math.sqrt((realWidth/metrics.xdpi) * (realWidth /metrics.xdpi) + (realHeight/metrics.ydpi) * (realHeight / metrics.ydpi)),1);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return mInch;
+    }
+    /**
+     * Double类型保留指定位数的小数，返回double类型（四舍五入）
+     * newScale 为指定的位数
+     */
+    private static double formatDouble(double d,int newScale) {
+        BigDecimal bd = new BigDecimal(d);
+        return bd.setScale(newScale, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
 
     /**
      * 获得屏幕高度
@@ -26,7 +80,7 @@ public class ScreenUtils {
                 .getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.widthPixels;
+        return Math.min(outMetrics.widthPixels, outMetrics.heightPixels);
 
     }
 
@@ -51,14 +105,22 @@ public class ScreenUtils {
      * @param view 要适配的view
      * @param h    要显示的高度和屏幕宽度的比例
      */
-    public static float setHight(View view, double h) {
+    public static float setHeight(View view, double h) {
         ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();
         gLayoutParams.height = (int) (ScreenUtils.getScreenWidth() * h);
         view.setLayoutParams(gLayoutParams);
         return gLayoutParams.height;
     }
 
-    public static float setHight(View view, int h) {
+    public static ViewGroup.LayoutParams setBounds(View view, double w, double h) {
+        ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();
+        gLayoutParams.width = (int) (ScreenUtils.getScreenWidth() * w);
+        gLayoutParams.height = (int) (ScreenUtils.getScreenWidth() * h);
+        view.setLayoutParams(gLayoutParams);
+        return gLayoutParams;
+    }
+
+    public static float setHeight(View view, int h) {
         ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();
         if (h < 0) {
             gLayoutParams.height = h;
@@ -100,6 +162,7 @@ public class ScreenUtils {
 
     /**
      * 获得状态栏的高度
+     *
      * @return
      */
     public static int getStatusHeight() {
@@ -198,7 +261,7 @@ public class ScreenUtils {
 
 
     public static int px2sp(float pxValue) {
-        final float fontScale =BApp.app().getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = BApp.app().getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 

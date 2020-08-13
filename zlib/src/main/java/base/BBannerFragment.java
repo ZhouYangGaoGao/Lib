@@ -56,7 +56,7 @@ public abstract class BBannerFragment<M> extends BListDataFragment<M> {
         mViewPager.setOnPageChangeListener(pageChangeCallback);
         if (banner.transformer != null)
             mViewPager.addPageTransformer(banner.transformer);
-        ScreenUtils.setHight(mViewPager, banner.height / 360d);
+        ScreenUtils.setHeight(mViewPager, banner.height / 360d);
         initAdapter();
     }
 

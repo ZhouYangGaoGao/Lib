@@ -312,11 +312,11 @@ public class SmartView extends LinearLayout {
         centerTextView.setVisibility(GONE);
         centerEditText.setBackground(new DrawableCreator.Builder()
                 .setCornersRadius(dip2px(25))
-                .setSolidColor(0xffffffff).build());
+                .setSolidColor(0x66ffffff).build());
         centerEditText.setImeOptions(0x00000003);
         centerEditText.setGravity(Gravity.CENTER_VERTICAL);
         centerEditText.setTextColor(0xff666666);
-        centerEditText.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(android.R.drawable.ic_menu_search), null, null, null);
+        centerEditText.setLeftRes(android.R.drawable.ic_menu_search);
         return this;
     }
 
@@ -352,8 +352,10 @@ public class SmartView extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (measure != MEASURE_CUSTOM)
             initCenterMargin(dip2px(centerVMargin),
-                    measure == MEASURE_MAX ? Math.max(leftTextView.getMeasuredWidth(), rightTextView.getMeasuredWidth()) : width(leftTextView.getMeasuredWidth(), centerLMargin),
-                    measure == MEASURE_MAX ? Math.max(leftTextView.getMeasuredWidth(), rightTextView.getMeasuredWidth()) : width(rightTextView.getMeasuredWidth(), centerRMargin));
+                    measure == MEASURE_MAX ? Math.max(leftTextView.getMeasuredWidth(),
+                            rightTextView.getMeasuredWidth()) : width(leftTextView.getMeasuredWidth(), centerLMargin),
+                    measure == MEASURE_MAX ? Math.max(leftTextView.getMeasuredWidth(),
+                            rightTextView.getMeasuredWidth()) : width(rightTextView.getMeasuredWidth(), centerRMargin));
     }
 
     public String getText() {
@@ -375,7 +377,8 @@ public class SmartView extends LinearLayout {
 
     public boolean emptyTest() {
         if (isEmpty()) {
-            Toast.makeText(getContext(), TextUtils.isEmpty(leftTextView.getText()) ? "请输入内容" : (leftTextView.getText().toString().trim() + "不能为空"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), TextUtils.isEmpty(leftTextView.getText()) ? "请输入内容" :
+                    (leftTextView.getText().toString().trim() + "不能为空"), Toast.LENGTH_SHORT).show();
         }
         return isEmpty();
     }

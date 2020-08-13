@@ -5,7 +5,7 @@ import android.widget.RelativeLayout;
 import base.BSplashActivity;
 import custom.StatusView;
 import mvp.login.view.LoginFragment;
-import util.layoutparams.RLParams;
+import util.layout.RLParams;
 
 public class SplashActivity extends BSplashActivity {
 

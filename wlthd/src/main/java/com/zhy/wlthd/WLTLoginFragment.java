@@ -48,7 +48,7 @@ public class WLTLoginFragment extends BLoginFragment<WLTLoginModel> {
             @Override
             public void onSuccess(WLTLoginModel o) {
                 BConfig.get().setToken(o.getToken());
-                GoTo.start(WLTMainActivity.class, new Intent().putExtra(BConfig.URL, WLTConstant.url + new Gson().toJson(o)));
+                GoTo.start(WLTHomeActivity.class, new Intent().putExtra(BConfig.URL, WLTConstant.url + new Gson().toJson(o)));
                 success(o);
             }
         };

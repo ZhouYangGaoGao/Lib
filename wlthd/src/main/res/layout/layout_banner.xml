@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<custom.card.CardViewInner xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="2dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardBackgroundColor="@color/clo_theme_88"
+    app:cardCornerRadius="5dp">
+
+<!--    <custom.page.AutoPager-->
+<!--        android:id="@+id/mViewPager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+</custom.card.CardViewInner>

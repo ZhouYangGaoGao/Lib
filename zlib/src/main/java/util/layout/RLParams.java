@@ -1,13 +1,10 @@
-package util.layoutparams;
+package util.layout;
 
 import android.widget.RelativeLayout;
 
 import base.BApp;
 
 public class RLParams extends RelativeLayout.LayoutParams {
-    public RLParams(int w, int h) {
-        super(w, h);
-    }
 
     public RLParams rule(int... verbs) {
         for (int i : verbs) {
@@ -21,6 +18,9 @@ public class RLParams extends RelativeLayout.LayoutParams {
         return this;
     }
 
+    public RLParams(int width, int height) {
+        super(px(width), px(height));
+    }
     public static RLParams WW() {
         return new RLParams(-2, -2);
     }
@@ -47,13 +47,13 @@ public class RLParams extends RelativeLayout.LayoutParams {
         return margin(margin, margin, margin, margin);
     }
 
-    public RLParams marginStart(int start) {
-        setMarginStart(start);
+    public RLParams marginS(int start) {
+        setMarginStart(px(start));
         return this;
     }
 
-    public RLParams marginEnd(int end) {
-        setMarginEnd(end);
+    public RLParams marginE(int end) {
+        setMarginEnd(px(end));
         return this;
     }
 

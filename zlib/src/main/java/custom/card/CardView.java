@@ -154,22 +154,22 @@ public class CardView extends FrameLayout {
                 elevation, maxElevation, mStartColor, mEndColor);
 
         if (cropCorner) {
-            cardContentView = new CardContentView(context, attrs, defStyleAttr);
+            cardViewInner = new CardViewInner(context, attrs, defStyleAttr);
         }
     }
 
-    CardContentView cardContentView;
+    CardViewInner cardViewInner;
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        if (cropCorner && cardContentView != null) {
+        if (cropCorner && cardViewInner != null) {
             for (int i = 0; i < getChildCount(); i++) {
                 View view = getChildAt(i);
                 removeViewAt(i);
-                cardContentView.addView(view, i);
+                cardViewInner.addView(view, i);
             }
-            addView(cardContentView);
+            addView(cardViewInner);
         }
     }
 
