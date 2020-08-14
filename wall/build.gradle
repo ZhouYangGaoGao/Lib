@@ -25,7 +25,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation project(path: ':zlib')
 }

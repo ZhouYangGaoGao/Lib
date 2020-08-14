@@ -2,6 +2,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <integer name="ucrop_progress_loading_anim_time">1500</integer>
     <item name="id_recycler" type="id" tools:ignore="ResourceName" />
-    <item name="id_life" type="id" tools:ignore="ResourceName" />
 
 </resources>

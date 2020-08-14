@@ -19,20 +19,18 @@ import util.ScreenUtils;
 
 public abstract class BBannerFragment<M> extends BListDataFragment<M> {
 
-    protected AutoPager mViewPager;
+    protected AutoPager mViewPager = new AutoPager(BApp.app().act());
     protected OnPageChangeCallback pageChangeCallback;
     protected RelativeLayout mRootView;
     protected RecyclerView.Adapter<BaseViewHolder> adapter;
     protected Banner banner = new Banner();
 
     {
-        contentViewId = R.layout.fragment_pager;
+        contentView = mViewPager;
     }
 
     @Override
     public void initView() {
-        mRootView = (RelativeLayout) findViewById(R.id.mRootView);
-        mViewPager = (AutoPager) findViewById(R.id.mViewPager);
         if (banner.useIndicate) {
             if (banner.indicator == null) {
                 banner.indicator = new IndicatorView(getContext())
@@ -65,7 +63,8 @@ public abstract class BBannerFragment<M> extends BListDataFragment<M> {
             @NonNull
             @Override
             public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return new BaseViewHolder(LayoutInflater.from(BApp.app()).inflate(banner.itemLayoutId, parent, false));
+                return new BaseViewHolder(LayoutInflater.from(BApp.app().act())
+                        .inflate(banner.itemLayoutId, parent, false));
             }
 
             @Override
@@ -85,8 +84,8 @@ public abstract class BBannerFragment<M> extends BListDataFragment<M> {
         adapter.notifyDataSetChanged();
         if (!banner.noDataHide) return;
         if (mData.size() > 0) {
-            mRootView.setVisibility(View.VISIBLE);
-        } else mRootView.setVisibility(View.GONE);
+            mViewPager.setVisibility(View.VISIBLE);
+        } else mViewPager.setVisibility(View.GONE);
     }
 
     protected abstract void convert(BaseViewHolder h, M i);

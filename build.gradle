@@ -15,6 +15,23 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            credentials {
+                username '5f368923209ad8bf4839bf89'
+                password 'DzZZE0rDBZ(S'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2023576-release-ztmRky/'
+        }
+        maven {
+            credentials {
+                username '5f368923209ad8bf4839bf89'
+                password 'DzZZE0rDBZ(S'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2023576-snapshot-UhdTVT/'
+        }
     }
 }
 

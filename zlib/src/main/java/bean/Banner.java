@@ -22,7 +22,7 @@ public class Banner {
     public float indicatorRadiusSelect = 3.5f;//指示标的圆角
     public float indicatorRatio = 1f;
     public float indicatorRatioSelect = 1.5f;//指示标拉伸比例
-    public int itemLayoutId = R.layout.item_avl;
+    public int itemLayoutId = R.layout.item_image;
     public int orientation = ViewPager2.ORIENTATION_HORIZONTAL;//方向
     public int indicatorColor = Color.WHITE;//指示标颜色
     public int indicatorSelectorColor = Color.WHITE;//指示标颜色

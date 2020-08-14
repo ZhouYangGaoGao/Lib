@@ -2,20 +2,18 @@ package com.zhy.photo;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ComponentActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.zhy.lifecycle.LifeCycle;
 
 import java.util.List;
 
@@ -27,15 +25,12 @@ import photopicker.lib.config.PictureMimeType;
 import photopicker.lib.decoration.GridSpacingItemDecoration;
 import photopicker.lib.entity.LocalMedia;
 import photopicker.lib.style.PictureParameterStyle;
-import photopicker.photoview.log.LoggerDefault;
 
 public class PicSelectView extends RecyclerView {
-    private static PicSelectView picSelectView;
     private GridImageAdapter adapter;
     private PictureSelector pictureSelector;
     private int numColumns = 4, max = 9;
     private View.OnClickListener addListener;
-    private LifeFragment lifeFragment;
 
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
@@ -60,8 +55,7 @@ public class PicSelectView extends RecyclerView {
         int orientation = t.getInt(R.styleable.PicSelectView_android_orientation, 1);
         int compressSize = t.getInt(R.styleable.PicSelectView_compressSize, 1000);
         int type = t.getInt(R.styleable.PicSelectView_type, 1);
-        int offset = t.getInt(R.styleable.PicSelectView_offset, 1);
-        this.offset = dip2px(offset);
+        this.offset = dip2px(t.getInt(R.styleable.PicSelectView_offset, 1));
         boolean onlyCamera = t.getBoolean(R.styleable.PicSelectView_onlyCamera, false);
         boolean showCamera = t.getBoolean(R.styleable.PicSelectView_showCamera, true);
         boolean compress = t.getBoolean(R.styleable.PicSelectView_compress, false);
@@ -74,18 +68,14 @@ public class PicSelectView extends RecyclerView {
         t.recycle();
         addItemDecoration(new GridSpacingItemDecoration(numColumns, (int) this.offset, false));
         setLayoutManager(new GridLayoutManager(context, numColumns, orientation, false));
-        picSelectView = this;
-        lifeFragment = new LifeFragment();
-        lifeFragment.setListener(new LifeFragment.OnResultListener() {
-            @Override
-            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-                if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST) {
-                    initData(PictureSelector.obtainMultipleResult(data));
-                }
+
+        Fragment lifeFragment = LifeCycle.setOnActivityResult((AppCompatActivity) getContext(), (requestCode, resultCode, data) -> {
+            if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST) {
+                initData(PictureSelector.obtainMultipleResult(data));
             }
         });
-        addListener = onlyShow ? null : view -> {
 
+        addListener = onlyShow ? null : view -> {
             getModel(onlyCamera, type)//打开相册或相机,选择文件类型
                     .maxSelectNum(max)//最大选择数量
                     .minSelectNum(min)//最小选择数量
@@ -103,16 +93,6 @@ public class PicSelectView extends RecyclerView {
                     .forResult(lifeFragment, PictureConfig.CHOOSE_REQUEST);//
         };
     }
-
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        activity.getWindow().getDecorView().setId(R.id.id_life);
-        activity.getSupportFragmentManager().beginTransaction().add(activity.getWindow().getDecorView().getId(), lifeFragment).commit();
-    }
-
 
     float offset = 1;
 
@@ -156,10 +136,6 @@ public class PicSelectView extends RecyclerView {
 
     public List<LocalMedia> getSelectList() {
         return adapter.getList();
-    }
-
-    public void onResult(int requestCode, int resultCode, Intent data) {
-
     }
 
     public void initData(List<LocalMedia> mediaList) {

@@ -1,8 +1,10 @@
 package util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -52,6 +54,7 @@ public class ImageUtils extends AppGlideModule {
      * @param imageView  加载图片的ImageView
      */
     public static void loadImage(Context context, @NonNull Object model, int resourceId, ImageView imageView) {
+        if (isDestroy((Activity) context))return;
         GlideApp.with(context).load(model).placeholder(resourceId).error(resourceId)
                 .into(imageView);
     }
@@ -65,9 +68,9 @@ public class ImageUtils extends AppGlideModule {
      * @param imageView 加载图片的ImageView
      */
     public static void loadImage(Context context, @NonNull Object model, ImageView imageView) {
-        if (context!=null)
-        GlideApp.with(context).load(model).thumbnail(0.5f)
-                .into(imageView);
+        if (isDestroy((Activity) context))return;
+            GlideApp.with(context).load(model).thumbnail(0.5f)
+                    .into(imageView);
     }
 
     /**
@@ -79,6 +82,7 @@ public class ImageUtils extends AppGlideModule {
      * @param imageView
      */
     public static void loadRoundImage(Context context, @NonNull Object model, int dpRadius, ImageView imageView) {
+        if (isDestroy((Activity) context))return;
         GlideApp.with(context).load(model).thumbnail(0.5f)
                 .apply(new RequestOptions().transform(new RoundedCorners(ScreenUtils.dip2px(dpRadius))))
                 .into(imageView);
@@ -93,6 +97,7 @@ public class ImageUtils extends AppGlideModule {
     public static float fold = 1;
 
     public static void loadImageResize(Context context, @NonNull Object model, ImageView imageView, int w, int h) {
+        if (isDestroy((Activity) context))return;
         GlideApp.with(context).load(model).override((int) (w * fold), (int) (h * fold)).thumbnail(0.5f).centerCrop()
                 .into(imageView);
     }
@@ -105,6 +110,7 @@ public class ImageUtils extends AppGlideModule {
      * @param imageView 加载图片的ImageView
      */
     public static void loadImageFit(Context context, @NonNull Object model, ImageView imageView) {
+        if (isDestroy((Activity) context))return;
         GlideApp.with(context).load(model).fitCenter()
                 .into(imageView);
 
@@ -117,7 +123,16 @@ public class ImageUtils extends AppGlideModule {
      * @param imageView  加载图片的ImageView
      */
     public static void loadGifImage(Context context, @NonNull Object model, int resourceId, ImageView imageView) {
+        if (isDestroy((Activity) context))return;
         GlideApp.with(context).asGif().load(model).placeholder(resourceId).centerCrop()
                 .into(imageView);
+    }
+
+    public static boolean isDestroy(Activity mActivity) {
+        if (mActivity == null || mActivity.isFinishing() || mActivity.isDestroyed()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

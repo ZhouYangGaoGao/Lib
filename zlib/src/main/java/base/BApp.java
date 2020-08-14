@@ -6,11 +6,11 @@ import android.text.TextUtils;
 
 import com.tencent.bugly.Bugly;
 import com.zhy.android.BuildConfig;
+import com.zhy.lifecycle.LifeCycle;
 
 import java.lang.ref.WeakReference;
 
 import hawk.Hawk;
-import listener.ActCallback;
 
 public abstract class BApp extends Application implements Runnable {
     private static BApp app;
@@ -37,7 +37,7 @@ public abstract class BApp extends Application implements Runnable {
     @Override
     public void run() {
         Hawk.init(app).build();
-        registerActivityLifecycleCallbacks(new ActCallback() {
+        LifeCycle.application(this,new LifeCycle.ActListener(){
             @Override
             protected void onCurrentActivity(Activity activity) {
                 act = new WeakReference<>(activity);

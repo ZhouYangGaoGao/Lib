@@ -8,9 +8,10 @@
     app:cardBackgroundColor="@color/clo_theme_88"
     app:cardCornerRadius="5dp">
 
-<!--    <custom.page.AutoPager-->
-<!--        android:id="@+id/mViewPager"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent" />-->
+    <fragment
+        android:id="@+id/mBanner"
+        android:name="com.zhy.wlthd.WLTBannerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </custom.card.CardViewInner>

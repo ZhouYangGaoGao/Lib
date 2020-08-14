@@ -4,7 +4,6 @@ import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
-
 import com.orient.me.widget.rv.adapter.GridAdapter;
 import com.orient.me.widget.rv.layoutmanager.table.TableLayoutManager;
 import com.orient.me.widget.rv.rv.TableRecyclerView;
@@ -30,7 +29,7 @@ public class WLTHomeActivity extends BActivity {
     private GridAdapter<TableCell> mAdapter;
     private float r;
     private int[] bgs = {
-            0xff28ACA9, 0xff5DABE9, R.mipmap.bg_welcome, 0xffE7A855,
+            0xff28ACA9, 0xff5DABE9, 0xff28ACA9, 0xffE7A855,
             0xff28ACA9, 0xff01BF9D, 0xffEC8B7B,
             0xffEC8B7B, 0xff28ACA9, 0xff7F80BB, R.mipmap.bg_welcome,
             0xff74C6DB, 0xffE170A7, 0xff00C29F};
@@ -57,16 +56,29 @@ public class WLTHomeActivity extends BActivity {
                 return tableCell.getType() == 3 ? R.layout.layout_banner : R.layout.item_menu;
             }
         });
-
         List<TableCell> cells = new LinkedList<>();
 
-        cells.add(new TableCell("自查上图", bgs[0], "自查造林小班登记", 1, 1, 1, 1, 1));
-        cells.add(new TableCell("自查登记", bgs[1], "营造林展示中心", 1, 1, 2, 1, 1));
-        cells.add(new TableCell("", bgs[2], "7", 0, 1, 3, 2, 2));
+        cells.add(new TableCell("轮播类型", bgs[2], "轮播图循环播放", 3, 1, 1, 2, 2));
+        cells.add(new TableCell("自查上图", bgs[0], "自查造林小班登记", 1, 1, 3, 1, 1));
+        cells.add(new TableCell("自查登记", bgs[1], "营造林展示中心", 1, 1, 4, 1, 1));
         cells.add(new TableCell("任务管理", bgs[3], "各工程类型营林任务管理", 1, 1, 5, 2, 1));
 
 
-        cells.add(new TableCell("造林一张图", bgs[4], "森林长廊、义务植树等自查登记", 1, 2, 1, 2, 1));
+        cells.add(new TableCell("造林一张图", bgs[4], "森林长廊、义务植树等自查登记", 1, 2, 3, 2, 1));
+
+
+
+
+
+
+
+//        cells.add(new TableCell("自查上图", bgs[0], "自查造林小班登记", 3, 1, 1, 1, 1));
+//        cells.add(new TableCell("自查登记", bgs[1], "营造林展示中心", 1, 1, 2, 1, 1));
+//        cells.add(new TableCell("轮播类型", bgs[2], "轮播图循环播放", 1, 1, 3, 2, 2));
+//        cells.add(new TableCell("任务管理", bgs[3], "各工程类型营林任务管理", 1, 1, 5, 2, 1));
+//
+//
+//        cells.add(new TableCell("造林一张图", bgs[4], "森林长廊、义务植树等自查登记", 1, 2, 1, 2, 1));
         cells.add(new TableCell("进度督查", bgs[5], "省市县自查进度督查", 1, 2, 5, 1, 1));
         cells.add(new TableCell("使用手册", bgs[6], "学习操作中心", 1, 2, 6, 1, 1));
 

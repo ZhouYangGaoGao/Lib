@@ -33,7 +33,6 @@
         android:id="@+id/btn_more"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@color/picture_color_transparent"
         android:focusable="true"
         android:focusableInTouchMode="true" />
 

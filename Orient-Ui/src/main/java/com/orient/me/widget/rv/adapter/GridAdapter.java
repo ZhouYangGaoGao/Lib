@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * GridAdapter出了数据适配器的功能以外
  * 其他功能有：将数据位置和坐标建立关系放在缓存中
+ *
  * @param <Data> 数据类型
  */
 public abstract class GridAdapter<Data extends ICellItem> extends BaseAdapter<Data>

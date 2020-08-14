@@ -139,7 +139,6 @@ public class NavigationFragment extends BListDataFragment<Navigation> {
     }
 
     private void jump(Article i, Navigation navigation, int childPosition) {
-        GoTo.start(BWebFragment.class, new Intent().putExtra(BConfig.URL, i.getLink()));
         new Smart(2) {
             @Override
             protected void init() {

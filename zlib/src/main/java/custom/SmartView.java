@@ -314,8 +314,8 @@ public class SmartView extends LinearLayout {
                 .setCornersRadius(dip2px(25))
                 .setSolidColor(0x66ffffff).build());
         centerEditText.setImeOptions(0x00000003);
+        centerEditText.setHintTextColor(BConfig.get().getColorTheme88());
         centerEditText.setGravity(Gravity.CENTER_VERTICAL);
-        centerEditText.setTextColor(0xff666666);
         centerEditText.setLeftRes(android.R.drawable.ic_menu_search);
         return this;
     }

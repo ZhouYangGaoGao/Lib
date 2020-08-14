@@ -67,7 +67,7 @@ public abstract class BaseAdapter<Data> extends RecyclerView.Adapter<BaseAdapter
     @Override
     public void onBindViewHolder(ViewHolder<Data> holder, int position) {
         // 设置不能进行重复绘制
-        holder.setIsRecyclable(false);
+//        holder.setIsRecyclable(false);
         // TODO 对多数据进行测试，查看哪里出了问题
         // 绑定数据
         holder.bind(mDataList.get(position));

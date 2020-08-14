@@ -1,0 +1,47 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+
+}
+
+task clearJar(type: Delete) {
+    delete 'build/life_1.0.jar' //jar包的名字，随便命名 
+}
+task makeJar(type: Jar) {
+    //指定生成的jar名 
+    baseName 'life_1.0'
+    //从哪里打包class文件 
+    from('build/intermediates/packaged-classes/debug/default/')
+    //打包到jar后的目录结构 
+    into('build/')
+    //去掉不需要打包的目录和文件 
+    exclude('BuildConfig.class', 'R.class')
+    //去掉R开头的文件  
+    exclude { it.name.startsWith('R'); }
+}
+makeJar.dependsOn(clearJar, build)
+repositories {
+    mavenCentral()
+}

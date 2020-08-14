@@ -24,7 +24,13 @@ public class ProjectFragment extends ArticleFragment {
 
     @Override
     protected void convert(ViewHolder h, Article i) {
-        h.setImage(R.id.iv_cover, i.getEnvelopePic());
+        if (h.getPosition()%2==0){
+            h.setImage(R.id.iv_cover_r, i.getEnvelopePic());
+            h.setVisibility(R.id.iv_cover_r,View.VISIBLE);
+        }else {
+            h.setImage(R.id.iv_cover_l, i.getEnvelopePic());
+            h.setVisibility(R.id.iv_cover_l,View.VISIBLE);
+        }
         h.setText(R.id.tv_description, i.getDesc());
         h.setVisibility(R.id.tv_description, View.VISIBLE);
         super.convert(h, i);

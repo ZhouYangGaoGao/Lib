@@ -56,7 +56,7 @@ public class BActivity<M, P extends BPresenter<BView<?>>> extends AppCompatActiv
         statusBarColor = getResources().getColor(R.color.clo_status_bar);
         isFullScreen = BConfig.get().isFullScreen();
 //        initTransition();
-//                setUpTransition();
+//        setUpTransition();
 
         super.onCreate(savedInstanceState);
         beforeView();

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.GridLayout;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -20,8 +21,10 @@ import base.BApp;
 
 public class ScreenUtils {
     private static double mInch = 0;
+
     /**
      * 获取屏幕尺寸
+     *
      * @return
      */
     public static double getScreenInch() {
@@ -50,7 +53,8 @@ public class ScreenUtils {
                 realHeight = metrics.heightPixels;
             }
 
-            mInch =formatDouble(Math.sqrt((realWidth/metrics.xdpi) * (realWidth /metrics.xdpi) + (realHeight/metrics.ydpi) * (realHeight / metrics.ydpi)),1);
+            mInch = formatDouble(Math.sqrt((realWidth / metrics.xdpi) * (realWidth / metrics.xdpi)
+                    + (realHeight / metrics.ydpi) * (realHeight / metrics.ydpi)), 1);
 
 
         } catch (Exception e) {
@@ -59,11 +63,12 @@ public class ScreenUtils {
 
         return mInch;
     }
+
     /**
      * Double类型保留指定位数的小数，返回double类型（四舍五入）
      * newScale 为指定的位数
      */
-    private static double formatDouble(double d,int newScale) {
+    private static double formatDouble(double d, int newScale) {
         BigDecimal bd = new BigDecimal(d);
         return bd.setScale(newScale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
@@ -106,14 +111,14 @@ public class ScreenUtils {
      * @param h    要显示的高度和屏幕宽度的比例
      */
     public static float setHeight(View view, double h) {
-        ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();
+        ViewGroup.LayoutParams gLayoutParams = getLp(view);
         gLayoutParams.height = (int) (ScreenUtils.getScreenWidth() * h);
         view.setLayoutParams(gLayoutParams);
         return gLayoutParams.height;
     }
 
     public static ViewGroup.LayoutParams setBounds(View view, double w, double h) {
-        ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();
+        ViewGroup.LayoutParams gLayoutParams = getLp(view);
         gLayoutParams.width = (int) (ScreenUtils.getScreenWidth() * w);
         gLayoutParams.height = (int) (ScreenUtils.getScreenWidth() * h);
         view.setLayoutParams(gLayoutParams);
@@ -121,7 +126,7 @@ public class ScreenUtils {
     }
 
     public static float setHeight(View view, int h) {
-        ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();
+        ViewGroup.LayoutParams gLayoutParams = getLp(view);
         if (h < 0) {
             gLayoutParams.height = h;
         } else gLayoutParams.height = dip2px(h);
@@ -130,7 +135,7 @@ public class ScreenUtils {
     }
 
     public static float setHightPx(View view, int h) {
-        ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();
+        ViewGroup.LayoutParams gLayoutParams = getLp(view);
         if (h < 0) {
             gLayoutParams.height = h;
         } else gLayoutParams.height = h;
@@ -139,7 +144,7 @@ public class ScreenUtils {
     }
 
     public static float setWidth(View view, int w) {
-        ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();
+        ViewGroup.LayoutParams gLayoutParams = getLp(view);
         if (w < 0) {
             gLayoutParams.width = w;
         } else gLayoutParams.width = dip2px(w);
@@ -147,6 +152,10 @@ public class ScreenUtils {
         return gLayoutParams.width;
     }
 
+    private static ViewGroup.LayoutParams getLp(View view){
+        if (view.getLayoutParams()==null)return new ViewGroup.LayoutParams(-2,-2);
+        return view.getLayoutParams();
+    }
     /**
      * 适配用的 按屏幕宽度比例
      *
@@ -154,7 +163,7 @@ public class ScreenUtils {
      * @param h    要显示的高度和屏幕宽度的比例
      */
     public static float setWidth(View view, double h) {
-        ViewGroup.LayoutParams gLayoutParams = view.getLayoutParams();//底部导航栏做了适配
+        ViewGroup.LayoutParams gLayoutParams = getLp(view);//底部导航栏做了适配
         gLayoutParams.width = (int) (ScreenUtils.getScreenWidth() * h);
         view.setLayoutParams(gLayoutParams);
         return gLayoutParams.width;
