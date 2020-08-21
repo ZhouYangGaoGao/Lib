@@ -20,7 +20,7 @@ public class PopView extends LinearLayout {
 
     public PopView(String... items) {
         this(BApp.app().act());
-        setBackground(MDrawable.solid(Color.GRAY, 10));
+        setBackground(MDrawable.solid(0xee000000, 10));
         setOrientation(VERTICAL);
         LayoutParams params = new LayoutParams(-2, -2);
         params.setMargins(dp(5),dp(5),dp(5),dp(5));

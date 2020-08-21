@@ -20,18 +20,16 @@ public class WLTSplashActivity extends BSplashActivity {
         centerIconRes = R.mipmap.ic_splash;
         bgRes = R.mipmap.bg_welcome;
         otherView = getView(R.layout.layout_login);
-        RelativeLayout.LayoutParams params = RLParams.WW();
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        otherView.setLayoutParams(params);
+        otherView.setLayoutParams(RLParams.WW().rule(RelativeLayout.CENTER_IN_PARENT));
 
         mCompany = new TextView(this);
         mCompany.setText("东华（安徽）生态规划院有限公司\ncopyright © 2019\n");
         mCompany.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-        mCompany.setTextColor(Color.WHITE);
+        mCompany.setTextColor(0xffcccccc);
         mCompany.setBackgroundColor(0x44ffffff);
         mCompany.setTextSize(12);
-        mCompany.setLayoutParams(new RelativeLayout.LayoutParams(-1, -1));
-        delay = 2500;
+        mCompany.setLayoutParams(RLParams.MM());
+        delay = 1500;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class WLTSplashActivity extends BSplashActivity {
                 .addSize("v1.0", 0.7f)
                 .addSize("互联网+造林", 1.1f)
                 .addSize("安徽省营造林管理平台", 0.85f)
-                .setColor("安徽省营造林管理平台", 0xff0b4938);
+                .setColor("安徽省营造林管理平台", 0xff0C5B60);
     }
 
     @Override

@@ -23,8 +23,5 @@
             android:name=".WLTHomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".WLTMainActivity"
-            android:screenOrientation="landscape" />
     </application>
 </manifest>

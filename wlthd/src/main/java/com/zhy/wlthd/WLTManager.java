@@ -12,11 +12,14 @@ import util.RetrofitHelper;
 public class WLTManager extends BManager<WLTApi> {
 
     public Observable<BResponse<WLTLoginModel>> login(String phone, String password) {
-        return service.login(new MMap(BConfig.PHONE, phone)
-                .add(BConfig.CLIENT, BConfig.get().getClient()).body(BConfig.PASSWORD, MD5Util.MD5(password)));
+        return service.login(new MMap("loginAccount", phone)
+                .body(BConfig.PASSWORD, MD5Util.MD5(password)));
     }
 
     public static WLTManager get(){
         return RetrofitHelper.get(WLTManager.class);
+    }
+    public static WLTApi api() {
+        return get().service;
     }
 }

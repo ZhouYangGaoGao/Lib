@@ -14,7 +14,7 @@ public class TableCell implements ICellItem {
     private int widthSpan;
     private int heightSpan;
 
-    public TableCell(String name, int bg, String desc, int type, int row, int col, int rowSpan, int colSpan) {
+    public TableCell(String name, int bg,int icon, String desc, int type, int row, int col, int rowSpan, int colSpan) {
         this.name = name;
         this.desc = desc;
         this.type = type;
@@ -23,7 +23,7 @@ public class TableCell implements ICellItem {
         this.widthSpan = rowSpan;
         this.heightSpan = colSpan;
         this.bg = bg;
-        this.icon = R.drawable.ic_menu;
+        this.icon = icon;
     }
 
     public int getBg() {

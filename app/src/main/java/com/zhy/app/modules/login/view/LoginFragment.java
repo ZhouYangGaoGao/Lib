@@ -28,7 +28,7 @@ public class LoginFragment extends BLoginFragment<LoginModel> {
     }
 
     @Override
-    protected Subscription captcha(String phone) {
+    protected Subscription sendCaptcha(String phone) {
         return new BSub<LoginModel>(this,Manager.get().login(phone, "123456")) {
             @Override
             public void onSuccess(LoginModel loginModel) {

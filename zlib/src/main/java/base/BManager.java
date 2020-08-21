@@ -28,4 +28,9 @@ public class BManager<S> {
     public static Observable<Object> test() {
         return RetrofitHelper.get(TestApi.class).test();
     }
+
+    public static <S> S api() {
+        return (S) get().service;
+    }
+
 }

@@ -8,10 +8,10 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-
     </style>
 
-    <style name="login" parent="login_parent"></style>
+
+    <style name="login" parent="login_parent" />
 
     <style name="login_parent">
         <item name="android:layout_width">match_parent</item>

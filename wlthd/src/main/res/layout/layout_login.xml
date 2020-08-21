@@ -6,16 +6,36 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_title" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+        <custom.TextView
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="v2.0 "
+            android:visibility="invisible" />
+        <ImageView
+            android:layout_width="320dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_title" />
+
+        <custom.TextView
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="v2.0"
+            android:textColor="#FFD200" />
+    </LinearLayout>
+
 
     <background.view.BLLinearLayout
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:elevation="10dp"
         android:layout_marginTop="15dp"
+        android:elevation="10dp"
         android:orientation="vertical"
         app:bl_corners_radius="5dp"
         app:bl_solid_color="#44ffffff">

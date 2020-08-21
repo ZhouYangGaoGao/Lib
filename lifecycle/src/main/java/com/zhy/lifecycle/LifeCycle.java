@@ -12,7 +12,31 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import java.lang.ref.WeakReference;
+
 public class LifeCycle {
+    private static LifeCycle lifeCycle;
+    private WeakReference<Activity> mCurrentAct;
+
+    public static LifeCycle get(Application application) {
+        if (lifeCycle == null) lifeCycle = new LifeCycle(application);
+        return lifeCycle;
+    }
+
+    public Activity act() {
+        return mCurrentAct.get();
+    }
+
+    private LifeCycle(Application application) {
+        application.registerActivityLifecycleCallbacks(new ActListener() {
+            @Override
+            protected void onCurrentActivity(Activity activity) {
+                if (mCurrentAct != null && !activity.equals(mCurrentAct.get()))
+                    mCurrentAct = new WeakReference<>(activity);
+            }
+        });
+    }
+
     public static void application(Application application, ActListener fragListener) {
         application.registerActivityLifecycleCallbacks(fragListener);
     }
@@ -20,6 +44,13 @@ public class LifeCycle {
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public static void activity(Activity activity, ActListener listener) {
         activity.registerActivityLifecycleCallbacks(listener);
+    }
+
+    public static LifeFragment setOnResult(AppCompatActivity activity, final onActivityResultListener listener) {
+        final LifeFragment lifeFragment = new LifeFragment(listener);
+        activity.getWindow().getDecorView().setId(R.id.id_window);
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.id_window, lifeFragment).commit();
+        return lifeFragment;
     }
 
     public static LifeFragment setOnActivityResult(final AppCompatActivity act, final onActivityResultListener listener) {
@@ -93,7 +124,7 @@ public class LifeCycle {
         }
     }
 
-   public interface onActivityResultListener {
+    public interface onActivityResultListener {
         void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
     }
 }

@@ -6,8 +6,9 @@ import android.util.AttributeSet;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import background.BackgroundFactory;
+import custom.TextView;
 
-public class BLTextView extends AppCompatTextView {
+public class BLTextView extends TextView {
     public BLTextView(Context context) {
         super(context);
     }

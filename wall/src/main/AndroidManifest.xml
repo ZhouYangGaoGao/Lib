@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".WHomeActivity">
+        <activity android:name=".WHomeActivity" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <!--                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />-->

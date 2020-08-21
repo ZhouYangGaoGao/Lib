@@ -15,14 +15,12 @@ public class WLTApp extends BApp {
 
     @Override
     protected void initApp() {
-        WLTLoginModel loginModel = Hawk.get(BConfig.LOGIN);
-        BConfig.get().setBaseUrl("https://www.ahlzz.com/api/")
+        BConfig.get().setBaseUrl("http://192.168.20.10:8991/api/")
                 .setClient("cms")
                 .setFullScreen(true)
                 .setBugLy("a19f54cc33")
-                .setWebInterface(new WLTJS())
+                .setWebInterface(WLTJS.class)
                 .setTestPassword("123456")
-                .setTestPhone("17600117227")
-                .setToken(loginModel == null ? "0" : loginModel.getToken());
+                .setTestPhone("17600117227");
     }
 }

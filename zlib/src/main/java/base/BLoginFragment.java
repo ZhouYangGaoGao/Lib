@@ -4,32 +4,77 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.zhy.android.R;
 
+import java.util.Objects;
+
 import custom.SmartView;
+import custom.TextView;
 import hawk.Hawk;
 import listener.SmartListener;
 import rx.Subscription;
 import util.GoTo;
 
-public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>>> implements View.OnClickListener {
+public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>>>
+        implements View.OnClickListener, SmartListener {
 
-    protected SmartView titleView,phone,captcha,password,checkPassword;
-    protected LinearLayout editContent,actionLayout;
-    protected TextView forget,login,next,register;
-    protected String mode,toast;
+    protected SmartView titleView, phone, captcha, password, checkPassword;
+    protected LinearLayout topContent,centerContent, bottomContent;
+    protected TextView forget, login, next, register;
+    protected String mode, toast, captchaStr;
+
+    {
+        contentViewId = R.layout.fragment_login;
+    }
 
     @Override
-    public void beforeView() {
-        contentViewId = R.layout.fragment_login;
+    public void initView() {
         mode = getIntent().getStringExtra(BConfig.LOGIN_MODE);
         if (TextUtils.isEmpty(mode)) mode = BConfig.LOGIN_MODE_LOGIN;
+        bottomContent = (LinearLayout) findViewById(R.id.bottomContent);
+        centerContent = (LinearLayout) findViewById(R.id.centerContent);
+        topContent = (LinearLayout) findViewById(R.id.topContent);
+        titleView = (SmartView) findViewById(R.id.titleView);
+        phone = (SmartView) findViewById(R.id.phone);
+        captcha = (SmartView) findViewById(R.id.captcha);
+        password = (SmartView) findViewById(R.id.password);
+        checkPassword = (SmartView) findViewById(R.id.checkPassword);
+        forget = (TextView) findViewById(R.id.forget);
+        login = (TextView) findViewById(R.id.login);
+        next = (TextView) findViewById(R.id.next);
+        register = (TextView) findViewById(R.id.register);
+        forget.setOnClickListener(this);
+        login.setOnClickListener(this);
+        next.setOnClickListener(this);
+        register.setOnClickListener(this);
+        captcha.setListener(this, 2);
+        switch (mode) {
+            case BConfig.LOGIN_MODE_LOGIN:
+                titleView.setBack(false);
+                initLogin(true);
+                break;
+            case BConfig.LOGIN_MODE_REGISTER:
+                initRegister();
+                break;
+            case BConfig.LOGIN_MODE_RESET:
+                initReset();
+                break;
+            case BConfig.LOGIN_MODE_CAPTCHA:
+                initCaptcha();
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(SmartView smartView, int textViewIndex, int drawableIndex) {
+        if (smartView.getId() == R.id.captcha) {
+            presenter.sub(sendCaptcha(phone.getText()));
+        }
     }
 
     protected void resetView() {
-        forget.setVisibility(View.GONE);
+        centerContent.setVisibility(View.GONE);
         phone.setVisibility(View.GONE);
         password.setVisibility(View.GONE);
         login.setVisibility(View.GONE);
@@ -70,55 +115,17 @@ public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>
         register.setVisibility(View.VISIBLE);
     }
 
-    protected void initLogin() {
+    protected void initLogin(boolean needRegister) {
         resetView();
         mode = BConfig.LOGIN_MODE_LOGIN;
         titleView.centerTextView.setText("登录");
-        titleView.setBack(false);
         toast = getString(R.string.str_login_success);
         phone.setVisibility(View.VISIBLE);
         password.setVisibility(View.VISIBLE);
         login.setVisibility(View.VISIBLE);
-        register.setVisibility(View.VISIBLE);
-        register.setAlpha(0.5f);
-    }
-
-    @Override
-    public void initView() {
-        actionLayout = (LinearLayout) findViewById(R.id.actionLayout);
-        editContent = (LinearLayout) findViewById(R.id.editContent);
-        titleView = (SmartView) findViewById(R.id.titleView);
-        phone = (SmartView) findViewById(R.id.phone);
-        captcha = (SmartView) findViewById(R.id.captcha);
-        password = (SmartView) findViewById(R.id.password);
-        checkPassword = (SmartView) findViewById(R.id.checkPassword);
-        forget = (TextView) findViewById(R.id.forget);
-        login = (TextView) findViewById(R.id.login);
-        next = (TextView) findViewById(R.id.next);
-        register = (TextView) findViewById(R.id.register);
-        forget.setOnClickListener(this);
-        login.setOnClickListener(this);
-        next.setOnClickListener(this);
-        register.setOnClickListener(this);
-        captcha.setListener(new SmartListener() {
-            @Override
-            public void onClick(SmartView smartView, int textViewIndex, int drawableIndex) {
-                presenter.sub(captcha(phone.getText()));
-            }
-        }, 2);
-        switch (mode) {
-            case BConfig.LOGIN_MODE_LOGIN:
-                initLogin();
-                break;
-            case BConfig.LOGIN_MODE_REGISTER:
-                initRegister();
-                break;
-            case BConfig.LOGIN_MODE_RESET:
-                initReset();
-                break;
-            case BConfig.LOGIN_MODE_CAPTCHA:
-                initCaptcha();
-                break;
+        if (needRegister){
+            register.setVisibility(View.VISIBLE);
+            register.setAlpha(0.5f);
         }
     }
 
@@ -127,7 +134,7 @@ public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>
         toast(toast);
         Hawk.put(BConfig.LOGIN, data);
         GoTo.start(goTo(data), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_RESET));
-        if (isFinish()) getActivity().finish();
+        if (isFinish()) Objects.requireNonNull(getActivity()).finish();
     }
 
     @Override
@@ -141,14 +148,17 @@ public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>
     public void onClick(View view) {
         if (view.getId() == R.id.forget) {//忘记按钮点击
             forgetClick();
+            return;
         }
 
         if (view.getId() == R.id.login) {//登录按钮点击
-            if (loginClick()) return;
+            loginClick();
+            return;
         }
 
         if (view.getId() == R.id.register) {//登录页面 注册按钮点击
             registerClick();
+            return;
         }
 
         if (view.getId() == R.id.next) {//重置密码页面 下一步按钮点击
@@ -159,32 +169,34 @@ public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>
     protected void nextClick() {
         if (mode.equals(BConfig.LOGIN_MODE_CAPTCHA)) {
             if (captcha.actionErrorCheck()) return;
+            checkCaptcha();
+        } else {
+            if (checkPassword.actionErrorCheck()) return;
+            presenter.sub(reset(phone.getText(), password.getText()));
+        }
+        next.setEnabled(false);
+    }
+
+    private void checkCaptcha() {
+        Subscription subscription = checkCaptcha(phone.getText(), captcha.getText());
+        if (subscription == null)
             if (captcha.getText().equals(captchaStr)) {
                 toast("验证成功");
-                captchaSuccess();
+                initReset();
             } else {
                 toast("验证码不正确");
             }
-        } else {
-            if (checkPassword.actionErrorCheck()) return;
-            next.setEnabled(false);
-            presenter.sub(reset(password.getText(), checkPassword.getText()));
-        }
-    }
-
-    protected void captchaSuccess() {
-        GoTo.start(getClass(), new Intent().putExtra(BConfig.LOGIN_MODE, BConfig.LOGIN_MODE_RESET));
+        else presenter.sub(subscription);
     }
 
     protected void forgetClick() {
         initCaptcha();
     }
 
-    protected boolean loginClick() {
-        if (password.actionErrorCheck()) return true;
+    protected void loginClick() {
+        if (password.actionErrorCheck()) return;
         login.setEnabled(false);
         presenter.sub(login(phone.getText(), password.getText()));
-        return false;
     }
 
     protected void registerClick() {
@@ -197,7 +209,6 @@ public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>
             register.setEnabled(false);
             presenter.sub(register(phone.getText(), captcha.getText()));
         }
-        return;
     }
 
     protected Subscription login(String phone, String password) {
@@ -208,19 +219,21 @@ public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>
         return null;
     }
 
-    protected Subscription captcha(String phone) {
+    protected Subscription sendCaptcha(String phone) {
         return null;
     }
 
-    protected Subscription reset(String password, String checkPassword) {
+    protected Subscription checkCaptcha(String phone, String captcha) {
+        return null;
+    }
+
+    protected Subscription reset(String phone, String password) {
         return null;
     }
 
     protected Class<?> goTo(M data) {
         return null;
     }
-
-    protected String captchaStr;
 
     protected boolean isFinish() {
         return true;

@@ -29,7 +29,7 @@ public class WHomeActivity extends BActivity implements View.OnClickListener,
         MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
         Layer.OnDismissListener, Layer.OnClickListener, Layer.OnShowListener {
 
-    private final static String baseUrl = "http://192.168.21.220:8080/";
+    private final static String baseUrl = "http://192.168.20.55:8023/tv-wall";
     private String videoUrl;
     private String[] urls = {baseUrl + "textMode", baseUrl + "sendVideo", baseUrl + "officeMode"};
     private View popView;
@@ -65,32 +65,7 @@ public class WHomeActivity extends BActivity implements View.OnClickListener,
     }
 
     private void initJs() {
-        BConfig.get().setWebInterface(new BWebJS() {
-            String jsonStr;
-            private Runnable runnable = () -> {
-                List<Video> videos = new Gson().fromJson(jsonStr, new TypeToken<ArrayList<Video>>() {
-                }.getType());
-                if (videos != null && videos.size() > 0) {
-                    mVideos.clear();
-                    mVideos.addAll(videos);
-                    player(videos.get(0).getFileUrl());
-                }
-            };
-
-            @JavascriptInterface
-            @Override
-            public String getInfo(int code, String info) {
-                if (info.equals(jsonStr)) return null;
-                jsonStr = info;
-                runOnUiThread(runnable);
-                return super.getInfo(code, info);
-            }
-
-            @Override
-            public void onReceiveValue(String value) {
-                log("onReceiveValue");
-            }
-        });
+        BConfig.get().setWebInterface(MJS.class);
     }
 
     private void doAction(int id) {
@@ -192,5 +167,32 @@ public class WHomeActivity extends BActivity implements View.OnClickListener,
         public String getFileUrl() {
             return fileUrl;
         }
+    }
+    class MJS extends BWebJS{
+        String jsonStr;
+        private Runnable runnable = () -> {
+            List<Video> videos = new Gson().fromJson(jsonStr, new TypeToken<ArrayList<Video>>() {
+            }.getType());
+            if (videos != null && videos.size() > 0) {
+                mVideos.clear();
+                mVideos.addAll(videos);
+                player(videos.get(0).getFileUrl());
+            }
+        };
+
+        @JavascriptInterface
+        @Override
+        public String getInfo(int code, String info) {
+            if (info.equals(jsonStr)) return null;
+            jsonStr = info;
+            runOnUiThread(runnable);
+            return super.getInfo(code, info);
+        }
+
+        @Override
+        public void onReceiveValue(String value) {
+            log("onReceiveValue");
+        }
+
     }
 }

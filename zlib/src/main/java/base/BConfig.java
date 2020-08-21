@@ -22,12 +22,13 @@ import util.SystemUtil;
 
 public class BConfig {
     public static final String LOGIN = "login";
+    public static final String REGISTER = "register";
     public static final String LOGIN_MODE = "mode";
     public static final String LOGIN_MODE_LOGIN = "login";
     public static final String LOGIN_MODE_REGISTER = "register";
-    public static final String REGISTER = "register";
     public static final String LOGIN_MODE_RESET = "reset";
     public static final String LOGIN_MODE_CAPTCHA = "captcha";
+
     public static final String TOP_SHOW = "showTop";
     public static final String TITLE = "title";
     public static final String BACK = "back";
@@ -38,6 +39,7 @@ public class BConfig {
     public static final String PASSWORD = "password";
     public static final String USER_NAME = "username";
     public static final String PHONE = "phone";
+    public static final String PHONE_CODE = "phoneCode";
     public static final String CLIENT = "client";
     public static final String PAGE = "page";
     public static final String ID = "id";
@@ -53,7 +55,7 @@ public class BConfig {
     private String bugLy;
     private String testPhone;
     private String testPassword;
-    private BWebJS webInterface;
+    private Class webInterface;
     private boolean fullScreen = false;
     private int colorTheme, colorTheme88;
     private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
@@ -154,13 +156,11 @@ public class BConfig {
         return config;
     }
 
-    public BWebJS getWebInterface() {
-        if (webInterface == null)
-            webInterface = new BWebJS();
+    public Class getWebInterface() {
         return webInterface;
     }
 
-    public BConfig setWebInterface(BWebJS webInterface) {
+    public BConfig setWebInterface(Class webInterface) {
         this.webInterface = webInterface;
         return config;
     }

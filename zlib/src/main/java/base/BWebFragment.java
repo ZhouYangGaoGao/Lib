@@ -101,20 +101,29 @@ public class BWebFragment extends BFragment {
         }
         if (!settings.getUserAgentString().contains("Mobile") && !settings.getUserAgentString().contains("TV"))
             settings.setUserAgentString(settings.getUserAgentString().replace("Safari", "Mobile Safari"));
-        mAgentWeb = AgentWeb.with(this)
+        AgentWeb.CommonBuilder builder = AgentWeb.with(this)
                 .setAgentWebParent(mSmartView, layoutParams)
                 .useDefaultIndicator()
                 .setWebView(mWebView)
                 .setWebViewClient(getWebClient())
                 .setWebChromeClient(getWebChromeClient(finalTitle))
                 .setMainFrameErrorView(R.layout.layout_web_error, R.id.error)
-                .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-                .addJavascriptInterface(BConfig.ANDROID, BConfig.get().getWebInterface()
-                        .setActivity(getActivity()))
+                .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK);
+        Object instance = null;
+        if (BConfig.get().getWebInterface() != null) {
+            try {
+                instance = BConfig.get().getWebInterface().newInstance();
+                builder.addJavascriptInterface(BConfig.ANDROID, instance);
+            } catch (IllegalAccessException | java.lang.InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+        mAgentWeb = builder
                 .createAgentWeb()
                 .ready()
                 .go(tmpUrl);
-        BConfig.get().getWebInterface().setAgentWeb(mAgentWeb);
+        if (instance != null && instance instanceof BWebJS)
+            ((BWebJS) instance).setAgentWeb(mAgentWeb).setActivity(getActivity());
     }
 
     @NonNull
