@@ -57,38 +57,6 @@ public class FileModel {
         return pictureSelector;
     }
 
-//    /**
-//     * 在自定义View中使用
-//     * @param context
-//     */
-//    public void init(Context context) {
-//        this.context = context;
-//        if (lifeFragment == null) {
-//            lifeFragment = LifeCycle.addOnResult((AppCompatActivity) context, (requestCode, resultCode, data) -> {
-//                if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST) {
-//                    if (listener != null)
-//                        listener.files(PictureSelector.obtainMultipleResult(data));
-//                }
-//            });
-//        }
-//    }
-
-//    /**
-//     * 在Java代码中使用
-//     * @param appCompatActivity
-//     */
-//    public void initModel(AppCompatActivity appCompatActivity) {
-//        this.context = appCompatActivity;
-//        if (lifeFragment == null) {
-//            lifeFragment = LifeCycle.setOnResult(appCompatActivity, (requestCode, resultCode, data) -> {
-//                if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST) {
-//                    if (listener != null)
-//                        listener.files(PictureSelector.obtainMultipleResult(data));
-//                }
-//            });
-//        }
-//    }
-
     public void go(List<LocalMedia> mediaList) {
         if (lifeFragment == null) {
             lifeFragment = LifeCycle.setOnResult((AppCompatActivity) context, (requestCode, resultCode, data) -> {

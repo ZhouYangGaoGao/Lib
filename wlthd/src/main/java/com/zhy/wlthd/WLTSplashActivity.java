@@ -32,10 +32,11 @@ public class WLTSplashActivity extends BSplashActivity {
         otherView.setLayoutParams(RLParams.WW().rule(RelativeLayout.CENTER_IN_PARENT));
 
         mCompany = new TextView(this);
-        mCompany.setText("东华（安徽）生态规划院有限公司\ncopyright © 2019\n");
+//        mCompany.setText("东华（安徽）生态规划院有限公司\ncopyright © 2019\n皖ICP备18012557号-4 联网备案号34019202000826\n");
+        mCompany.setText("皖ICP备18012557号-4 联网备案号34019202000826\n");
         mCompany.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
         mCompany.setTextColor(0xffcccccc);
-        mCompany.setBackgroundColor(0x44ffffff);
+//        mCompany.setBackgroundColor(0x44ffffff);
         mCompany.setTextSize(12);
         mCompany.setLayoutParams(RLParams.MM());
         delay = 1500;
@@ -66,7 +67,7 @@ public class WLTSplashActivity extends BSplashActivity {
                 .scale(1f, 0.5f)
                 .scale(otherView, 0.3f, 1f)
                 .alpha(otherView, 0f, 1f)
-                .alpha(mCompany, 1f, 0f)
+//                .alpha(mCompany, 1f, 0f)
                 .playTogether();
     }
 

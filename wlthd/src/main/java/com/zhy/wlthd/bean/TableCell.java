@@ -4,8 +4,6 @@ import com.orient.me.data.table.ICellItem;
 
 public class TableCell implements ICellItem {
 
-    private String name;
-    private String desc;
     private int type;
     private int index;
     private int row;
@@ -13,9 +11,7 @@ public class TableCell implements ICellItem {
     private int widthSpan;
     private int heightSpan;
 
-    public TableCell(String name, int index, String desc, int type, int row, int col, int rowSpan, int colSpan) {
-        this.name = name;
-        this.desc = desc;
+    public TableCell(  int index , int type, int row, int col, int rowSpan, int colSpan) {
         this.type = type;
         this.row = row;
         this.col = col;
@@ -23,23 +19,6 @@ public class TableCell implements ICellItem {
         this.heightSpan = colSpan;
         this.index = index;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
     public int getType() {
         return type;
     }

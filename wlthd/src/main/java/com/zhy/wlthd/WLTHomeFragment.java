@@ -118,23 +118,23 @@ public class WLTHomeFragment extends BListDataFragment<Permission> {
             }
         });
 
-        cells.add(new TableCell("自查上图", 0, "自查造林小班登记", 1, 1, 1, 1, 1));
-        cells.add(new TableCell("自查登记", 1, "森林长廊、义务植树等自查登记", 1, 1, 2, 1, 1));
-        cells.add(new TableCell("风采展示", 2, "轮播图循环播放", 2, 1, 3, 2, 2));
-        cells.add(new TableCell("任务管理", 3, "各工程类型营林任务管理", 1, 1, 5, 2, 1));
+        cells.add(new TableCell(0, 1, 1, 1, 1, 1));
+        cells.add(new TableCell(1, 1, 1, 2, 1, 1));
+        cells.add(new TableCell(2, 2, 1, 3, 2, 2));
+        cells.add(new TableCell(3, 1, 1, 5, 2, 1));
 
-        cells.add(new TableCell("营林一张图", 4, "营造林展示中心", 1, 2, 1, 2, 1));
-        cells.add(new TableCell("进度督查", 5, "省市县自查进度督查", 1, 2, 5, 1, 1));
-        cells.add(new TableCell("使用手册", 6, "学习操作中心", 1, 2, 6, 1, 1));
+        cells.add(new TableCell(4, 1, 2, 1, 2, 1));
+        cells.add(new TableCell(5, 1, 2, 5, 1, 1));
+        cells.add(new TableCell(6, 1, 2, 6, 1, 1));
 
-        cells.add(new TableCell("数据统计", 7, "图文播报营林数据", 1, 3, 1, 1, 1));
-        cells.add(new TableCell("人员管理", 8, "造林绿化体系管理", 1, 3, 2, 1, 1));
-        cells.add(new TableCell("核查验收", 9, "省市抽检核查验收", 1, 3, 3, 2, 1));
-        cells.add(new TableCell("我国将建立林木种质资源数据库", 10, "14", 0, 3, 5, 2, 2));
+        cells.add(new TableCell(7, 1, 3, 1, 1, 1));
+        cells.add(new TableCell(8, 1, 3, 2, 1, 1));
+        cells.add(new TableCell(9, 1, 3, 3, 2, 1));
+        cells.add(new TableCell(10, 0, 3, 5, 2, 2));
 
-        cells.add(new TableCell("个人中心", 11, "个人信息更新管理", 1, 4, 1, 2, 1));
-        cells.add(new TableCell("系统管理", 12, "平台设置管理", 1, 4, 3, 1, 1));
-        cells.add(new TableCell("消息中心", 13, "营林信息发布", 1, 4, 4, 1, 1));
+        cells.add(new TableCell(11, 1, 4, 1, 2, 1));
+        cells.add(new TableCell(12, 1, 4, 3, 1, 1));
+        cells.add(new TableCell(13, 1, 4, 4, 1, 1));
 
     }
 
@@ -183,13 +183,8 @@ public class WLTHomeFragment extends BListDataFragment<Permission> {
         protected void onBind(TableCell tableCell) {
             switch (tableCell.getType()) {
                 case 0:
-                    contentLayout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            GoTo.start(BWebFragment.class, new MIntent(BConfig.TOP_SHOW, false)
-                                    .putExtra(BConfig.URL, WLTApp.url.replace(urls[6], urls[tableCell.getIndex()]) + JsonUtil.getJson(user)));
-                        }
-                    });
+                    contentLayout.setOnClickListener(v -> GoTo.start(BWebFragment.class, new MIntent(BConfig.TOP_SHOW, false)
+                            .putExtra(BConfig.URL, WLTApp.url.replace(urls[6], urls[tableCell.getIndex()]) + JsonUtil.getJson(user))));
                     if (icons[tableCell.getIndex()] == 0) return;
                     textView.setDrawablePadding((int) (4 * r));
                     textView.setLeftRes(icons[tableCell.getIndex()]);
@@ -203,16 +198,17 @@ public class WLTHomeFragment extends BListDataFragment<Permission> {
                     if (news == null)
                         contentLayout.setBackgroundResource(bgs[tableCell.getIndex()]);
                     else
-                        ImageUtils.loadImage(getActivity(),news.getPostImg(),imageView);
+                        ImageUtils.loadImage(getActivity(), news.getPostImg(), imageView);
                     break;
                 case 2:
-                    contentLayout.setBackgroundResource(bgs[tableCell.getIndex()]);
-                    contentLayout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            BApp.app().logout();
-                        }
-                    });
+                    if (BuildConfig.DEBUG){
+                        textView.setMaxLines(4);
+                        textView.setText(user.getRealName() +
+                                "\n" + user.getPhone() + "\n" +
+                                "版本号:" + BuildConfig.VERSION_NAME);
+                        imageView.setOnClickListener(v -> BApp.app().logout());
+                    }
+                    imageView.setImageResource(bgs[tableCell.getIndex()]);
                     break;
                 case 1:
                     if (WLTHomeFragment.this.mData == null) return;
@@ -237,29 +233,26 @@ public class WLTHomeFragment extends BListDataFragment<Permission> {
                     .addColor(permission.getRemarks(), 0xffeeeeee)
                     .setSize(permission.getRemarks(), 0.75f);
             contentLayout.setBackgroundColor(bgs[tableCell.getIndex()]);
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if ("spot-check".equals(permission.getCode())) {
-                        if (check == null || check.size() == 0) return;
-                        for (int j = 0; j < check.get(0).getPlanList().size(); j++) {
-                            if (!"accept_check".equals(check.get(0).getPlanList().get(j).getStage()))
-                                continue;
-                            if (!check.get(0).getPlanList().get(j).getStatus().equals("doing"))
-                                continue;
-                            if (TextUtils.isEmpty(check.get(0).getPlanList().get(j).getEndTime()))
-                                continue;
-                            if (!check.get(0).getPlanList().get(j).getEndTime().startsWith(check.get(0).getYear()))
-                                continue;
-                            GoTo.start(BWebFragment.class, new MIntent(BConfig.TOP_SHOW, false)
-                                    .putExtra(BConfig.URL, WLTApp.url.replace(urls[6], urls[tableCell.getIndex()]) + JsonUtil.getJson(user)));
-                            return;
-                        }
-                        toast("请等待抽检结束!");
-                    } else
+            textView.setOnClickListener(v -> {
+                if ("spot-check".equals(permission.getCode())) {
+                    if (check == null || check.size() == 0) return;
+                    for (int j = 0; j < check.get(0).getPlanList().size(); j++) {
+                        if (!"accept_check".equals(check.get(0).getPlanList().get(j).getStage()))
+                            continue;
+                        if (!check.get(0).getPlanList().get(j).getStatus().equals("doing"))
+                            continue;
+                        if (TextUtils.isEmpty(check.get(0).getPlanList().get(j).getEndTime()))
+                            continue;
+                        if (!check.get(0).getPlanList().get(j).getEndTime().startsWith(check.get(0).getYear()))
+                            continue;
                         GoTo.start(BWebFragment.class, new MIntent(BConfig.TOP_SHOW, false)
                                 .putExtra(BConfig.URL, WLTApp.url.replace(urls[6], urls[tableCell.getIndex()]) + JsonUtil.getJson(user)));
-                }
+                        return;
+                    }
+                    toast("请等待抽检结束!");
+                } else
+                    GoTo.start(BWebFragment.class, new MIntent(BConfig.TOP_SHOW, false)
+                            .putExtra(BConfig.URL, WLTApp.url.replace(urls[6], urls[tableCell.getIndex()]) + JsonUtil.getJson(user)));
             });
         }
     }

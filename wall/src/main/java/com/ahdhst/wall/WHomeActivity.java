@@ -29,7 +29,7 @@ public class WHomeActivity extends BActivity implements View.OnClickListener,
         MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
         Layer.OnDismissListener, Layer.OnClickListener, Layer.OnShowListener {
 
-    private final static String baseUrl = "http://192.168.20.55:8023/tv-wall";
+    private final static String baseUrl = "http://112.30.60.51:8023/tv-wall";
     private String videoUrl;
     private String[] urls = {baseUrl + "textMode", baseUrl + "sendVideo", baseUrl + "officeMode"};
     private View popView;

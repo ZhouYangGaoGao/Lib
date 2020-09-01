@@ -54,6 +54,14 @@ public class User {
         return token;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
     public static class RegionListBean {
         /**
          * area : 0

@@ -2,16 +2,10 @@ package base;
 
 import android.app.Activity;
 import android.location.Location;
-import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.just.agentweb.AgentWeb;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import hawk.Hawk;
 import util.GPSUtils;
@@ -66,7 +60,6 @@ public class BWebJS implements ValueCallback<String>, GPSUtils.OnLocationListene
             case 102://停止连续位置获取
                 if (gpsUtils != null) gpsUtils.removeListener();
                 break;
-
         }
         LogUtils.e("code = " + code, "info = " + info + "\nreturn = " + returnInfo);
         return returnInfo;

@@ -34,11 +34,13 @@ public abstract class BApp extends Application implements Runnable {
         LifeCycle.application(this, new LifeCycle.ActListener() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+                super.onActivityCreated(activity, bundle);
                 acts.add(new WeakReference<>(activity));
             }
 
             @Override
             public void onActivityDestroyed(@NonNull Activity activity) {
+                super.onActivityDestroyed(activity);
                 for (int i = 0; i < acts.size(); i++) {
                     if (acts.get(i).get().equals(activity)) {
                         acts.remove(i);
