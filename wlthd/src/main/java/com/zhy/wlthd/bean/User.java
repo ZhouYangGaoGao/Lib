@@ -1,4 +1,4 @@
-package com.zhy.wlthd;
+package com.zhy.wlthd.bean;
 
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * - generate by MvpAutoCodePlus plugin.
  */
 
-public class WLTLoginModel {
+public class User {
 
 
     /**
@@ -45,6 +45,10 @@ public class WLTLoginModel {
     private int regionLevel;
     private String regionName;
     private List<RegionListBean> regionList;
+
+    public int getId() {
+        return id;
+    }
 
     public String getToken() {
         return token;

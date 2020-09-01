@@ -45,6 +45,7 @@ public class BConfig {
     public static final String ID = "id";
     public static final String TABS = "tabs";
     public static final String COOKIES = "cookies";
+    public static final String TYPE = "type";
     public static String[] LOADINGS;
     private static BConfig config;
     private Interceptor interceptor;
@@ -55,8 +56,11 @@ public class BConfig {
     private String bugLy;
     private String testPhone;
     private String testPassword;
-    private Class webInterface;
+    private String expiredCode;
+    private Class<?> webInterface;
+    private Class<?> loginClass;
     private boolean fullScreen = false;
+    private boolean isExpired = false;
     private int colorTheme, colorTheme88;
     private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 
@@ -232,5 +236,32 @@ public class BConfig {
     public BConfig setTestPassword(String testPassword) {
         this.testPassword = testPassword;
         return this;
+    }
+
+    public String getExpiredCode() {
+        return expiredCode;
+    }
+
+    public BConfig setExpiredCode(String expiredCode) {
+        this.expiredCode = expiredCode;
+        return config;
+    }
+
+    public boolean isExpired() {
+        return isExpired;
+    }
+
+    public BConfig setExpired(boolean expired) {
+        isExpired = expired;
+        return config;
+    }
+
+    public Class<?> getLoginClass() {
+        return loginClass;
+    }
+
+    public BConfig setLoginClass(Class<?> loginClass) {
+        this.loginClass = loginClass;
+        return config;
     }
 }

@@ -1,12 +1,21 @@
 package com.zhy.wlthd;
 
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.Gravity;
+import android.webkit.WebStorage;
 import android.widget.RelativeLayout;
 
+import com.zhy.wlthd.bean.News;
+import com.zhy.wlthd.manager.WLTManager;
+
+import base.BApp;
+import base.BConfig;
 import base.BSplashActivity;
+import base.BSub;
 import custom.TextView;
 import util.AnimatorUtil;
+import util.DataCleanManager;
 import util.IncludeUtil;
 import util.layout.RLParams;
 
@@ -16,7 +25,7 @@ public class WLTSplashActivity extends BSplashActivity {
 
     @Override
     public void beforeView() {
-        homeCls = WLTHomeActivity.class;
+        homeCls = WLTHomeFragment.class;
         centerIconRes = R.mipmap.ic_splash;
         bgRes = R.mipmap.bg_welcome;
         otherView = getView(R.layout.layout_login);
@@ -36,6 +45,7 @@ public class WLTSplashActivity extends BSplashActivity {
     public void afterView() {
         otherView.setAlpha(0);
         mRootView.addView(mCompany, 0);
+        mStatusView.requestFocus();
         mStatusView.getTextView().setEnabled(false);
         mStatusView.empty("互联网+造林 v1.0\n安徽省营造林管理平台");
         mStatusView.getTextView().setTextSize(20);
@@ -58,5 +68,24 @@ public class WLTSplashActivity extends BSplashActivity {
                 .alpha(otherView, 0f, 1f)
                 .alpha(mCompany, 1f, 0f)
                 .playTogether();
+    }
+
+    @Override
+    protected void startHome() {
+        presenter.sub(new BSub<News>(WLTManager.api().indexNotice("news")){
+            @Override
+            public void onSuccess(News news) {
+                WLTSplashActivity.super.startHome();
+            }
+
+            @Override
+            public boolean onCode(String code) {
+                if (!TextUtils.isEmpty(code) && code.equals(BConfig.get().getExpiredCode())) {
+                    startLogin();
+                    return false;
+                }
+                return true;
+            }
+        });
     }
 }

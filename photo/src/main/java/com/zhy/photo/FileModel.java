@@ -29,7 +29,7 @@ public class FileModel {
     int max = 9;//最大选择数量
     int min = 1;//最小选择数量
     boolean single;//是否单选
-    boolean compress=true;//是否压缩
+    boolean compress = true;//是否压缩
     boolean isCrop;//是否裁切
     boolean isGif;//是否选gif
     boolean circleCrop;//是否显示圆形裁切框
@@ -40,6 +40,11 @@ public class FileModel {
     private Fragment lifeFragment;
     private PictureSelector pictureSelector;
     private OnFilesGetListener listener;
+
+    public FileModel(Context context, OnFilesGetListener listener) {
+        this.context = context;
+        this.listener = listener;
+    }
 
     PictureSelectionModel getModel(boolean onlyCamera, int type) {
         return onlyCamera ? getPictureSelector().openCamera(type) : getPictureSelector().openGallery(type);
@@ -52,31 +57,47 @@ public class FileModel {
         return pictureSelector;
     }
 
-    public void init(Context context) {
-        this.context = context;
-        if (lifeFragment == null) {
-            lifeFragment = LifeCycle.setOnActivityResult((AppCompatActivity) context, (requestCode, resultCode, data) -> {
-                if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST) {
-                    if (listener != null)
-                        listener.files(PictureSelector.obtainMultipleResult(data));
-                }
-            });
-        }
-    }
+//    /**
+//     * 在自定义View中使用
+//     * @param context
+//     */
+//    public void init(Context context) {
+//        this.context = context;
+//        if (lifeFragment == null) {
+//            lifeFragment = LifeCycle.addOnResult((AppCompatActivity) context, (requestCode, resultCode, data) -> {
+//                if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST) {
+//                    if (listener != null)
+//                        listener.files(PictureSelector.obtainMultipleResult(data));
+//                }
+//            });
+//        }
+//    }
 
-    public void initModel(AppCompatActivity appCompatActivity) {
-        this.context = appCompatActivity;
-        if (lifeFragment == null) {
-            lifeFragment = LifeCycle.setOnResult(appCompatActivity, (requestCode, resultCode, data) -> {
-                if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST) {
-                    if (listener != null)
-                        listener.files(PictureSelector.obtainMultipleResult(data));
-                }
-            });
-        }
-    }
+//    /**
+//     * 在Java代码中使用
+//     * @param appCompatActivity
+//     */
+//    public void initModel(AppCompatActivity appCompatActivity) {
+//        this.context = appCompatActivity;
+//        if (lifeFragment == null) {
+//            lifeFragment = LifeCycle.setOnResult(appCompatActivity, (requestCode, resultCode, data) -> {
+//                if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST) {
+//                    if (listener != null)
+//                        listener.files(PictureSelector.obtainMultipleResult(data));
+//                }
+//            });
+//        }
+//    }
 
     public void go(List<LocalMedia> mediaList) {
+        if (lifeFragment == null) {
+            lifeFragment = LifeCycle.setOnResult((AppCompatActivity) context, (requestCode, resultCode, data) -> {
+                if (resultCode == Activity.RESULT_OK && requestCode == PictureConfig.CHOOSE_REQUEST) {
+                    if (listener != null)
+                        listener.files(PictureSelector.obtainMultipleResult(data));
+                }
+            });
+        }
         getModel(onlyCamera, type)//打开相册或相机,选择文件类型
                 .maxSelectNum(max)//最大选择数量
                 .minSelectNum(min)//最小选择数量

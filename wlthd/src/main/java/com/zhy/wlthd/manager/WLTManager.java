@@ -1,5 +1,7 @@
-package com.zhy.wlthd;
+package com.zhy.wlthd.manager;
 
+
+import com.zhy.wlthd.bean.User;
 
 import base.BConfig;
 import base.BManager;
@@ -11,7 +13,7 @@ import util.RetrofitHelper;
 
 public class WLTManager extends BManager<WLTApi> {
 
-    public Observable<BResponse<WLTLoginModel>> login(String phone, String password) {
+    public Observable<BResponse<User>> login(String phone, String password) {
         return service.login(new MMap("loginAccount", phone)
                 .body(BConfig.PASSWORD, MD5Util.MD5(password)));
     }

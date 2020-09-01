@@ -18,8 +18,9 @@
             android:text="v2.0 "
             android:visibility="invisible" />
         <ImageView
-            android:layout_width="320dp"
-            android:layout_height="40dp"
+            android:layout_width="350dp"
+            android:layout_height="42dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/ic_title" />
 
         <custom.TextView
@@ -32,7 +33,7 @@
 
 
     <background.view.BLLinearLayout
-        android:layout_width="320dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:elevation="10dp"

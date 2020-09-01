@@ -7,16 +7,21 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.google.gson.Gson;
+import com.zhy.wlthd.bean.User;
+import com.zhy.wlthd.manager.WLTApp;
+import com.zhy.wlthd.manager.WLTManager;
 
 import base.BConfig;
 import base.BLoginFragment;
 import base.BSub;
+import base.BWebFragment;
 import custom.SmartView;
 import custom.TextView;
 import rx.Subscription;
 import util.GoTo;
 import util.MD5Util;
 import util.MDrawable;
+import util.MIntent;
 import util.ScreenUtils;
 import util.layout.LLParams;
 
@@ -42,7 +47,8 @@ public class WLTLoginFragment extends BLoginFragment {
         TextView help = new TextView(" 帮助").setLeftRes(R.drawable.ic_help);
         help.setTextColor(Color.WHITE);
         help.setOnClickListener(v -> {
-
+            GoTo.start(BWebFragment.class, new MIntent(BConfig.TOP_SHOW, false)
+                    .putExtra(BConfig.URL, WLTApp.url));
         });
         centerContent.addView(help, 0, LLParams.WW().weight(1));
         Drawable tag = MDrawable.tag(0x88ffffff, 2);
@@ -68,21 +74,19 @@ public class WLTLoginFragment extends BLoginFragment {
                 case BConfig.LOGIN_MODE_RESET:
                     initCaptcha();
                     break;
-
             }
             return;
         }
         super.onClick(smartView, textViewIndex, drawableIndex);
-
     }
 
     @Override
     protected Subscription login(String phone, String password) {
-        return new BSub<WLTLoginModel>(this, WLTManager.get().login(phone, password)) {
+        return new BSub<User>(this, WLTManager.get().login(phone, password)) {
             @Override
-            public void onSuccess(WLTLoginModel o) {
+            public void onSuccess(User o) {
                 BConfig.get().setToken(o.getToken());
-                GoTo.start(WLTHomeActivity.class, new Intent().putExtra(BConfig.URL, WLTConstant.url + new Gson().toJson(o)));
+                GoTo.start(WLTHomeFragment.class, new Intent().putExtra(BConfig.URL, WLTApp.url + new Gson().toJson(o)));
                 success(o);
             }
         };

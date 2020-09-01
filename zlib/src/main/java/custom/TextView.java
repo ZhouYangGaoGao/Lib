@@ -31,7 +31,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     private boolean textClickable = true;
 
     public TextView(String text) {
-        this(BApp.app().act());
+        this(BApp.app().act() == null ? BApp.app() : BApp.app().act());
         setText(text);
     }
 
@@ -153,7 +153,7 @@ public class TextView extends androidx.appcompat.widget.AppCompatTextView {
     }
 
     public TextView setRes(int drawableIndex, int... resIds) {
-        return setDrawable(drawableIndex,getDrawables(resIds));
+        return setDrawable(drawableIndex, getDrawables(resIds));
     }
 
     public TextView setTextRes(int res) {

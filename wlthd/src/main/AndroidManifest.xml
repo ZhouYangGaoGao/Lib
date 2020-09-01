@@ -5,11 +5,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
-        android:name=".WLTApp"
+        android:name=".manager.WLTApp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".WLTSplashActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,10 +20,6 @@
         </activity>
         <activity
             android:name="base.BFragmentActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".WLTHomeActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="landscape" />
     </application>
 </manifest>

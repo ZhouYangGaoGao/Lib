@@ -1,9 +1,11 @@
 package base;
 
 import android.annotation.SuppressLint;
+import android.net.http.SslError;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.just.agentweb.AgentWeb;
@@ -47,7 +50,6 @@ public class BWebFragment extends BFragment {
         contentViewId = R.layout.fragment_web;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     @Override
     public void initView() {
@@ -75,6 +77,7 @@ public class BWebFragment extends BFragment {
         mWebView = new WebView(BApp.app());
         mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         WebSettings settings = mWebView.getSettings();
+        settings.setSavePassword(true);
         settings.setLoadsImagesAutomatically(true);
         settings.setAppCacheEnabled(true);
         settings.setAllowContentAccess(true);
@@ -88,7 +91,7 @@ public class BWebFragment extends BFragment {
         settings.setDatabaseEnabled(true);
         settings.setGeolocationEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
-        settings.setCacheMode(LOAD_DEFAULT);
+        settings.setCacheMode(LOAD_NO_CACHE);
         settings.setDefaultTextEncodingName("GBK");
         settings.setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
         settings.setLoadWithOverviewMode(true);
@@ -96,9 +99,8 @@ public class BWebFragment extends BFragment {
         settings.setAllowFileAccess(true); // 允许访问文件
         settings.setSaveFormData(true);// 保存表单数据
         settings.setDomStorageEnabled(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
         if (!settings.getUserAgentString().contains("Mobile") && !settings.getUserAgentString().contains("TV"))
             settings.setUserAgentString(settings.getUserAgentString().replace("Safari", "Mobile Safari"));
         AgentWeb.CommonBuilder builder = AgentWeb.with(this)
@@ -142,15 +144,24 @@ public class BWebFragment extends BFragment {
     @NonNull
     private WebViewClient getWebClient() {
         return new WebViewClient() {//拦截错误链接
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                // 不要使用super，否则有些手机访问不了，因为包含了一条 handler.cancel()
+                // super.onReceivedSslError(view, handler, error);
+                // 接受所有网站的证书，忽略SSL错误，执行访问网页
+                handler.proceed();
+            }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                log("shouldOverrideUrlLoading", request.getUrl().toString());
                 if (!request.getUrl().toString().contains("http")) return true;
                 return super.shouldOverrideUrlLoading(view, request);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                log("shouldOverrideUrlLoading", url);
                 if (!url.contains("http")) return true;
                 return super.shouldOverrideUrlLoading(view, url);
             }

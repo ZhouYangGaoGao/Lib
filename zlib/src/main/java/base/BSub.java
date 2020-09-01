@@ -22,7 +22,6 @@ import util.Reflector;
  */
 
 public class BSub<T> extends Subscriber<BResponse<T>> {
-
     private BView<T> mView;
     private String tag;
 
@@ -49,11 +48,12 @@ public class BSub<T> extends Subscriber<BResponse<T>> {
     @Override
     public void onStart() {
         if (!NetUtil.isNetworkAvailable() && !isUnsubscribed()) {
-            onCompleted();
             onFail("无网络");
+            onCompleted();
             unsubscribe();
             return;
         }
+        if (BConfig.get().isExpired()) return;
         super.onStart();
     }
 
@@ -67,6 +67,7 @@ public class BSub<T> extends Subscriber<BResponse<T>> {
 
     @Override
     public void onNext(BResponse<T> m) {
+        if (BConfig.get().isExpired()) return;
         if (m == null) {
             onFail(BApp.app().getString(R.string.str_no_data));
         } else {
@@ -77,6 +78,10 @@ public class BSub<T> extends Subscriber<BResponse<T>> {
     }
 
     public boolean onCode(String code) {
+        if (!TextUtils.isEmpty(code) && code.equals(BConfig.get().getExpiredCode())) {
+            BApp.app().expired();
+            return false;
+        }
         return true;
     }
 

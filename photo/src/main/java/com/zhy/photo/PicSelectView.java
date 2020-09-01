@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +20,7 @@ import photopicker.lib.decoration.GridSpacingItemDecoration;
 import photopicker.lib.entity.LocalMedia;
 import photopicker.lib.style.PictureParameterStyle;
 
-public class PicSelectView extends RecyclerView {
+public class PicSelectView extends RecyclerView implements FileModel.OnFilesGetListener{
     private GridImageAdapter adapter;
     private int numColumns = 4;
     private View.OnClickListener addListener;
@@ -41,8 +42,7 @@ public class PicSelectView extends RecyclerView {
 
     public PicSelectView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        fileModel = new FileModel();
-        fileModel.init(context);
+        fileModel = new FileModel(context,this);
         TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.PicSelectView);
         fileModel.max = t.getInt(R.styleable.PicSelectView_max, 9);
         fileModel.min = t.getInt(R.styleable.PicSelectView_min, 1);
@@ -63,12 +63,6 @@ public class PicSelectView extends RecyclerView {
         t.recycle();
         addItemDecoration(new GridSpacingItemDecoration(numColumns, (int) this.offset, false));
         setLayoutManager(new GridLayoutManager(context, numColumns, orientation, false));
-        fileModel.setListener(new FileModel.OnFilesGetListener() {
-            @Override
-            public void files(List<LocalMedia> mediaList) {
-                initData(mediaList);
-            }
-        });
         addListener = onlyShow ? null : view -> {
             fileModel.go(adapter.getList());
         };
@@ -108,12 +102,13 @@ public class PicSelectView extends RecyclerView {
         return adapter.getList();
     }
 
-    public void initData(List<LocalMedia> mediaList) {
-        adapter.setList(mediaList);
-    }
-
     private int dip2px(float dipValue) {
         final float scale = getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
+    }
+
+    @Override
+    public void files(List<LocalMedia> mediaList) {
+        adapter.setList(mediaList);
     }
 }

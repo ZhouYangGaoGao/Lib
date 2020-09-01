@@ -1,4 +1,4 @@
-package com.zhy.wlthd;
+package com.zhy.wlthd.bean;
 
 import com.orient.me.data.table.ICellItem;
 
@@ -7,14 +7,13 @@ public class TableCell implements ICellItem {
     private String name;
     private String desc;
     private int type;
-    private int bg;
-    private int icon;
+    private int index;
     private int row;
     private int col;
     private int widthSpan;
     private int heightSpan;
 
-    public TableCell(String name, int bg,int icon, String desc, int type, int row, int col, int rowSpan, int colSpan) {
+    public TableCell(String name, int index, String desc, int type, int row, int col, int rowSpan, int colSpan) {
         this.name = name;
         this.desc = desc;
         this.type = type;
@@ -22,16 +21,7 @@ public class TableCell implements ICellItem {
         this.col = col;
         this.widthSpan = rowSpan;
         this.heightSpan = colSpan;
-        this.bg = bg;
-        this.icon = icon;
-    }
-
-    public int getBg() {
-        return bg;
-    }
-
-    public int getIcon() {
-        return icon;
+        this.index = index;
     }
 
     public String getName() {
@@ -72,6 +62,10 @@ public class TableCell implements ICellItem {
 
     public void setHeightSpan(int heightSpan) {
         this.heightSpan = heightSpan;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     @Override

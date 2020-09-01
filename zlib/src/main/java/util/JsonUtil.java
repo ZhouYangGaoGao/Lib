@@ -20,16 +20,20 @@ public class JsonUtil {
         return util;
     }
 
+    public static Gson gson() {
+        return get().gson;
+    }
+
     public static String getJson(Object obj) {
         return get().gson.toJson(obj);
     }
 
-    public static <T> T getObject(String jsonStr,Class<T> tClass){
-       return get().gson.fromJson(jsonStr,tClass);
+    public static <T> T getObject(String jsonStr, Class<T> tClass) {
+        return get().gson.fromJson(jsonStr, tClass);
     }
 
-    public static <T> T getListObject(String jsonStr){
-       return get().gson.fromJson(jsonStr,new TypeToken<List<T>>() {
-       }.getType());
+    public static <T> T getListObject(String jsonStr) {
+        return get().gson.fromJson(jsonStr, new TypeToken<List<T>>() {
+        }.getType());
     }
 }

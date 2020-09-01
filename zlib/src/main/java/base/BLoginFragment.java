@@ -30,6 +30,7 @@ public abstract class BLoginFragment<M> extends BFragment<M, BPresenter<BView<?>
 
     @Override
     public void initView() {
+        BConfig.get().setExpired(false);
         mode = getIntent().getStringExtra(BConfig.LOGIN_MODE);
         if (TextUtils.isEmpty(mode)) mode = BConfig.LOGIN_MODE_LOGIN;
         bottomContent = (LinearLayout) findViewById(R.id.bottomContent);

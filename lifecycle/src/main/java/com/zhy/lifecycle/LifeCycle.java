@@ -37,8 +37,8 @@ public class LifeCycle {
         });
     }
 
-    public static void application(Application application, ActListener fragListener) {
-        application.registerActivityLifecycleCallbacks(fragListener);
+    public static void application(Application application, ActListener actListener) {
+        application.registerActivityLifecycleCallbacks(actListener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -46,14 +46,28 @@ public class LifeCycle {
         activity.registerActivityLifecycleCallbacks(listener);
     }
 
-    public static LifeFragment setOnResult(AppCompatActivity activity, final onActivityResultListener listener) {
+    /**
+     * 设置OnResult监听
+     * 需在activity onResume之后调用
+     * @param act
+     * @param listener
+     * @return
+     */
+    public static LifeFragment setOnResult(AppCompatActivity act, final onActivityResultListener listener) {
         final LifeFragment lifeFragment = new LifeFragment(listener);
-        activity.getWindow().getDecorView().setId(R.id.id_window);
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.id_window, lifeFragment).commit();
+        act.getWindow().getDecorView().setId(R.id.id_window);
+        act.getSupportFragmentManager().beginTransaction().replace(R.id.id_window, lifeFragment).commit();
         return lifeFragment;
     }
 
-    public static LifeFragment setOnActivityResult(final AppCompatActivity act, final onActivityResultListener listener) {
+    /**
+     * 默认添加了activity的生命周期监听
+     * 在onActivityResumed时添加OnResult监听
+     * @param act
+     * @param listener
+     * @return
+     */
+    public static LifeFragment addOnResult(final AppCompatActivity act, final onActivityResultListener listener) {
         final LifeFragment lifeFragment = new LifeFragment(listener);
         act.getApplication().registerActivityLifecycleCallbacks(new ActListener() {
             @Override

@@ -40,7 +40,7 @@
         android:imeOptions="flagNoExtractUi"
         android:paddingHorizontal="7dp"
         android:visibility="gone"
-        android:textColorHint="#999999"
+        android:textColorHint="#aaaaaa"
         android:paddingVertical="0.5dp"
         android:singleLine="true" />
 

@@ -70,7 +70,7 @@ public class ListFragment extends BListFragment<Class> {
 
             @Override
             public void onClick(View view) {
-                gpsUtils = GPSUtils.location(new GPSUtils.OnLocationListener() {
+                gpsUtils = GPSUtils.get().location(new GPSUtils.OnLocationListener() {
 
                     @Override
                     public void location(Location location) {
